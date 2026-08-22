@@ -67,43 +67,46 @@
         </div>
     </header>
 
-    <!-- MAIN HOME SECTION -->
-    <main class="w-full flex-1 flex flex-col items-center justify-start px-4 pt-25 sm:pt-10 pb-16">
-        <!-- Title Image (Closer to header, more bottom spacing) -->
-        <div class="flex justify-center mb-20 sm:mb-24 md:mb-28">
-            <img src="./src/assets/Northbase texto.png" alt="NorthBase"
-                class="w-60 sm:w-80 md:w-96 h-auto object-contain drop-shadow-sm" />
-        </div>
+    <!-- MAIN TRIVIA SECTION -->
+    <main class="w-full flex-1 flex flex-col items-center justify-start px-4 pt-12 sm:pt-16 pb-16">
 
-        <!-- 3 Cards Container (With Orange-Yellow Glow) -->
-        <div class="w-full max-w-4xl grid grid-cols-3 gap-3 sm:gap-6 md:gap-8 items-end justify-center px-2">
-            <!-- Card 1 (Left) -->
+        <!-- Title (Extra Bold) -->
+        <h1
+            class="font-['Poppins',sans-serif] text-base sm:text-lg md:text-xl font-extrabold text-[#0A1A32] text-center mb-6 sm:mb-8 tracking-wide">
+            El Norte juega. ¿Tú qué tanto sabes?
+        </h1>
+
+        <!-- Rectangle Container (Orange-Yellow Shadow) -->
+        <div
+            class="relative w-full max-w-2xl sm:max-w-3xl h-40 sm:h-48 bg-white border border-orange-200 border-b-6 border-b-orange-500 rounded-xl sm:rounded-2xl p-5 shadow-lg shadow-amber-400/40 flex flex-col justify-end items-end mb-6 sm:mb-8 transition-shadow">
+            <!-- Red "¡Prueba ahora!" Button (Bottom Right) -->
+            <button type="button"
+                class="px-6 py-2 sm:px-7 sm:py-2.5 bg-[#C1121F] hover:bg-[#9b0e19] text-white font-['Poppins',sans-serif] font-bold text-xs sm:text-sm rounded-full shadow-md hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 text-center tracking-wide whitespace-nowrap cursor-pointer">
+                ¡Prueba ahora!
+            </button>
+        </div>
+        <!-- 2x2 Square Containers Grid -->
+        <div class="w-full max-w-2xl sm:max-w-3xl grid grid-cols-2 gap-4 sm:gap-6">
+            <!-- Square 1 -->
             <div
-                class="bg-white border border-orange-200 border-b-4 border-b-orange-500 rounded-xl sm:rounded-2xl p-4 sm:p-6 h-52 sm:h-64 md:h-72 shadow-lg shadow-amber-400/35 flex flex-col items-center justify-center transition-all hover:scale-[1.02] hover:shadow-amber-400/50">
-                <span class="text-orange-500 font-['Poppins',sans-serif] font-semibold text-xs sm:text-sm"></span>
+                class="aspect-square bg-white border border-orange-200 border-b-5 border-b-orange-500 rounded-xl sm:rounded-2xl p-4 shadow-lg shadow-amber-400/35 flex flex-col items-center justify-center transition-all hover:scale-[1.02] hover:shadow-amber-400/50">
             </div>
-            <!-- Card 2 (Middle - Elevated / Higher) -->
+            <!-- Square 2 -->
             <div
-                class="bg-white border border-orange-200 border-b-4 border-b-orange-500 rounded-xl sm:rounded-2xl p-4 sm:p-6 h-52 sm:h-64 md:h-72 shadow-lg shadow-amber-400/35 flex flex-col items-center justify-center transition-all hover:scale-[1.02] hover:shadow-amber-400/50 -translate-y-4 sm:-translate-y-8">
-                <span class="text-orange-500 font-['Poppins',sans-serif] font-semibold text-xs sm:text-sm"></span>
+                class="aspect-square bg-white border border-orange-200 border-b-5 border-b-orange-500 rounded-xl sm:rounded-2xl p-4 shadow-lg shadow-amber-400/35 flex flex-col items-center justify-center transition-all hover:scale-[1.02] hover:shadow-amber-400/50">
             </div>
-            <!-- Card 3 (Right) -->
+            <!-- Square 3 -->
             <div
-                class="bg-white border border-orange-200 border-b-4 border-b-orange-500 rounded-xl sm:rounded-2xl p-4 sm:p-6 h-52 sm:h-64 md:h-72 shadow-lg shadow-amber-400/35 flex flex-col items-center justify-center transition-all hover:scale-[1.02] hover:shadow-amber-400/50">
-                <span class="text-orange-500 font-['Poppins',sans-serif] font-semibold text-xs sm:text-sm"></span>
+                class="aspect-square bg-white border border-orange-200 border-b-5 border-b-orange-500 rounded-xl sm:rounded-2xl p-4 shadow-lg shadow-amber-400/35 flex flex-col items-center justify-center transition-all hover:scale-[1.02] hover:shadow-amber-400/50">
+            </div>
+            <!-- Square 4 -->
+            <div
+                class="aspect-square bg-white border border-orange-200 border-b-5 border-b-orange-500 rounded-xl sm:rounded-2xl p-4 shadow-lg shadow-amber-400/35 flex flex-col items-center justify-center transition-all hover:scale-[1.02] hover:shadow-amber-400/50">
             </div>
         </div>
-
-        <!-- Bottom-Center "¡Comienza ya!" Button -->
-        <div class="mt-25 sm:mt-28 flex justify-center">
-            <a href="./trivia.html"
-                class="inline-block px-8 py-2.5 sm:px-10 sm:py-3 bg-[#C1121F] hover:bg-[#9b0e19] text-white font-['Poppins',sans-serif] font-bold text-xs sm:text-sm rounded-full shadow-md hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 text-center tracking-wide whitespace-nowrap">
-                ¡Comienza ya!
-            </a>
-        </div>
-
 
     </main>
+
 
 
     <script src="./src/js/index.js"></script>
