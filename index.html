@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NorthBase - Landing Page</title>
+    <!-- Google Font: Anton -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="./dist/output.css">
+</head>
+
+<!-- 1. Ensure body has zero margins/padding -->
+
+<body class="bg-white flex flex-col min-h-screen items-center m-0 p-0">
+    <!-- 2. Pinned to top (sticky top-0 z-30) and using shadow-xl instead of drop-shadow-xl -->
+    <header class="sticky top-0 z-30 w-full bg-[#0A1A32] px-4 py-3 shadow-xl">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <!-- 1. LEFT: Menu Button & Dropdown -->
+            <div class="relative">
+                <button id="menu-btn"
+                    class="flex items-center justify-center p-2 rounded-lg bg-transparent hover:bg-white/10 text-white transition focus:outline-none"
+                    aria-label="Abrir Menú">
+                    <img src="./src/assets/hamburger menu icon.png" alt="Menu"
+                        class="w-6 h-6 sm:w-7 sm:h-7 object-contain" />
+                </button>
+                <!-- Dropdown Menu -->
+                <div id="menu-dropdown"
+                    class="hidden absolute left-0 mt-3 w-48 bg-[#0A1A32] border border-white/15 rounded-xl shadow-2xl py-2 z-50 transition-all">
+                    <a href="#home"
+                        class="block px-4 py-2.5 text-slate-100 hover:bg-white/10 hover:text-white transition font-medium text-sm">
+                        Home
+                    </a>
+                    <a href="#nosotros"
+                        class="block px-4 py-2.5 text-slate-100 hover:bg-white/10 hover:text-white transition font-medium text-sm">
+                        Nosotros
+                    </a>
+                    <a href="#conoce"
+                        class="block px-4 py-2.5 text-slate-100 hover:bg-white/10 hover:text-white transition font-medium text-sm">
+                        Conoce
+                    </a>
+                </div>
+            </div>
+            <!-- CENTER: Upside-Down White Pentagon (retains drop-shadow-xl for polygon) -->
+            <div class="absolute left-1/2 -translate-x-1/2 top-0 z-20 drop-shadow-xl">
+                <div
+                    class="w-20 h-24 sm:w-22 sm:h-26 bg-white flex items-center justify-center pt-1 pb-4 [clip-path:polygon(0_0,100%_0,100%_50%,50%_90%,0_50%)]">
+                    <img src="./src/assets/NorthBaseLogo.png" alt="NorthBase Logo"
+                        class="w-15 h-15 sm:w-17 sm:h-17 object-contain" />
+                </div>
+            </div>
+            <!-- 3. RIGHT: Spacer -->
+            <div class="w-10"></div>
+        </div>
+    </header>
+
+    <!-- MAIN HERO / LANDING IMAGE SECTION -->
+    <main id="home" class="w-full flex-1 flex items-center justify-center p-3 sm:p-5">
+        <!-- Relative container holding both image and overlay text -->
+        <div
+            class="relative w-full max-w-6xl h-[80vh] sm:h-[85vh] overflow-hidden rounded-2xl sm:rounded-3xl shadow-2xl">
+
+            <!-- 1. Background Image -->
+            <img src="./src/assets/landing photo.jpg" alt="NorthBase Landing Photo"
+                class="absolute inset-0 w-full h-full object-cover object-[40%_center]" />
+            <!-- 2. (Optional) Subtle gradient to make text pop -->
+            <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent"></div>
+            <!-- 3. Middle-Left Text Container (justify-center = vertical middle, items-start = left) -->
+            <div class="relative z-10 w-full h-full flex flex-col justify-center items-start px-6 sm:px-12 md:px-16">
+                <h1
+                    class="font-['Anton',sans-serif] uppercase tracking-wide leading-none text-4xl sm:text-6xl md:text-7xl lg:text-8xl drop-shadow-2xl flex flex-col gap-3 sm:gap-5 md:gap-6">
+                    <!-- Line 1: White -->
+                    <span class="block text-white">El béisbol,</span>
+                    <!-- Line 2: White -->
+                    <span class="block text-white mt-1 sm:mt-2">ahora en</span>
+                    <!-- Line 3: Red -->
+                    <span class="block text-[#C1121F] mt-1 sm:mt-2">otra dimensión</span>
+                </h1>
+
+                <!-- Subtitle (Anton Font with reasonable gap) -->
+                <p
+                    class="font-['Poppins',sans-serif] font-normal text-slate-200 text-xs sm:text-sm md:text-base max-w-xs sm:max-w-sm md:max-w-md mt-4 sm:mt-6 drop-shadow-md leading-relaxed">
+                    Trivia, realidad aumentada y pasión por el béisbol, una experiencia única.
+                </p>
+
+            </div>
+
+            <!-- 4. BOTTOM-CENTER BUTTON -->
+            <div class="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-20">
+                <a href="login.html"
+                    class="inline-block px-6 py-2 sm:px-7 sm:py-2.5 bg-[#C1121F] hover:bg-[#9b0e19] text-white font-['Poppins',sans-serif] font-semibold text-xs sm:text-sm rounded-full shadow-md hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 text-center tracking-wide whitespace-nowrap">
+                    ¡Comienza ya!
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="./src/js/index.js"></script>
+
+</body>
+
+</html>
