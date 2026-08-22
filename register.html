@@ -60,14 +60,13 @@
         <!-- Form Wrapper (More compact overall width: max-w-[290px] sm:max-w-xs) -->
         <div class="w-full max-w-[290px] sm:max-w-xs flex flex-col items-center">
 
-            <!-- 2-Line Title in Poppins -->
-            <h1
-                class="font-['Poppins',sans-serif] text-2xl sm:text-3xl font-bold text-[#0A1A32] uppercase tracking-wider text-center flex flex-col leading-tight mb-5 drop-shadow-sm">
-                <span>CREATE YOUR</span>
-                <span>ACCOUNT</span>
-            </h1>
+            <!-- Title Image -->
+            <div class="flex justify-center mb-15 mt-15">
+                <img src="./src/assets/ACCOUNT.png" alt="Create Your Account"
+                    class="w-56 sm:w-72 h-auto object-contain drop-shadow-sm" />
+            </div>
             <!-- Registration Form (No labels, tighter gap-2.5) -->
-            <form action="#" method="POST" class="w-full flex flex-col gap-4.5 bg-transparent p-0">
+            <form action="./login.html" method="GET" class="w-full flex flex-col gap-4.5 bg-transparent p-0">
                 <!-- 1. Name(s) -->
                 <input type="text" id="name" name="name" autocomplete="given-name" placeholder="Nombre(s)"
                     aria-label="Nombre(s)" required
