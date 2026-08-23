@@ -16,7 +16,7 @@
 
 <!-- 1. Ensure body has zero margins/padding -->
 
-<body class="bg-white flex flex-col min-h-screen items-center m-0 p-0">
+<body class="bg-[#F5F5F5] flex flex-col min-h-screen items-center m-0 p-0">
     <!-- 2. Pinned to top (sticky top-0 z-30) and using shadow-xl instead of drop-shadow-xl -->
     <header class="sticky top-0 z-30 w-full bg-[#0A1A32] px-4 py-3 shadow-xl">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
@@ -58,38 +58,37 @@
         </div>
     </header>
 
-    <!-- MAIN HERO / LANDING IMAGE SECTION -->
-    <main id="home" class="w-full flex-1 flex items-center justify-center p-3 sm:p-5">
-        <!-- Relative container holding both image and overlay text -->
+    <!-- MAIN CONTENT -->
+    <main id="home" class="w-full flex-1 flex flex-col items-center justify-start p-3 sm:p-5 gap-12 sm:gap-16 pb-20">
+
+        <!-- 1. LANDING HERO PHOTO -->
         <div
             class="relative w-full max-w-6xl h-[80vh] sm:h-[85vh] overflow-hidden rounded-2xl sm:rounded-3xl shadow-2xl">
 
-            <!-- 1. Background Image -->
+            <!-- Background Image -->
             <img src="./src/assets/landing photo.jpg" alt="NorthBase Landing Photo"
                 class="absolute inset-0 w-full h-full object-cover object-[40%_center]" />
-            <!-- 2. (Optional) Subtle gradient to make text pop -->
+
+            <!-- Subtle gradient to make text pop -->
             <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent"></div>
-            <!-- 3. Middle-Left Text Container (justify-center = vertical middle, items-start = left) -->
+
+            <!-- Middle-Left Text Container -->
             <div class="relative z-10 w-full h-full flex flex-col justify-center items-start px-6 sm:px-12 md:px-16">
                 <h1
                     class="font-['Anton',sans-serif] uppercase tracking-wide leading-none text-4xl sm:text-6xl md:text-7xl lg:text-8xl drop-shadow-2xl flex flex-col gap-3 sm:gap-5 md:gap-6">
-                    <!-- Line 1: White -->
                     <span class="block text-white">El béisbol,</span>
-                    <!-- Line 2: White -->
                     <span class="block text-white mt-1 sm:mt-2">ahora en</span>
-                    <!-- Line 3: Red -->
                     <span class="block text-[#C1121F] mt-1 sm:mt-2">otra dimensión</span>
                 </h1>
 
-                <!-- Subtitle (Anton Font with reasonable gap) -->
+                <!-- Subtitle -->
                 <p
                     class="font-['Poppins',sans-serif] font-normal text-slate-200 text-xs sm:text-sm md:text-base max-w-xs sm:max-w-sm md:max-w-md mt-4 sm:mt-6 drop-shadow-md leading-relaxed">
                     Trivia, realidad aumentada y pasión por el béisbol, una experiencia única.
                 </p>
-
             </div>
 
-            <!-- 4. BOTTOM-CENTER BUTTON -->
+            <!-- Bottom-Center Button -->
             <div class="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-20">
                 <a href="login.html"
                     class="inline-block px-6 py-2 sm:px-7 sm:py-2.5 bg-[#C1121F] hover:bg-[#9b0e19] text-white font-['Poppins',sans-serif] font-semibold text-xs sm:text-sm rounded-full shadow-md hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 text-center tracking-wide whitespace-nowrap">
@@ -98,7 +97,152 @@
             </div>
 
         </div>
+
+        <!-- 2. NOSOTROS SECTION (Stronger Container Shadow + Pentagon Drop Shadow) -->
+        <div
+            class="relative w-full max-w-lg sm:max-w-xl aspect-square bg-white rounded-3xl shadow-2xl shadow-black/35 border border-slate-200 flex flex-col items-center justify-center p-6 sm:p-8 mt-12 sm:mt-16">
+
+            <!-- Top Left: Taller Upside-Down Pentagon with Drop Shadow -->
+            <div id="nosotros" class=" absolute -top-12 sm:-top-16 left-6 sm:left-8 z-10 drop-shadow-2xl">
+                <div
+                    class="w-28 sm:w-32 h-36 sm:h-44 bg-[#0A1A32] flex items-center justify-center pt-3 pb-12 [clip-path:polygon(0_0,100%_0,100%_60%,50%_100%,0_60%)]">
+                    <span
+                        class="font-['Poppins',sans-serif] text-white font-normal text-sm sm:text-base tracking-normal">
+                        Nosotros
+                    </span>
+                </div>
+            </div>
+
+            <!-- Top Right Image (With spacing from borders) -->
+            <img src="./src/assets/lineas pelota right.png" alt="Líneas Pelota Derecha"
+                class="absolute top-4 right-4 sm:top-6 sm:right-6 w-28 sm:w-36 md:w-44 h-auto object-contain pointer-events-none z-0" />
+
+            <!-- Middle Description Text -->
+            <p
+                class="font-['Poppins',sans-serif] text-slate-700 text-xs sm:text-sm md:text-[15px] leading-relaxed sm:leading-relaxed text-center max-w-xs sm:max-w-sm md:max-w-md px-3 z-10">
+                Somos una página que busca llevar la experiencia del beisbol a un mundo más interactivo, por ello
+                NORTHBASE busca que el béisbol y la realidad aumentada sean uno. Busca el escudo de tu equipo favorito
+                del norte y escanéalo para vivir el béisbol en realidad aumentada y conoce más sobre tus equipos
+                favoritos y la zona norte del béisbol, probando nuestra trivia.
+            </p>
+
+            <!-- Bottom Left Image (With spacing from borders) -->
+            <img src="./src/assets/lineas pelota left.png" alt="Líneas Pelota Izquierda"
+                class="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 w-28 sm:w-36 md:w-44 h-auto object-contain pointer-events-none z-0" />
+
+        </div>
+
+        <!-- 3. CONOCE SECTION -->
+        <section id="conoce"
+            class="w-full max-w-lg sm:max-w-xl flex flex-col items-center justify-center text-center mt-6 sm:mt-8">
+
+            <!-- Title with Left & Right baseball-sharp Icons (Larger Size) -->
+            <div class="flex items-center justify-center gap-3 sm:gap-4">
+                <!-- Left Baseball Icon -->
+                <img src="./src/assets/baseball-sharp.png" alt="Béisbol"
+                    class="w-6 h-6 sm:w-8 sm:h-8 md:w-9 md:h-9 object-contain" />
+
+                <!-- Main Title -->
+                <h2
+                    class="font-['Anton',sans-serif] text-2xl sm:text-3xl md:text-4xl text-[#0A1A32] uppercase tracking-wide">
+                    CONOCE MÁS DEL BÉISBOL
+                </h2>
+
+                <!-- Right Baseball Icon -->
+                <img src="./src/assets/baseball-sharp.png" alt="Béisbol"
+                    class="w-6 h-6 sm:w-8 sm:h-8 md:w-9 md:h-9 object-contain" />
+            </div>
+
+            <!-- Subtitle in Red Without Caps (Larger Size) -->
+            <p
+                class="text-[#C1121F] font-['Poppins',sans-serif] font-medium text-sm sm:text-base md:text-lg mt-2 sm:mt-2.5">
+                Juega, aprende y vive
+            </p>
+
+            <!-- Cards Container (More Compact Size) -->
+            <div
+                class="w-full max-w-[290px] sm:max-w-[340px] md:max-w-[370px] flex flex-col items-center mt-8 sm:mt-10 gap-4 sm:gap-5">
+
+                <!-- Top Row: 2 Side-by-Side Tilted Cards -->
+                <div class="w-full grid grid-cols-2 gap-3 sm:gap-4">
+
+                    <!-- Left Card: Trivia Card (Tilted Left) -->
+                    <div
+                        class="aspect-[3/4] bg-white border border-black border-b-4 border-r-4 border-b-black border-r-black rounded-2xl -rotate-3 hover:rotate-0 hover:scale-105 transition-all duration-200 cursor-pointer p-3 sm:p-4 flex flex-col items-center justify-start text-center">
+
+                        <!-- Red Title -->
+                        <h3
+                            class="font-['Anton',sans-serif] text-[#C1121F] text-lg sm:text-xl md:text-2xl uppercase tracking-wide">
+                            Trivia
+                        </h3>
+
+                        <!-- Dark Blue Subtitle (Bigger Gap Below Title) -->
+                        <p
+                            class="font-['Poppins',sans-serif] text-[#0A1A32] font-semibold text-[10px] sm:text-xs leading-tight sm:leading-snug mt-2 sm:mt-2.5">
+                            Pon a prueba tus conocimientos.
+                        </p>
+
+                        <!-- Question Mark Image (Bigger & More Separated) -->
+                        <img src="./src/assets/Question mark.png" alt="Question mark"
+                            class="w-11 sm:w-13 md:w-14 h-auto object-contain mt-3.5 sm:mt-4.5 md:mt-5 drop-shadow-sm" />
+                    </div>
+
+                    <!-- Right Card: Baseball Card (Tilted Right) -->
+                    <div
+                        class="aspect-[3/4] bg-white border border-black border-b-4 border-r-4 border-b-black border-r-black rounded-2xl rotate-3 hover:rotate-0 hover:scale-105 transition-all duration-200 cursor-pointer p-3 sm:p-4 flex flex-col items-center justify-start text-center">
+
+                        <!-- Red Title -->
+                        <h3
+                            class="font-['Anton',sans-serif] text-[#C1121F] text-lg sm:text-xl md:text-2xl uppercase tracking-wide">
+                            Baseball
+                        </h3>
+
+                        <!-- Dark Blue Subtitle (Bigger Gap Below Title) -->
+                        <p
+                            class="font-['Poppins',sans-serif] text-[#0A1A32] font-semibold text-[10px] sm:text-xs leading-tight sm:leading-snug mt-2 sm:mt-2.5">
+                            Conoce sobre tus equipos favoritos.
+                        </p>
+
+                        <!-- Baseball Blue Image (Bigger & More Separated) -->
+                        <img src="./src/assets/baseball blue.png" alt="Baseball"
+                            class="w-11 sm:w-13 md:w-14 h-auto object-contain mt-3.5 sm:mt-4.5 md:mt-5 drop-shadow-sm" />
+                    </div>
+
+                </div>
+
+                <!-- Bottom Row: 1 Centered Card Below (Cámara Card) -->
+                <div class="w-full flex justify-center">
+                    <div
+                        class="w-[calc(50%-0.375rem)] sm:w-[calc(50%-0.5rem)] aspect-[3/4] bg-white border border-black border-b-4 border-r-4 border-b-black border-r-black rounded-2xl hover:scale-105 transition-all duration-200 cursor-pointer p-3 sm:p-4 flex flex-col items-center justify-start text-center">
+
+                        <!-- Red Title -->
+                        <h3
+                            class="font-['Anton',sans-serif] text-[#C1121F] text-lg sm:text-xl md:text-2xl uppercase tracking-wide">
+                            Cámara
+                        </h3>
+
+                        <!-- Dark Blue Subtitle (Bigger Gap Below Title) -->
+                        <p
+                            class="font-['Poppins',sans-serif] text-[#0A1A32] font-semibold text-[10px] sm:text-xs leading-tight sm:leading-snug mt-2 sm:mt-2.5">
+                            Mira el mundo desde otra perspectiva.
+                        </p>
+
+                        <!-- Camera Blue Image (Bigger & More Separated) -->
+                        <img src="./src/assets/camera blue.png" alt="Cámara"
+                            class="w-11 sm:w-13 md:w-14 h-auto object-contain mt-3.5 sm:mt-4.5 md:mt-5 drop-shadow-sm" />
+                    </div>
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
     </main>
+
 
     <script src="./src/js/index.js"></script>
 
