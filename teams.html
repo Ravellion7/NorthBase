@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NorthBase - Team Select</title>
+    <!-- Google Font: Anton -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="./dist/output.css">
+</head>
+
+<!-- 1. Ensure body has zero margins/padding -->
+
+<body class="bg-white flex flex-col min-h-screen items-center m-0 p-0">
+    <!-- 2. Pinned to top (sticky top-0 z-30) and using shadow-xl instead of drop-shadow-xl -->
+    <header class="sticky top-0 z-30 w-full bg-[#0A1A32] px-4 py-3 shadow-xl">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <!-- 1. LEFT: Menu Button & Dropdown -->
+            <div class="relative">
+                <button id="menu-btn"
+                    class="flex items-center justify-center p-2 rounded-lg bg-transparent hover:bg-white/10 text-white transition focus:outline-none"
+                    aria-label="Abrir Menú">
+                    <img src="./src/assets/hamburger menu icon.png" alt="Menu"
+                        class="w-6 h-6 sm:w-7 sm:h-7 object-contain" />
+                </button>
+                <!-- Dropdown Menu -->
+                <div id="menu-dropdown"
+                    class="hidden absolute left-0 mt-3 w-48 bg-[#0A1A32] border border-white/15 rounded-xl shadow-2xl py-2 z-50 transition-all">
+                    <a href="./home.html"
+                        class="block px-4 py-2.5 text-slate-100 hover:bg-white/10 hover:text-white transition font-medium text-sm">
+                        Home
+                    </a>
+                    <a href="./trivia_select.html"
+                        class="block px-4 py-2.5 text-slate-100 hover:bg-white/10 hover:text-white transition font-medium text-sm">
+                        Trivia
+                    </a>
+                    <a href="./camera.html"
+                        class="block px-4 py-2.5 text-slate-100 hover:bg-white/10 hover:text-white transition font-medium text-sm">
+                        Cámara
+                    </a>
+                    <a href="./gallery.html"
+                        class="block px-4 py-2.5 text-slate-100 hover:bg-white/10 hover:text-white transition font-medium text-sm">
+                        Galería
+                    </a>
+                    <a href="./teams.html"
+                        class="block px-4 py-2.5 text-slate-100 hover:bg-white/10 hover:text-white transition font-medium text-sm">
+                        Equipos
+                    </a>
+                </div>
+            </div>
+            <!-- CENTER: Upside-Down White Pentagon (retains drop-shadow-xl for polygon) -->
+            <div class="absolute left-1/2 -translate-x-1/2 top-0 z-20 drop-shadow-xl">
+                <a href="./index.html"
+                    class="w-20 h-24 sm:w-22 sm:h-26 bg-white flex items-center justify-center pt-1 pb-4 [clip-path:polygon(0_0,100%_0,100%_50%,50%_90%,0_50%)] hover:opacity-95 transition-opacity cursor-pointer block"
+                    aria-label="Ir al inicio">
+                    <img src="./src/assets/NorthBaseLogo.png" alt="NorthBase Logo"
+                        class="w-15 h-15 sm:w-17 sm:h-17 object-contain" />
+                </a>
+            </div>
+            <!-- 3. RIGHT: Spacer -->
+            <div class="w-10"></div>
+        </div>
+    </header>
+
+    <!-- MAIN TEAMS SECTION -->
+    <main class="w-full flex-1 flex flex-col items-center justify-start px-4 pt-16 sm:pt-20 pb-16">
+
+        <!-- Title Image (Top Middle, slightly to the left side) -->
+        <div class="w-full max-w-lg sm:max-w-xl flex justify-start pl-2 sm:pl-3 mb-6 sm:mb-8">
+            <img src="./src/assets/Equipos Baseball.png" alt="Equipos Baseball"
+                class="w-52 sm:w-64 md:w-72 h-auto object-contain drop-shadow-sm" />
+        </div>
+
+        <!-- 3 Rows x 2 Columns of Square Containers (No Borders + Stronger Shadow) -->
+        <div class="w-full max-w-lg sm:max-w-xl grid grid-cols-2 gap-4 sm:gap-6">
+
+            <!-- Row 1 - Team 1 -->
+            <div
+                class="aspect-square bg-white rounded-2xl shadow-xl shadow-slate-900/15 hover:shadow-2xl hover:shadow-slate-900/25 flex flex-col items-center justify-center transition-all hover:scale-[1.02] cursor-pointer p-4">
+            </div>
+
+            <!-- Row 1 - Team 2 -->
+            <div
+                class="aspect-square bg-white rounded-2xl shadow-xl shadow-slate-900/15 hover:shadow-2xl hover:shadow-slate-900/25 flex flex-col items-center justify-center transition-all hover:scale-[1.02] cursor-pointer p-4">
+            </div>
+
+            <!-- Row 2 - Team 3 -->
+            <div
+                class="aspect-square bg-white rounded-2xl shadow-xl shadow-slate-900/15 hover:shadow-2xl hover:shadow-slate-900/25 flex flex-col items-center justify-center transition-all hover:scale-[1.02] cursor-pointer p-4">
+            </div>
+
+            <!-- Row 2 - Team 4 -->
+            <div
+                class="aspect-square bg-white rounded-2xl shadow-xl shadow-slate-900/15 hover:shadow-2xl hover:shadow-slate-900/25 flex flex-col items-center justify-center transition-all hover:scale-[1.02] cursor-pointer p-4">
+            </div>
+
+            <!-- Row 3 - Team 5 -->
+            <div
+                class="aspect-square bg-white rounded-2xl shadow-xl shadow-slate-900/15 hover:shadow-2xl hover:shadow-slate-900/25 flex flex-col items-center justify-center transition-all hover:scale-[1.02] cursor-pointer p-4">
+            </div>
+
+            <!-- Row 3 - Team 6 -->
+            <div
+                class="aspect-square bg-white rounded-2xl shadow-xl shadow-slate-900/15 hover:shadow-2xl hover:shadow-slate-900/25 flex flex-col items-center justify-center transition-all hover:scale-[1.02] cursor-pointer p-4">
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script src="./src/js/index.js"></script>
+
+</body>
+
+</html>
