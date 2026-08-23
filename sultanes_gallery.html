@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NorthBase - Sultanes de Monterrey</title>
+    <title>NorthBase - Sultanes Gallery</title>
     <!-- Google Font: Anton & Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -64,40 +64,69 @@
         </div>
     </header>
 
-    <!-- MAIN SULTANES SECTION -->
+    <!-- MAIN SULTANES GALLERY SECTION -->
     <main class="w-full flex-1 flex flex-col items-center justify-start px-4 pt-16 sm:pt-20 pb-16">
 
         <!-- Top Button: "Explorar Multimedia" (Transparent Background) -->
         <div class="w-full max-w-lg sm:max-w-xl flex justify-start pl-2 sm:pl-3 mb-3 sm:mb-4">
-            <a href="./sultanes_gallery.html"
+            <a href="./sultanes.html"
                 class="inline-flex items-center gap-1.5 bg-transparent hover:bg-slate-100 text-slate-700 hover:text-black font-['Poppins',sans-serif] font-medium text-xs sm:text-sm py-1.5 px-3 rounded-lg border border-slate-300 hover:border-slate-400 transition-all cursor-pointer">
-                <span>Explorar Multimedia</span>
+                <span>Regresar</span>
             </a>
         </div>
 
-        <!-- Title Image -->
-        <div class="w-full max-w-lg sm:max-w-xl flex justify-start pl-2 sm:pl-3 mb-6 sm:mb-8">
+        <!-- Title Image: Sultanes Mty -->
+        <div class="w-full max-w-lg sm:max-w-xl flex justify-start pl-2 sm:pl-3 mb-4 sm:mb-6">
             <img src="./src/assets/Sultanes Mty.png" alt="Sultanes de Monterrey"
                 class="w-52 sm:w-64 md:w-72 h-auto object-contain drop-shadow-sm" />
         </div>
 
-        <!-- Information Placeholder Container -->
-        <div class="w-full max-w-lg sm:max-w-xl bg-white border-transparent rounded-2xl p-6 sm:p-8">
-            <p
-                class="font-['Poppins',sans-serif] text-slate-500 font-medium text-xs sm:text-sm leading-relaxed tracking-wider text-justify uppercase select-none">
-                INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN
-                INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN
-                INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN
-                INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN
-                INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN
-                INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN
-                INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN
-                INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN
-                INFORMACIÓN INFORMACIÓN INFORMACIÓN INFORMACIÓN.
-            </p>
+        <!-- 2 Rows x 3 Columns of Square Containers (Photos) -->
+        <div class="w-full max-w-lg sm:max-w-xl grid grid-cols-3 gap-3 sm:gap-4 mb-14 sm:mb-18 md:mb-20">
+
+            <!-- Row 1 -->
+            <div
+                class="aspect-square bg-white border border-slate-200 shadow-xl shadow-black/25 hover:shadow-2xl hover:shadow-black/35 flex items-center justify-center transition-all hover:scale-[1.02] cursor-pointer">
+            </div>
+
+            <div
+                class="aspect-square bg-white border border-slate-200 shadow-xl shadow-black/25 hover:shadow-2xl hover:shadow-black/35 flex items-center justify-center transition-all hover:scale-[1.02] cursor-pointer">
+            </div>
+
+            <div
+                class="aspect-square bg-white border border-slate-200 shadow-xl shadow-black/25 hover:shadow-2xl hover:shadow-black/35 flex items-center justify-center transition-all hover:scale-[1.02] cursor-pointer">
+            </div>
+
+            <!-- Row 2 -->
+            <div
+                class="aspect-square bg-white border border-slate-200 shadow-xl shadow-black/25 hover:shadow-2xl hover:shadow-black/35 flex items-center justify-center transition-all hover:scale-[1.02] cursor-pointer">
+            </div>
+
+            <div
+                class="aspect-square bg-white border border-slate-200 shadow-xl shadow-black/25 hover:shadow-2xl hover:shadow-black/35 flex items-center justify-center transition-all hover:scale-[1.02] cursor-pointer">
+            </div>
+
+            <div
+                class="aspect-square bg-white border border-slate-200 shadow-xl shadow-black/25 hover:shadow-2xl hover:shadow-black/35 flex items-center justify-center transition-all hover:scale-[1.02] cursor-pointer">
+            </div>
+
+        </div>
+
+        <!-- Videos Title Image -->
+        <div class="w-full max-w-lg sm:max-w-xl flex justify-start pl-2 sm:pl-3 mb-4 sm:mb-6">
+            <img src="./src/assets/Videos.png" alt="Vídeos"
+                class="w-24 sm:w-28 md:w-32 h-auto object-contain drop-shadow-sm" />
+        </div>
+
+        <!-- Single Square Container Below Videos -->
+        <div class="w-full max-w-lg sm:max-w-xl grid grid-cols-3 gap-3 sm:gap-4">
+            <div
+                class="aspect-square bg-white border border-slate-200 shadow-xl shadow-black/25 hover:shadow-2xl hover:shadow-black/35 flex items-center justify-center transition-all hover:scale-[1.02] cursor-pointer">
+            </div>
         </div>
 
     </main>
+
 
 
     <script src="./src/js/index.js"></script>
