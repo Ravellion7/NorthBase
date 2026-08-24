@@ -13,77 +13,114 @@
     <link rel="stylesheet" href="./dist/output.css">
 </head>
 
-<body class="bg-white flex flex-col min-h-screen items-center m-0 p-0">
-    <!-- 2. Pinned to top (sticky top-0 z-30) and using shadow-xl instead of drop-shadow-xl -->
+<body class="bg-[#F5F5F5] flex flex-col min-h-screen items-center m-0 p-0">
+
+    <!-- 1. HEADER (Responsive: Mobile Menu vs Desktop Navigation) -->
     <header class="sticky top-0 z-30 w-full bg-[#0A1A32] px-4 py-3 shadow-xl">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <!-- 1. LEFT: Menu Button & Dropdown -->
-            <div class="relative">
-                <button id="menu-btn"
-                    class="flex items-center justify-center p-2 rounded-lg bg-transparent hover:bg-white/10 text-white transition focus:outline-none"
-                    aria-label="Abrir Menú">
-                    <img src="./src/assets/hamburger menu icon.png" alt="Menu"
-                        class="w-6 h-6 sm:w-7 sm:h-7 object-contain" />
-                </button>
-                <!-- Dropdown Menu -->
-                <div id="menu-dropdown"
-                    class="hidden absolute left-0 mt-3 w-48 bg-[#0A1A32] border border-white/15 rounded-xl shadow-2xl py-2 z-50 transition-all">
-                    <a href="index.html#home"
-                        class="block px-4 py-2.5 text-slate-100 hover:bg-white/10 hover:text-white transition font-medium text-sm">
-                        Home
-                    </a>
-                    <a href="index.html#nosotros"
-                        class="block px-4 py-2.5 text-slate-100 hover:bg-white/10 hover:text-white transition font-medium text-sm">
-                        Nosotros
-                    </a>
-                    <a href="index.html#conoce"
-                        class="block px-4 py-2.5 text-slate-100 hover:bg-white/10 hover:text-white transition font-medium text-sm">
-                        Conoce
+        <div class="max-w-7xl mx-auto flex items-center justify-between relative h-10 sm:h-12">
+
+            <!-- LEFT: Mobile Hamburger Menu & Desktop Balancer -->
+            <div class="flex items-center">
+                <!-- Mobile Hamburger (Hidden on Desktop) -->
+                <div class="relative md:hidden">
+                    <button id="menu-btn"
+                        class="flex items-center justify-center p-2 rounded-lg bg-transparent hover:bg-white/10 text-white transition focus:outline-none"
+                        aria-label="Abrir Menú">
+                        <img src="./src/assets/hamburger menu icon.png" alt="Menu"
+                            class="w-6 h-6 sm:w-7 sm:h-7 object-contain" />
+                    </button>
+                    <!-- Dropdown Menu -->
+                    <div id="menu-dropdown"
+                        class="hidden absolute left-0 mt-3 w-48 bg-[#0A1A32] border border-white/15 rounded-xl shadow-2xl py-2 z-50 transition-all">
+                        <a href="index.html#home"
+                            class="block px-4 py-2.5 text-slate-100 hover:bg-white/10 hover:text-white transition font-medium text-sm">
+                            Home
+                        </a>
+                        <a href="index.html#nosotros"
+                            class="block px-4 py-2.5 text-slate-100 hover:bg-white/10 hover:text-white transition font-medium text-sm">
+                            Nosotros
+                        </a>
+                        <a href="index.html#conoce"
+                            class="block px-4 py-2.5 text-slate-100 hover:bg-white/10 hover:text-white transition font-medium text-sm">
+                            Conoce
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Desktop Spacer -->
+                <div class="hidden md:block w-28 lg:w-36"></div>
+            </div>
+
+            <!-- CENTER: Navigation (Desktop "Conoce" - Pentagon Logo - Desktop "Nosotros") -->
+            <div
+                class="flex items-center gap-8 md:gap-12 lg:gap-16 absolute left-1/2 -translate-x-1/2 top-0 h-full z-20">
+
+                <!-- Desktop "Conoce" Link -->
+                <a href="index.html#conoce"
+                    class="hidden md:flex items-center h-full text-white hover:text-[#C1121F] font-['Poppins',sans-serif] font-semibold text-sm lg:text-base transition-colors tracking-wide">
+                    Conoce
+                </a>
+
+                <!-- Center Pentagon Logo -->
+                <div class="drop-shadow-xl self-start">
+                    <a href="index.html"
+                        class="w-20 h-24 sm:w-22 sm:h-26 bg-white flex items-center justify-center pt-1 pb-4 [clip-path:polygon(0_0,100%_0,100%_50%,50%_90%,0_50%)] hover:opacity-95 transition-opacity block"
+                        aria-label="Ir al inicio">
+                        <img src="./src/assets/NorthBaseLogo.png" alt="NorthBase Logo"
+                            class="w-15 h-15 sm:w-17 sm:h-17 object-contain" />
                     </a>
                 </div>
+
+                <!-- Desktop "Nosotros" Link -->
+                <a href="index.html#nosotros"
+                    class="hidden md:flex items-center h-full text-white hover:text-[#C1121F] font-['Poppins',sans-serif] font-semibold text-sm lg:text-base transition-colors tracking-wide">
+                    Nosotros
+                </a>
             </div>
-            <!-- CENTER: Upside-Down White Pentagon (retains drop-shadow-xl for polygon) -->
-            <div class="absolute left-1/2 -translate-x-1/2 top-0 z-20 drop-shadow-xl">
-                <div
-                    class="w-20 h-24 sm:w-22 sm:h-26 bg-white flex items-center justify-center pt-1 pb-4 [clip-path:polygon(0_0,100%_0,100%_50%,50%_90%,0_50%)]">
-                    <img src="./src/assets/NorthBaseLogo.png" alt="NorthBase Logo"
-                        class="w-15 h-15 sm:w-17 sm:h-17 object-contain" />
-                </div>
+
+            <!-- RIGHT: Spacer on Mobile & "¡Comienza ya!" Button on Desktop -->
+            <div class="flex items-center justify-end w-10 md:w-28 lg:w-36">
+                <a href="login.html"
+                    class="hidden md:inline-block px-5 py-2 lg:px-6 lg:py-2.5 bg-[#C1121F] hover:bg-[#9b0e19] text-white font-['Poppins',sans-serif] font-semibold text-xs sm:text-sm rounded-full shadow-md hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 text-center tracking-wide whitespace-nowrap">
+                    ¡Comienza ya!
+                </a>
             </div>
-            <!-- 3. RIGHT: Spacer -->
-            <div class="w-10"></div>
+
         </div>
     </header>
 
-    <!-- MAIN LOGIN SECTION -->
-    <main class="w-full flex-1 flex flex-col items-center justify-start px-4 pt-20 sm:pt-8 pb-16 sm:pb-24">
-        <!-- Form Wrapper (More compact width) -->
-        <div class="w-full max-w-xs sm:max-w-sm flex flex-col items-center">
+    <!-- MAIN CONTENT -->
+    <main class="w-full flex-1 flex flex-col items-center justify-center p-4 sm:p-6 md:p-10">
 
-            <!-- Title Image in the exact same position -->
+        <!-- ============================================== -->
+        <!-- 1. MOBILE LOGIN VIEW (md:hidden)               -->
+        <!-- ============================================== -->
+        <div class="w-full max-w-xs sm:max-w-sm flex flex-col items-center md:hidden pt-8 pb-16">
+            <!-- Title Image -->
             <div class="flex justify-center mb-5">
                 <img src="./src/assets/login.png" alt="¡Comienza Ya!"
                     class="w-56 sm:w-72 h-auto object-contain drop-shadow-sm" />
             </div>
-            <!-- Login Form (Compact inputs and spacing) -->
-            <form action="./home.html" method="GET" class="w-full flex flex-col gap-3.5 bg-transparent pt-10">
+
+            <!-- Login Form -->
+            <form action="./home.html" method="GET" class="w-full flex flex-col gap-3.5 bg-transparent pt-4">
                 <!-- Email Field -->
                 <div class="flex flex-col gap-1">
-                    <label for="email"
+                    <label for="email-mobile"
                         class="font-['Poppins',sans-serif] text-xs sm:text-sm font-semibold text-slate-700">
                         Correo electrónico
                     </label>
-                    <input type="email" id="email" name="email" autocomplete="email" placeholder="ejemplo@correo.com"
-                        required
+                    <input type="email" id="email-mobile" name="email" autocomplete="email"
+                        placeholder="ejemplo@correo.com" required
                         class="w-full px-3.5 py-2 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-black transition shadow-sm" />
                 </div>
                 <!-- Password Field -->
                 <div class="flex flex-col gap-1">
-                    <label for="password"
+                    <label for="password-mobile"
                         class="font-['Poppins',sans-serif] text-xs sm:text-sm font-semibold text-slate-700">
                         Contraseña
                     </label>
-                    <input type="password" id="password" name="password" autocomplete="current-password"
+                    <input type="password" id="password-mobile" name="password" autocomplete="current-password"
                         placeholder="••••••••" required
                         class="w-full px-3.5 py-2 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-black transition shadow-sm" />
                 </div>
@@ -93,22 +130,92 @@
                     Ingresar
                 </button>
             </form>
+
             <!-- Black Straight Horizontal Line -->
             <div class="w-full h-[2.5px] bg-black my-5"></div>
+
             <!-- Underlined Question Text -->
             <p
                 class="font-['Poppins',sans-serif] text-xs sm:text-sm text-black underline font-semibold text-center mb-3">
                 ¿Aún no tienes cuenta?
             </p>
+
             <!-- Red "Registrarse" Button -->
             <a href="register.html"
                 class="w-full text-center py-2.5 px-5 bg-[#C1121F] hover:bg-[#9b0e19] text-white font-['Poppins',sans-serif] font-bold text-xs sm:text-sm rounded-full shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer tracking-wide">
                 Registrarse
             </a>
         </div>
-    </main>
 
-    <script src="./src/js/index.js"></script>
+        <!-- ============================================== -->
+        <!-- 2. DESKTOP LOGIN VIEW (80vw x 80vh Split Box)  -->
+        <!-- ============================================== -->
+        <div
+            class="hidden md:flex w-full md:w-[80vw] h-[86vh] lg:h-[88vh] bg-[#0A1A32] rounded-3xl shadow-2xl overflow-hidden border border-slate-700/50">
+
+            <!-- Left 60%: desktop login photo with soft corners -->
+            <div class="w-[60%] p-4 lg:p-6 flex items-center justify-center overflow-hidden">
+                <img src="./src/assets/desktop login photo.jpeg" alt="NorthBase Desktop Login"
+                    class="w-full h-full object-cover object-center rounded-2xl lg:rounded-3xl shadow-lg" />
+            </div>
+
+            <!-- Right 40%: Form Container (Without login.png) -->
+            <div class="w-[40%] p-8 lg:p-12 flex flex-col justify-center items-center">
+                <div class="w-full max-w-sm flex flex-col items-center">
+
+                    <!-- Login Form -->
+                    <form action="./home.html" method="GET" class="w-full flex flex-col gap-4">
+                        <!-- Email Field -->
+                        <div class="flex flex-col gap-1.5">
+                            <label for="email-desktop"
+                                class="font-['Poppins',sans-serif] text-xs lg:text-sm font-semibold text-white">
+                                Correo electrónico
+                            </label>
+                            <input type="email" id="email-desktop" name="email" autocomplete="email"
+                                placeholder="ejemplo@correo.com" required
+                                class="w-full px-4 py-3 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs lg:text-sm focus:outline-none focus:ring-2 focus:ring-[#C1121F] transition shadow-sm" />
+                        </div>
+
+                        <!-- Password Field -->
+                        <div class="flex flex-col gap-1.5">
+                            <label for="password-desktop"
+                                class="font-['Poppins',sans-serif] text-xs lg:text-sm font-semibold text-white">
+                                Contraseña
+                            </label>
+                            <input type="password" id="password-desktop" name="password" autocomplete="current-password"
+                                placeholder="••••••••" required
+                                class="w-full px-4 py-3 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs lg:text-sm focus:outline-none focus:ring-2 focus:ring-[#C1121F] transition shadow-sm" />
+                        </div>
+
+                        <!-- Red "Ingresar" Button -->
+                        <button type="submit"
+                            class="w-full mt-3 py-3 px-5 bg-[#C1121F] hover:bg-[#9b0e19] text-white font-['Poppins',sans-serif] font-bold text-xs lg:text-sm rounded-full shadow-md hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer tracking-wide">
+                            Ingresar
+                        </button>
+                    </form>
+
+                    <!-- White Horizontal Divider Line -->
+                    <div class="w-full h-[1.5px] bg-white/40 my-6"></div>
+
+                    <!-- Underlined Question Text -->
+                    <p
+                        class="font-['Poppins',sans-serif] text-xs lg:text-sm text-white underline font-semibold text-center mb-4">
+                        ¿Aún no tienes cuenta?
+                    </p>
+
+                    <!-- Red "Registrarse" Button -->
+                    <a href="register.html"
+                        class="w-full text-center py-3 px-5 bg-[#C1121F] hover:bg-[#9b0e19] text-white font-['Poppins',sans-serif] font-bold text-xs lg:text-sm rounded-full shadow-md hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer tracking-wide">
+                        Registrarse
+                    </a>
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <script src="./src/js/index.js"></script>
 
 </body>
 
