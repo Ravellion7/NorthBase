@@ -13,93 +13,132 @@
     <link rel="stylesheet" href="./dist/output.css">
 </head>
 
-<body class="bg-white flex flex-col min-h-screen items-center m-0 p-0">
-    <!-- 2. Pinned to top (sticky top-0 z-30) and using shadow-xl instead of drop-shadow-xl -->
+<body class="bg-[#F5F5F5] flex flex-col min-h-screen items-center m-0 p-0">
+
+    <!-- 1. HEADER (Responsive: Mobile Menu vs Desktop Navigation) -->
     <header class="sticky top-0 z-30 w-full bg-[#0A1A32] px-4 py-3 shadow-xl">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <!-- 1. LEFT: Menu Button & Dropdown -->
-            <div class="relative">
-                <button id="menu-btn"
-                    class="flex items-center justify-center p-2 rounded-lg bg-transparent hover:bg-white/10 text-white transition focus:outline-none"
-                    aria-label="Abrir Menú">
-                    <img src="./src/assets/hamburger menu icon.png" alt="Menu"
-                        class="w-6 h-6 sm:w-7 sm:h-7 object-contain" />
-                </button>
-                <!-- Dropdown Menu -->
-                <div id="menu-dropdown"
-                    class="hidden absolute left-0 mt-3 w-48 bg-[#0A1A32] border border-white/15 rounded-xl shadow-2xl py-2 z-50 transition-all">
-                    <a href="index.html#home"
-                        class="block px-4 py-2.5 text-slate-100 hover:bg-white/10 hover:text-white transition font-medium text-sm">
-                        Home
-                    </a>
-                    <a href="index.html#nosotros"
-                        class="block px-4 py-2.5 text-slate-100 hover:bg-white/10 hover:text-white transition font-medium text-sm">
-                        Nosotros
-                    </a>
-                    <a href="index.html#conoce"
-                        class="block px-4 py-2.5 text-slate-100 hover:bg-white/10 hover:text-white transition font-medium text-sm">
-                        Conoce
+        <div class="max-w-7xl mx-auto flex items-center justify-between relative h-10 sm:h-12">
+
+            <!-- LEFT: Mobile Hamburger Menu & Desktop Balancer -->
+            <div class="flex items-center">
+                <!-- Mobile Hamburger (Hidden on Desktop) -->
+                <div class="relative md:hidden">
+                    <button id="menu-btn"
+                        class="flex items-center justify-center p-2 rounded-lg bg-transparent hover:bg-white/10 text-white transition focus:outline-none"
+                        aria-label="Abrir Menú">
+                        <img src="./src/assets/hamburger menu icon.png" alt="Menu"
+                            class="w-6 h-6 sm:w-7 sm:h-7 object-contain" />
+                    </button>
+                    <!-- Dropdown Menu -->
+                    <div id="menu-dropdown"
+                        class="hidden absolute left-0 mt-3 w-48 bg-[#0A1A32] border border-white/15 rounded-xl shadow-2xl py-2 z-50 transition-all">
+                        <a href="index.html#home"
+                            class="block px-4 py-2.5 text-slate-100 hover:bg-white/10 hover:text-white transition font-medium text-sm">
+                            Home
+                        </a>
+                        <a href="index.html#nosotros"
+                            class="block px-4 py-2.5 text-slate-100 hover:bg-white/10 hover:text-white transition font-medium text-sm">
+                            Nosotros
+                        </a>
+                        <a href="index.html#conoce"
+                            class="block px-4 py-2.5 text-slate-100 hover:bg-white/10 hover:text-white transition font-medium text-sm">
+                            Conoce
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Desktop Spacer -->
+                <div class="hidden md:block w-28 lg:w-36"></div>
+            </div>
+
+            <!-- CENTER: Navigation (Desktop "Conoce" - Pentagon Logo - Desktop "Nosotros") -->
+            <div
+                class="flex items-center gap-8 md:gap-12 lg:gap-16 absolute left-1/2 -translate-x-1/2 top-0 h-full z-20">
+
+                <!-- Desktop "Conoce" Link -->
+                <a href="index.html#conoce"
+                    class="hidden md:flex items-center h-full text-white hover:text-[#C1121F] font-['Poppins',sans-serif] font-semibold text-sm lg:text-base transition-colors tracking-wide">
+                    Conoce
+                </a>
+
+                <!-- Center Pentagon Logo -->
+                <div class="drop-shadow-xl self-start">
+                    <a href="index.html"
+                        class="w-20 h-24 sm:w-22 sm:h-26 bg-white flex items-center justify-center pt-1 pb-4 [clip-path:polygon(0_0,100%_0,100%_50%,50%_90%,0_50%)] hover:opacity-95 transition-opacity block"
+                        aria-label="Ir al inicio">
+                        <img src="./src/assets/NorthBaseLogo.png" alt="NorthBase Logo"
+                            class="w-15 h-15 sm:w-17 sm:h-17 object-contain" />
                     </a>
                 </div>
+
+                <!-- Desktop "Nosotros" Link -->
+                <a href="index.html#nosotros"
+                    class="hidden md:flex items-center h-full text-white hover:text-[#C1121F] font-['Poppins',sans-serif] font-semibold text-sm lg:text-base transition-colors tracking-wide">
+                    Nosotros
+                </a>
             </div>
-            <!-- CENTER: Upside-Down White Pentagon (retains drop-shadow-xl for polygon) -->
-            <div class="absolute left-1/2 -translate-x-1/2 top-0 z-20 drop-shadow-xl">
-                <div
-                    class="w-20 h-24 sm:w-22 sm:h-26 bg-white flex items-center justify-center pt-1 pb-4 [clip-path:polygon(0_0,100%_0,100%_50%,50%_90%,0_50%)]">
-                    <img src="./src/assets/NorthBaseLogo.png" alt="NorthBase Logo"
-                        class="w-15 h-15 sm:w-17 sm:h-17 object-contain" />
-                </div>
+
+            <!-- RIGHT: Spacer on Mobile & "¡Comienza ya!" Button on Desktop -->
+            <div class="flex items-center justify-end w-10 md:w-28 lg:w-36">
+                <a href="login.html"
+                    class="hidden md:inline-block px-5 py-2 lg:px-6 lg:py-2.5 bg-[#C1121F] hover:bg-[#9b0e19] text-white font-['Poppins',sans-serif] font-semibold text-xs sm:text-sm rounded-full shadow-md hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 text-center tracking-wide whitespace-nowrap">
+                    ¡Comienza ya!
+                </a>
             </div>
-            <!-- 3. RIGHT: Spacer -->
-            <div class="w-10"></div>
+
         </div>
     </header>
 
-    <!-- MAIN REGISTER SECTION -->
-    <main class="w-full flex-1 flex flex-col items-center justify-start px-4 pt-16 sm:pt-20 pb-16 sm:pb-24">
-        <!-- Form Wrapper (More compact overall width: max-w-[290px] sm:max-w-xs) -->
-        <div class="w-full max-w-[290px] sm:max-w-xs flex flex-col items-center">
+    <!-- MAIN CONTENT -->
+    <main class="w-full flex-1 flex flex-col items-center justify-center p-4 sm:p-6 md:p-10">
 
+        <!-- ============================================== -->
+        <!-- 1. MOBILE REGISTER VIEW (md:hidden)            -->
+        <!-- ============================================== -->
+        <div class="w-full max-w-[290px] sm:max-w-xs flex flex-col items-center md:hidden pt-8 pb-16">
             <!-- Title Image -->
-            <div class="flex justify-center mb-15 mt-15">
+            <div class="flex justify-center mb-8">
                 <img src="./src/assets/ACCOUNT.png" alt="Create Your Account"
                     class="w-56 sm:w-72 h-auto object-contain drop-shadow-sm" />
             </div>
-            <!-- Registration Form (No labels, tighter gap-2.5) -->
-            <form action="./login.html" method="GET" class="w-full flex flex-col gap-4.5 bg-transparent p-0">
+
+            <!-- Registration Form -->
+            <form action="./login.html" method="GET" class="w-full flex flex-col gap-4 bg-transparent p-0">
                 <!-- 1. Name(s) -->
-                <input type="text" id="name" name="name" autocomplete="given-name" placeholder="Nombre(s)"
-                    aria-label="Nombre(s)" required
+                <input type="text" name="name" autocomplete="given-name" placeholder="Nombre(s)" aria-label="Nombre(s)"
+                    required
                     class="w-full px-3.5 py-2 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-black transition shadow-sm" />
+
                 <!-- 2. Father's Last Name -->
-                <input type="text" id="father-last-name" name="father_last_name" autocomplete="family-name"
-                    placeholder="Apellido paterno" aria-label="Apellido paterno" required
+                <input type="text" name="father_last_name" autocomplete="family-name" placeholder="Apellido paterno"
+                    aria-label="Apellido paterno" required
                     class="w-full px-3.5 py-2 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-black transition shadow-sm" />
+
                 <!-- 3. Mother's Last Name -->
-                <input type="text" id="mother-last-name" name="mother_last_name" placeholder="Apellido materno"
-                    aria-label="Apellido materno" required
+                <input type="text" name="mother_last_name" placeholder="Apellido materno" aria-label="Apellido materno"
+                    required
                     class="w-full px-3.5 py-2 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-black transition shadow-sm" />
+
                 <!-- 4. Email -->
-                <input type="email" id="email" name="email" autocomplete="email" placeholder="Correo electrónico"
+                <input type="email" name="email" autocomplete="email" placeholder="Correo electrónico"
                     aria-label="Correo electrónico" required
                     class="w-full px-3.5 py-2 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-black transition shadow-sm" />
+
                 <!-- 5. Password with Eye Toggle -->
                 <div class="relative w-full">
-                    <input type="password" id="password" name="password" autocomplete="new-password"
-                        placeholder="Contraseña" aria-label="Contraseña" required
+                    <input type="password" name="password" autocomplete="new-password" placeholder="Contraseña"
+                        aria-label="Contraseña" required
                         class="w-full pl-3.5 pr-10 py-2 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-black transition shadow-sm" />
 
                     <button type="button"
                         class="toggle-password absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-black focus:outline-none cursor-pointer p-1"
                         aria-label="Mostrar/Ocultar contraseña">
-                        <!-- Open Eye Icon -->
                         <svg class="eye-open w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                         </svg>
-                        <!-- Slashed Eye Icon (Hidden by default) -->
                         <svg class="eye-closed w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
@@ -109,21 +148,19 @@
 
                 <!-- 6. Confirm Password with Eye Toggle -->
                 <div class="relative w-full">
-                    <input type="password" id="confirm-password" name="confirm_password" autocomplete="new-password"
+                    <input type="password" name="confirm_password" autocomplete="new-password"
                         placeholder="Confirmar contraseña" aria-label="Confirmar contraseña" required
                         class="w-full pl-3.5 pr-10 py-2 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-black transition shadow-sm" />
 
                     <button type="button"
                         class="toggle-password absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-black focus:outline-none cursor-pointer p-1"
                         aria-label="Mostrar/Ocultar contraseña">
-                        <!-- Open Eye Icon -->
                         <svg class="eye-open w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                         </svg>
-                        <!-- Slashed Eye Icon (Hidden by default) -->
                         <svg class="eye-closed w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
@@ -132,11 +169,108 @@
                 </div>
 
                 <button type="submit"
-                    class="w-full mt-2 py-2.5 px-5 bg-[#C1121F] hover:bg-[#9b0e19] text-white font-['Poppins',sans-serif] font-bold text-xs sm:text-sm rounded-full shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer tracking-wide mt-5">
+                    class="w-full mt-3 py-2.5 px-5 bg-[#C1121F] hover:bg-[#9b0e19] text-white font-['Poppins',sans-serif] font-bold text-xs sm:text-sm rounded-full shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer tracking-wide">
                     Registrar
                 </button>
             </form>
         </div>
+
+        <!-- ============================================== -->
+        <!-- 2. DESKTOP REGISTER VIEW (80vw x 86-88vh Split Box) -->
+        <!-- ============================================== -->
+        <div
+            class="hidden md:flex w-full md:w-[80vw] h-[86vh] lg:h-[88vh] bg-[#0A1A32] rounded-3xl shadow-2xl overflow-hidden border border-slate-700/50">
+
+            <!-- Left 60%: desktop login photo with soft corners -->
+            <div class="w-[60%] p-4 lg:p-6 flex items-center justify-center overflow-hidden">
+                <img src="./src/assets/desktop login photo.jpeg" alt="NorthBase Desktop Register"
+                    class="w-full h-full object-cover object-center rounded-2xl lg:rounded-3xl shadow-lg" />
+            </div>
+
+            <!-- Right 40%: Register Form (Without ACCOUNT image) -->
+            <div class="w-[40%] p-6 lg:p-10 flex flex-col justify-center items-center">
+                <div class="w-full max-w-sm flex flex-col items-center">
+
+                    <!-- Registration Form -->
+                    <form action="./login.html" method="GET" class="w-full flex flex-col gap-3 lg:gap-3.5">
+                        <!-- 1. Name(s) -->
+                        <input type="text" name="name" autocomplete="given-name" placeholder="Nombre(s)"
+                            aria-label="Nombre(s)" required
+                            class="w-full px-4 py-2.5 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs lg:text-sm focus:outline-none focus:ring-2 focus:ring-[#C1121F] transition shadow-sm" />
+
+                        <!-- 2. Father's Last Name -->
+                        <input type="text" name="father_last_name" autocomplete="family-name"
+                            placeholder="Apellido paterno" aria-label="Apellido paterno" required
+                            class="w-full px-4 py-2.5 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs lg:text-sm focus:outline-none focus:ring-2 focus:ring-[#C1121F] transition shadow-sm" />
+
+                        <!-- 3. Mother's Last Name -->
+                        <input type="text" name="mother_last_name" placeholder="Apellido materno"
+                            aria-label="Apellido materno" required
+                            class="w-full px-4 py-2.5 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs lg:text-sm focus:outline-none focus:ring-2 focus:ring-[#C1121F] transition shadow-sm" />
+
+                        <!-- 4. Email -->
+                        <input type="email" name="email" autocomplete="email" placeholder="Correo electrónico"
+                            aria-label="Correo electrónico" required
+                            class="w-full px-4 py-2.5 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs lg:text-sm focus:outline-none focus:ring-2 focus:ring-[#C1121F] transition shadow-sm" />
+
+                        <!-- 5. Password with Eye Toggle -->
+                        <div class="relative w-full">
+                            <input type="password" name="password" autocomplete="new-password" placeholder="Contraseña"
+                                aria-label="Contraseña" required
+                                class="w-full pl-4 pr-10 py-2.5 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs lg:text-sm focus:outline-none focus:ring-2 focus:ring-[#C1121F] transition shadow-sm" />
+
+                            <button type="button"
+                                class="toggle-password absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-black focus:outline-none cursor-pointer p-1"
+                                aria-label="Mostrar/Ocultar contraseña">
+                                <svg class="eye-open w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                                <svg class="eye-closed w-4 h-4 hidden" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- 6. Confirm Password with Eye Toggle -->
+                        <div class="relative w-full">
+                            <input type="password" name="confirm_password" autocomplete="new-password"
+                                placeholder="Confirmar contraseña" aria-label="Confirmar contraseña" required
+                                class="w-full pl-4 pr-10 py-2.5 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs lg:text-sm focus:outline-none focus:ring-2 focus:ring-[#C1121F] transition shadow-sm" />
+
+                            <button type="button"
+                                class="toggle-password absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-black focus:outline-none cursor-pointer p-1"
+                                aria-label="Mostrar/Ocultar contraseña">
+                                <svg class="eye-open w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                                <svg class="eye-closed w-4 h-4 hidden" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- Red "Registrar" Button -->
+                        <button type="submit"
+                            class="w-full mt-2 py-3 px-5 bg-[#C1121F] hover:bg-[#9b0e19] text-white font-['Poppins',sans-serif] font-bold text-xs lg:text-sm rounded-full shadow-md hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer tracking-wide">
+                            Registrar
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+
     </main>
 
     <script src="./src/js/index.js"></script>
