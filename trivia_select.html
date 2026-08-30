@@ -112,43 +112,87 @@
         </div>
     </header>
 
-    <!-- MAIN TRIVIA SECTION -->
-    <main class="w-full flex-1 flex flex-col items-center justify-start px-4 pt-16 sm:pt-20 md:pt-32 lg:pt-36 pb-16">
+    <!-- MAIN TRIVIA SECTION (With More Top Space from Header) -->
+    <main class="w-full flex-1 flex flex-col items-center justify-start px-4 pt-20 sm:pt-28 md:pt-40 lg:pt-44 pb-16">
 
-        <!-- Title (Extra Bold & Further Down from Header) -->
+        <!-- Title (Extra Bold) -->
         <h1
             class="font-['Poppins',sans-serif] text-base sm:text-lg md:text-2xl lg:text-3xl font-extrabold text-[#0A1A32] text-center mb-6 sm:mb-8 md:mb-10 tracking-wide">
             El Norte juega. ¿Tú qué tanto sabes?
         </h1>
 
-        <!-- 1st Rectangle Container (More Compact Size) -->
+        <!-- 1st Rectangle Container (Taller Height + Centered Large Image above Button) -->
         <div
-            class="relative w-full max-w-xl sm:max-w-2xl md:max-w-3xl lg:max-w-4xl h-40 sm:h-44 md:h-52 lg:h-56 bg-white border-2 border-orange-200 border-b-[6px] border-r-[6px] md:border-b-8 md:border-r-8 border-b-orange-500 border-r-orange-500 rounded-xl sm:rounded-2xl p-5 md:p-6 shadow-lg shadow-amber-400/40 flex flex-col justify-end items-end mb-6 sm:mb-8 md:mb-12 transition-shadow">
+            class="relative w-full max-w-xl sm:max-w-2xl md:max-w-3xl lg:max-w-4xl min-h-[200px] sm:min-h-[230px] md:min-h-[270px] lg:min-h-[290px] bg-white border-2 border-orange-200 border-b-[6px] border-r-[6px] md:border-b-8 md:border-r-8 border-b-orange-500 border-r-orange-500 rounded-xl sm:rounded-2xl p-6 sm:p-8 md:p-10 shadow-lg shadow-amber-400/40 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-6 sm:mb-8 md:mb-12 transition-shadow">
 
-            <!-- Red "¡Prueba ahora!" Button (Bottom Right) -->
-            <a href="./trivia.html"
-                class="inline-block px-6 py-2 sm:px-7 sm:py-2.5 md:px-8 md:py-3 bg-[#C1121F] hover:bg-[#9b0e19] text-white font-['Poppins',sans-serif] font-bold text-xs sm:text-sm md:text-base rounded-full shadow-md hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 text-center tracking-wide whitespace-nowrap cursor-pointer">
-                ¡Prueba ahora!
-            </a>
+            <!-- Left: Title & Text -->
+            <div class="flex-1 flex flex-col justify-center pr-2">
+                <h2
+                    class="font-['Poppins',sans-serif] font-extrabold text-black text-lg sm:text-xl md:text-2xl lg:text-3xl tracking-wide drop-shadow-md mb-2 sm:mb-3">
+                    Desafío Norteño
+                </h2>
+                <p
+                    class="font-['Poppins',sans-serif] font-normal text-slate-800 text-xs sm:text-sm md:text-base leading-relaxed">
+                    Preguntas aleatorias sobre los equipos de la zona norte de México.
+                </p>
+            </div>
+
+            <!-- Right: Centered Image directly above Button -->
+            <div class="flex flex-col items-center justify-center gap-3 sm:gap-4 shrink-0 self-center">
+                <!-- baseball redblue.png -->
+                <img src="./src/assets/baseball redblue.png" alt="Baseball"
+                    class="w-12 sm:w-14 md:w-16 lg:w-20 h-auto object-contain drop-shadow-sm" />
+
+                <!-- Red Button -->
+                <a href="./trivia.html"
+                    class="inline-block px-6 py-2.5 sm:px-7 sm:py-3 md:px-8 md:py-3.5 bg-[#C1121F] hover:bg-[#9b0e19] text-white font-['Poppins',sans-serif] font-bold text-xs sm:text-sm md:text-base rounded-full shadow-md hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 text-center tracking-wide whitespace-nowrap cursor-pointer">
+                    ¡Prueba ahora!
+                </a>
+            </div>
         </div>
+
 
         <!-- 2nd Row: 3 Containers with Wider Gaps and Thicker Borders -->
         <div
             class="w-full max-w-2xl sm:max-w-3xl md:max-w-5xl lg:max-w-6xl grid grid-cols-2 md:grid-cols-3 gap-6 sm:gap-10 md:gap-14 lg:gap-20">
 
-            <!-- Container 1 -->
+            <!-- Container 1 (Desafío Sultán) -->
             <div
-                class="aspect-[4/3] bg-white border-2 border-orange-200 border-b-[6px] border-r-[6px] md:border-b-8 md:border-r-8 border-b-orange-500 border-r-orange-500 rounded-xl sm:rounded-2xl p-4 shadow-lg shadow-amber-400/35 flex flex-col items-center justify-center transition-all hover:scale-[1.02] hover:shadow-amber-400/50 cursor-pointer">
+                class="aspect-[4/3] bg-white border-2 border-orange-200 border-b-[6px] border-r-[6px] md:border-b-8 md:border-r-8 border-b-orange-500 border-r-orange-500 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-lg shadow-amber-400/35 flex flex-col items-center justify-between transition-all hover:scale-[1.02] hover:shadow-amber-400/50 cursor-pointer text-center">
+                <h3
+                    class="font-['Poppins',sans-serif] font-bold text-black text-sm sm:text-base md:text-xl lg:text-2xl tracking-wide drop-shadow-sm">
+                    Desafío Sultán
+                </h3>
+                <div class="flex-1 flex items-center justify-center my-auto">
+                    <img src="./src/assets/Sultanes logo.png" alt="Sultanes Logo"
+                        class="w-14 sm:w-16 md:w-20 lg:w-24 h-auto object-contain drop-shadow-sm" />
+                </div>
             </div>
 
-            <!-- Container 2 -->
+            <!-- Container 2 (Desafío Charro) -->
             <div
-                class="aspect-[4/3] bg-white border-2 border-orange-200 border-b-[6px] border-r-[6px] md:border-b-8 md:border-r-8 border-b-orange-500 border-r-orange-500 rounded-xl sm:rounded-2xl p-4 shadow-lg shadow-amber-400/35 flex flex-col items-center justify-center transition-all hover:scale-[1.02] hover:shadow-amber-400/50 cursor-pointer">
+                class="aspect-[4/3] bg-white border-2 border-orange-200 border-b-[6px] border-r-[6px] md:border-b-8 md:border-r-8 border-b-orange-500 border-r-orange-500 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-lg shadow-amber-400/35 flex flex-col items-center justify-between transition-all hover:scale-[1.02] hover:shadow-amber-400/50 cursor-pointer text-center">
+                <h3
+                    class="font-['Poppins',sans-serif] font-bold text-black text-sm sm:text-base md:text-xl lg:text-2xl tracking-wide drop-shadow-sm">
+                    Desafío Charro
+                </h3>
+                <div class="flex-1 flex items-center justify-center my-auto">
+                    <img src="./src/assets/Charros logo.png" alt="Charros Logo"
+                        class="w-14 sm:w-16 md:w-20 lg:w-24 h-auto object-contain drop-shadow-sm" />
+                </div>
             </div>
 
-            <!-- Container 3 (Shows on Desktop) -->
+            <!-- Container 3 (Desafío Rielero - Shows on Desktop) -->
             <div
-                class="hidden md:flex aspect-[4/3] bg-white border-2 border-orange-200 border-b-[6px] border-r-[6px] md:border-b-8 md:border-r-8 border-b-orange-500 border-r-orange-500 rounded-xl sm:rounded-2xl p-4 shadow-lg shadow-amber-400/35 flex-col items-center justify-center transition-all hover:scale-[1.02] hover:shadow-amber-400/50 cursor-pointer">
+                class="hidden md:flex aspect-[4/3] bg-white border-2 border-orange-200 border-b-[6px] border-r-[6px] md:border-b-8 md:border-r-8 border-b-orange-500 border-r-orange-500 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-lg shadow-amber-400/35 flex-col items-center justify-between transition-all hover:scale-[1.02] hover:shadow-amber-400/50 cursor-pointer text-center">
+                <h3
+                    class="font-['Poppins',sans-serif] font-bold text-black text-sm sm:text-base md:text-xl lg:text-2xl tracking-wide drop-shadow-sm">
+                    Desafío Rielero
+                </h3>
+                <div class="flex-1 flex items-center justify-center my-auto">
+                    <img src="./src/assets/rieleros logo.png" alt="Rieleros Logo"
+                        class="w-14 sm:w-16 md:w-20 lg:w-24 h-auto object-contain drop-shadow-sm" />
+                </div>
             </div>
 
         </div>
