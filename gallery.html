@@ -20,7 +20,8 @@
         <div class="max-w-7xl mx-auto flex items-center justify-between relative h-10 sm:h-12">
 
             <!-- 1. LEFT: Mobile Hamburger Menu & Desktop Balancer -->
-            <div class="flex items-center">
+            <div class="flex items-center gap-2 sm:gap-3">
+
                 <!-- Mobile Hamburger (Hidden on Desktop) -->
                 <div class="relative md:hidden">
                     <button id="menu-btn"
@@ -55,8 +56,13 @@
                     </div>
                 </div>
 
-                <!-- Desktop Balancer to match the right profile picture -->
-                <div class="hidden md:block w-9 sm:w-10"></div>
+                <!-- Cards Game Button (Goes to game.html) -->
+                <a href="./game.html"
+                    class="w-9 h-9 sm:w-10 sm:h-10 overflow-hidden hover:opacity-90 hover:scale-105 transition-all flex items-center justify-center cursor-pointer shrink-0 p-1"
+                    aria-label="Ir al juego de cartas">
+                    <img src="./src/assets/cards icon.png" alt="Juego de Cartas" class="w-full h-full object-contain" />
+                </a>
+
             </div>
 
             <!-- 2. CENTER: Navigation (Desktop "Trivia" & "Cámara" - Pentagon Logo - "Galería" & "Equipos") -->
