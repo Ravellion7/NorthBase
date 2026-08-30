@@ -132,22 +132,29 @@
         <div
             class="w-full max-w-lg sm:max-w-xl md:w-[90vw] md:max-w-none grid grid-cols-3 gap-3 sm:gap-6 md:gap-8 lg:gap-10 mb-10 sm:mb-14 md:mb-16">
 
-            <!-- Container 1 -->
+            <!-- Container 1: Sultanes Pic 1 -->
             <div
-                class="aspect-square md:aspect-[4/3] lg:aspect-[16/10] bg-white border border-slate-200 shadow-xl shadow-black/25 hover:shadow-2xl hover:shadow-black/35 rounded-xl sm:rounded-2xl flex items-center justify-center transition-all hover:scale-[1.02] cursor-pointer">
+                class="gallery-item aspect-square md:aspect-[4/3] lg:aspect-[16/10] shadow-xl shadow-black/25 hover:shadow-2xl hover:shadow-black/35 rounded-xl sm:rounded-2xl overflow-hidden flex items-center justify-center transition-all hover:scale-[1.02] cursor-pointer group">
+                <img src="./src/assets/sultanes pic.jpg" alt="Sultanes de Monterrey Foto 1"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
             </div>
 
-            <!-- Container 2 -->
+            <!-- Container 2: Sultanes Pic 2 -->
             <div
-                class="aspect-square md:aspect-[4/3] lg:aspect-[16/10] bg-white border border-slate-200 shadow-xl shadow-black/25 hover:shadow-2xl hover:shadow-black/35 rounded-xl sm:rounded-2xl flex items-center justify-center transition-all hover:scale-[1.02] cursor-pointer">
+                class="gallery-item aspect-square md:aspect-[4/3] lg:aspect-[16/10] shadow-xl shadow-black/25 hover:shadow-2xl hover:shadow-black/35 rounded-xl sm:rounded-2xl overflow-hidden flex items-center justify-center transition-all hover:scale-[1.02] cursor-pointer group">
+                <img src="./src/assets/sultanes pic2.jpg" alt="Sultanes de Monterrey Foto 2"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
             </div>
 
-            <!-- Container 3 -->
+            <!-- Container 3: Sultanes Pic 3 -->
             <div
-                class="aspect-square md:aspect-[4/3] lg:aspect-[16/10] bg-white border border-slate-200 shadow-xl shadow-black/25 hover:shadow-2xl hover:shadow-black/35 rounded-xl sm:rounded-2xl flex items-center justify-center transition-all hover:scale-[1.02] cursor-pointer">
+                class="gallery-item aspect-square md:aspect-[4/3] lg:aspect-[16/10] shadow-xl shadow-black/25 hover:shadow-2xl hover:shadow-black/35 rounded-xl sm:rounded-2xl overflow-hidden flex items-center justify-center transition-all hover:scale-[1.02] cursor-pointer group">
+                <img src="./src/assets/sultanes pic3.jpg" alt="Sultanes de Monterrey Foto 3"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
             </div>
 
         </div>
+
 
         <!-- 2. Videos Title Image -->
         <div class="w-full max-w-lg sm:max-w-xl md:w-[90vw] md:max-w-none flex justify-start pl-2 sm:pl-3 mb-4 sm:mb-6">
@@ -155,17 +162,85 @@
                 class="w-24 sm:w-28 md:w-32 h-auto object-contain drop-shadow-sm" />
         </div>
 
-        <!-- Single Container Below Videos (Same size as 1st row containers) -->
+        <!-- Single Container Below Videos -->
         <div
             class="w-full max-w-lg sm:max-w-xl md:w-[90vw] md:max-w-none grid grid-cols-3 gap-3 sm:gap-6 md:gap-8 lg:gap-10">
             <div
-                class="aspect-square md:aspect-[4/3] lg:aspect-[16/10] bg-white border border-slate-200 shadow-xl shadow-black/25 hover:shadow-2xl hover:shadow-black/35 rounded-xl sm:rounded-2xl flex items-center justify-center transition-all hover:scale-[1.02] cursor-pointer">
+                class="gallery-item aspect-square md:aspect-[4/3] lg:aspect-[16/10] shadow-xl shadow-black/25 hover:shadow-2xl hover:shadow-black/35 rounded-xl sm:rounded-2xl overflow-hidden flex items-center justify-center transition-all hover:scale-[1.02] cursor-pointer group relative bg-black">
+                <!-- Video Thumbnail -->
+                <video src="./src/assets/sultanes vid.mp4" muted playsinline
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                </video>
+                <!-- Play Icon Overlay -->
+                <div
+                    class="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-transparent transition-colors pointer-events-none">
+                    <div
+                        class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-black fill-current ml-0.5" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z" />
+                        </svg>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <!-- Full-Size Image & Video Modal -->
+        <div id="gallery-modal"
+            class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center p-4 transition-opacity duration-300">
+
+            <!-- Close Button (Top Right) -->
+            <button id="modal-close-btn" type="button"
+                class="absolute top-6 right-6 text-white/80 hover:text-white text-3xl font-bold p-2 z-50 transition-transform hover:scale-110 cursor-pointer"
+                aria-label="Cerrar vista completa">
+                ✕
+            </button>
+
+            <!-- Media Container (Image or Video) -->
+            <div
+                class="relative max-w-4xl max-h-[70vh] flex items-center justify-center rounded-2xl overflow-hidden shadow-2xl">
+                <img id="modal-img" src="" alt="Vista previa"
+                    class="hidden max-w-full max-h-[70vh] object-contain rounded-2xl transition-all duration-300" />
+                <video id="modal-video" src="" controls autoplay playsinline
+                    class="hidden max-w-full max-h-[70vh] object-contain rounded-2xl transition-all duration-300">
+                </video>
+            </div>
+
+
+            <!-- Bottom Circles (Same design as camera.html) -->
+            <div class="absolute bottom-8 left-0 right-0 flex items-center justify-center gap-3 sm:gap-4 z-50">
+                <!-- Circle 1 -->
+                <button type="button"
+                    class="filter-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-transparent border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer">
+                </button>
+
+                <!-- Circle 2 -->
+                <button type="button"
+                    class="filter-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-transparent border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer">
+                </button>
+
+                <!-- Circle 3 -->
+                <button type="button"
+                    class="filter-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-transparent border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer">
+                </button>
+
+                <!-- Circle 4 -->
+                <button type="button"
+                    class="filter-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-transparent border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer">
+                </button>
+
+                <!-- Circle 5 -->
+                <button type="button"
+                    class="filter-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-transparent border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer">
+                </button>
+            </div>
+
+        </div>
+
 
     </main>
 
     <script src="./src/js/index.js"></script>
+    <script src="./src/js/gallery.js"></script>
 </body>
 
 
