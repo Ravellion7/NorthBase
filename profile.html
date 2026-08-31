@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NorthBase - Perfil</title>
-    <!-- Google Font: Anton & Poppins -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700&display=swap"
@@ -16,18 +16,18 @@
 <body
     class="bg-[#0A1A32] overflow-x-hidden flex flex-col min-h-screen items-center justify-between m-0 p-0 relative font-['Poppins',sans-serif]">
 
-    <!-- 1. Transparent Header -->
+
     <header class="w-full bg-transparent px-4 sm:px-6 py-4 absolute top-0 left-0 z-30">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
 
-            <!-- LEFT: Regresar Button (Takes you to home.html) -->
+
             <a href="./home.html"
                 class="inline-flex items-center gap-1.5 text-white/90 hover:text-white font-medium text-xs sm:text-sm py-1.5 px-3 rounded-lg hover:bg-white/10 transition-colors"
                 aria-label="Regresar al inicio">
                 <span>Regresar</span>
             </a>
 
-            <!-- RIGHT: Camera Button (Takes you to camera.html) -->
+
             <a href="./camera.html"
                 class="flex items-center justify-center p-2 rounded-full hover:bg-white/10 transition-all cursor-pointer"
                 aria-label="Abrir cámara">
@@ -38,16 +38,16 @@
         </div>
     </header>
 
-    <!-- 2. Top Half (Bigger Profile Picture + Regular "Usuario" Text) -->
+
     <div class="w-full flex-1 flex flex-col items-center justify-center pt-14 pb-4 px-4 z-10">
 
-        <!-- Default Profile Picture with Thick White Border (Enlarged) -->
+
         <div
             class="w-32 h-32 sm:w-36 sm:h-36 rounded-full border-4 border-white shadow-2xl overflow-hidden bg-white flex items-center justify-center">
             <img src="./src/assets/default profile.png" alt="Foto de perfil" class="w-full h-full object-cover" />
         </div>
 
-        <!-- "Usuario" Name Text (Not bold, with more top margin) -->
+
         <h1
             class="text-white font-['Poppins',sans-serif] font-normal text-xl sm:text-2xl mt-4 sm:mt-5 tracking-wide drop-shadow-sm">
             Usuario
@@ -55,26 +55,26 @@
 
     </div>
 
-    <!-- 3. Bottom 50% Container (#F5F5F5) with "Editar perfil" Button + 2 Vertical Rectangles -->
+
     <div
         class="w-full h-[50vh] min-h-[340px] bg-[#F5F5F5] rounded-t-[2.5rem] shadow-2xl p-6 sm:p-8 flex flex-col items-center justify-start z-20">
 
-        <!-- Red "Editar perfil" Button (Links to edit_profile.html) -->
+
         <a href="./edit_profile.html"
             class="inline-block px-8 py-2 sm:px-10 sm:py-2.5 bg-[#C1121F] hover:bg-[#9b0e19] text-white font-['Poppins',sans-serif] font-bold text-xs sm:text-sm rounded-full shadow-md hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer tracking-wide mb-6 sm:mb-8 text-center">
             Editar perfil
         </a>
 
 
-        <!-- 2 Vertical Rectangle Containers (Transparent Fill + Uniform Orange Border + Yellow Glow) -->
+
         <div class="w-full max-w-sm sm:max-w-md grid grid-cols-2 gap-4 sm:gap-6">
 
-            <!-- Vertical Rectangle 1 -->
+
             <div
                 class="aspect-[3/4] bg-transparent border-2 border-orange-500 rounded-2xl shadow-lg shadow-amber-400/40 hover:shadow-amber-400/60 transition-all hover:scale-[1.02] cursor-pointer">
             </div>
 
-            <!-- Vertical Rectangle 2 -->
+
             <div
                 class="aspect-[3/4] bg-transparent border-2 border-orange-500 rounded-2xl shadow-lg shadow-amber-400/40 hover:shadow-amber-400/60 transition-all hover:scale-[1.02] cursor-pointer">
             </div>
