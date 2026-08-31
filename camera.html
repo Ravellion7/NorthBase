@@ -14,8 +14,6 @@
     <link rel="stylesheet" href="./dist/output.css">
 </head>
 
-<!-- 1. Ensure body has zero margins/padding -->
-
 <body class="bg-[#F5F5F5] overflow-x-hidden flex flex-col min-h-screen items-center m-0 p-0">
     <!-- 2. HEADER (Responsive: Mobile Menu vs Desktop Navigation) -->
     <header class="sticky top-0 z-30 w-full bg-[#0A1A32] px-4 py-3 shadow-xl">
@@ -118,23 +116,23 @@
         </div>
     </header>
 
-    <!-- MAIN CAMERA SECTION (Full Screen on Mobile / Centered Container on Desktop) -->
-    <main class="w-full flex-1 flex flex-col items-center justify-start p-0 md:px-4 md:pt-16 lg:pt-18 md:pb-16">
+    <!-- MAIN CAMERA SECTION (Full Body Screen on Both Desktop & Mobile) -->
+    <main class="w-full flex-1 flex flex-col items-center justify-start p-0 m-0 overflow-hidden">
 
-        <!-- Camera Container (100% Mobile Body Screen -> 94vw x 80vh on Desktop) -->
+        <!-- Full-Screen Camera Container -->
         <div
-            class="relative w-full h-[calc(100vh-64px)] sm:h-[calc(100vh-72px)] md:h-[80vh] md:w-[94vw] lg:w-[95vw] md:max-w-none bg-black md:bg-slate-200 rounded-none md:rounded-3xl shadow-none md:shadow-2xl flex flex-col justify-between items-center p-4 md:p-8 border-0 md:border md:border-slate-300 overflow-hidden">
+            class="relative w-full h-[calc(100vh-64px)] sm:h-[calc(100vh-72px)] bg-black rounded-none shadow-none flex flex-col justify-between items-center p-4 md:p-8 border-0 overflow-hidden">
 
-            <!-- "Camera top.png" Image (Centered at top) -->
+            <!-- "Camera top.png" Image (Centered at Top) -->
             <div
-                class="absolute top-3 md:-top-11 lg:-top-13 left-1/2 -translate-x-1/2 w-48 sm:w-60 md:w-full md:max-w-xl lg:max-w-2xl flex justify-center z-20 pointer-events-none">
+                class="absolute top-3 md:top-4 left-1/2 -translate-x-1/2 w-48 sm:w-60 md:w-80 lg:w-96 flex justify-center z-20 pointer-events-none">
                 <img src="./src/assets/Camera top.png" alt="Camera Top"
                     class="w-full h-auto object-contain drop-shadow-md" />
             </div>
 
             <!-- LEFT SIDE VERTICAL CONTROLS (4 Circles + Cerrar) -->
             <div
-                class="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2.5 sm:gap-3 z-20">
+                class="absolute left-3 sm:left-4 md:left-6 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2.5 sm:gap-3 md:gap-4 z-20">
 
                 <!-- Vertical Circle 1 -->
                 <button type="button"
@@ -158,7 +156,7 @@
 
                 <!-- "Cerrar" with Icon (Below bottom circle) -->
                 <a href="./home.html"
-                    class="flex items-center gap-1.5 text-white/90 hover:text-white font-['Poppins',sans-serif] text-xs font-semibold mt-1 transition-colors cursor-pointer drop-shadow-md"
+                    class="flex items-center gap-1.5 text-white/90 hover:text-white font-['Poppins',sans-serif] text-xs sm:text-sm font-semibold mt-1 transition-colors cursor-pointer drop-shadow-md"
                     aria-label="Cerrar cámara">
                     <img src="./src/assets/cerrar icon.png" alt="Cerrar"
                         class="w-3.5 h-3.5 sm:w-4 sm:h-4 object-contain brightness-200" />
@@ -169,7 +167,7 @@
 
             <!-- Camera Viewfinder (Live Video Feed Full Screen) -->
             <div
-                class="absolute inset-0 w-full h-full rounded-none md:rounded-3xl overflow-hidden bg-black flex items-center justify-center z-0">
+                class="absolute inset-0 w-full h-full rounded-none overflow-hidden bg-black flex items-center justify-center z-0">
                 <video id="camera-stream" autoplay playsinline muted class="w-full h-full object-cover -scale-x-100">
                 </video>
 
@@ -179,8 +177,6 @@
                     Iniciando cámara...
                 </p>
             </div>
-
-
 
             <!-- 5 Bottom Filter Circles (Pinned to Bottom) -->
             <div
