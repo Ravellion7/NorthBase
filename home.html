@@ -119,27 +119,29 @@
     <main class="w-full flex-1 flex flex-col items-center justify-start px-4 pt-25 sm:pt-16 md:pt-36 lg:pt-40 pb-16">
 
 
-        <div class="flex justify-center mb-20 sm:mb-24 md:mb-28">
+        <!-- Title Image -->
+        <div class="flex justify-center mb-10 sm:mb-16 md:mb-28">
             <img src="./src/assets/Northbase texto.png" alt="NorthBase"
                 class="w-60 sm:w-80 md:w-96 h-auto object-contain drop-shadow-sm" />
         </div>
 
-
+        <!-- 3 Cards Container (Stacked on Mobile -> 3-Columns Tilted on Desktop) -->
         <div
-            class="w-full max-w-5xl lg:max-w-6xl grid grid-cols-3 gap-6 sm:gap-10 md:gap-16 lg:gap-24 items-end justify-center px-4">
-            <!-- Card 1 (Left: Tilted Left - LMB) -->
-            <div
-                class="bg-white border-2 border-orange-200 border-b-[6px] border-r-[6px] md:border-b-8 md:border-r-8 border-b-orange-500 border-r-orange-500 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-7 min-h-[260px] sm:min-h-[290px] md:min-h-[340px] shadow-lg shadow-amber-400/35 flex flex-col items-center justify-between text-center -rotate-6 hover:rotate-0 hover:scale-105 transition-all duration-300 hover:shadow-amber-400/50 cursor-pointer">
+            class="w-full max-w-sm sm:max-w-md md:max-w-5xl lg:max-w-6xl grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10 md:gap-16 lg:gap-24 items-end justify-center px-4">
 
-                <!-- Title (With more space below) -->
+            <!-- Card 1 (LMB) -->
+            <div
+                class="bg-white border-2 border-orange-200 border-b-[6px] border-r-[6px] md:border-b-8 md:border-r-8 border-b-orange-500 border-r-orange-500 rounded-xl sm:rounded-2xl p-6 md:p-7 min-h-[220px] md:min-h-[340px] shadow-lg shadow-amber-400/35 flex flex-col items-center justify-between text-center rotate-0 md:-rotate-6 hover:rotate-0 hover:scale-105 transition-all duration-300 hover:shadow-amber-400/50 cursor-pointer">
+
+                <!-- Title -->
                 <h3
-                    class="font-['Poppins',sans-serif] font-bold text-black text-sm sm:text-base md:text-xl lg:text-2xl tracking-wide mb-3 sm:mb-4 md:mb-5">
+                    class="font-['Poppins',sans-serif] font-bold text-black text-base md:text-xl lg:text-2xl tracking-wide mb-3 sm:mb-4 md:mb-5">
                     LMB
                 </h3>
 
                 <!-- Text -->
                 <p
-                    class="font-['Poppins',sans-serif] font-normal text-black text-[11px] sm:text-xs md:text-sm lg:text-base leading-relaxed mb-3 sm:mb-4">
+                    class="font-['Poppins',sans-serif] font-normal text-black text-xs sm:text-sm md:text-base leading-relaxed mb-3 sm:mb-4">
                     La Liga Mexicana de Béisbol (LMB) nació el 28 de Junio de 1925.
                 </p>
 
@@ -150,19 +152,19 @@
                 </div>
             </div>
 
-            <!-- Card 2 (Middle: Slightly Tilted Right + Elevated - Primer Mexicano) -->
+            <!-- Card 2 (Primer Mexicano) -->
             <div
-                class="bg-white border-2 border-orange-200 border-b-[6px] border-r-[6px] md:border-b-8 md:border-r-8 border-b-orange-500 border-r-orange-500 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-7 min-h-[260px] sm:min-h-[290px] md:min-h-[340px] shadow-lg shadow-amber-400/35 flex flex-col items-center justify-between text-center -translate-y-4 sm:-translate-y-8 rotate-2 hover:rotate-0 hover:scale-105 transition-all duration-300 hover:shadow-amber-400/50 cursor-pointer">
+                class="bg-white border-2 border-orange-200 border-b-[6px] border-r-[6px] md:border-b-8 md:border-r-8 border-b-orange-500 border-r-orange-500 rounded-xl sm:rounded-2xl p-6 md:p-7 min-h-[220px] md:min-h-[340px] shadow-lg shadow-amber-400/35 flex flex-col items-center justify-between text-center translate-y-0 md:-translate-y-4 md:sm:-translate-y-8 rotate-0 md:rotate-2 hover:rotate-0 hover:scale-105 transition-all duration-300 hover:shadow-amber-400/50 cursor-pointer">
 
                 <!-- Title -->
                 <h3
-                    class="font-['Poppins',sans-serif] font-bold text-black text-sm sm:text-base md:text-xl lg:text-2xl tracking-wide mb-3 sm:mb-4 md:mb-5">
+                    class="font-['Poppins',sans-serif] font-bold text-black text-base md:text-xl lg:text-2xl tracking-wide mb-3 sm:mb-4 md:mb-5">
                     Primer mexicano
                 </h3>
 
                 <!-- Text -->
                 <p
-                    class="font-['Poppins',sans-serif] font-normal text-black text-[11px] sm:text-xs md:text-sm lg:text-base leading-relaxed mb-3 sm:mb-4">
+                    class="font-['Poppins',sans-serif] font-normal text-black text-xs sm:text-sm md:text-base leading-relaxed mb-3 sm:mb-4">
                     Baldomero "Melo" Almada, oriundo de Huatabampo, Sonora, se convirtió en el primer pelotero mexicano.
                 </p>
 
@@ -173,19 +175,19 @@
                 </div>
             </div>
 
-            <!-- Card 3 (Right: More Tilted Right - Ligas MX) -->
+            <!-- Card 3 (Ligas MX) -->
             <div
-                class="bg-white border-2 border-orange-200 border-b-[6px] border-r-[6px] md:border-b-8 md:border-r-8 border-b-orange-500 border-r-orange-500 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-7 min-h-[260px] sm:min-h-[290px] md:min-h-[340px] shadow-lg shadow-amber-400/35 flex flex-col items-center justify-between text-center rotate-6 hover:rotate-0 hover:scale-105 transition-all duration-300 hover:shadow-amber-400/50 cursor-pointer">
+                class="bg-white border-2 border-orange-200 border-b-[6px] border-r-[6px] md:border-b-8 md:border-r-8 border-b-orange-500 border-r-orange-500 rounded-xl sm:rounded-2xl p-6 md:p-7 min-h-[220px] md:min-h-[340px] shadow-lg shadow-amber-400/35 flex flex-col items-center justify-between text-center rotate-0 md:rotate-6 hover:rotate-0 hover:scale-105 transition-all duration-300 hover:shadow-amber-400/50 cursor-pointer">
 
                 <!-- Title -->
                 <h3
-                    class="font-['Poppins',sans-serif] font-bold text-black text-sm sm:text-base md:text-xl lg:text-2xl tracking-wide mb-3 sm:mb-4 md:mb-5">
+                    class="font-['Poppins',sans-serif] font-bold text-black text-base md:text-xl lg:text-2xl tracking-wide mb-3 sm:mb-4 md:mb-5">
                     Ligas MX
                 </h3>
 
                 <!-- Text -->
                 <p
-                    class="font-['Poppins',sans-serif] font-normal text-black text-[11px] sm:text-xs md:text-sm lg:text-base leading-relaxed mb-3 sm:mb-4">
+                    class="font-['Poppins',sans-serif] font-normal text-black text-xs sm:text-sm md:text-base leading-relaxed mb-3 sm:mb-4">
                     Liga Mexicana sirvió como un espacio de gran nivel e inclusión donde muchos jugadores afroamericanos
                     brillaron.
                 </p>
@@ -199,12 +201,13 @@
         </div>
 
         <!-- Bottom-Center "¡Comienza ya!" Button -->
-        <div class="mt-25 sm:mt-28 flex justify-center">
+        <div class="mt-12 sm:mt-16 md:mt-28 flex justify-center">
             <a href="./trivia_select.html"
                 class="inline-block px-8 py-2.5 sm:px-10 sm:py-3 bg-[#C1121F] hover:bg-[#9b0e19] text-white font-['Poppins',sans-serif] font-bold text-xs sm:text-sm rounded-full shadow-md hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 text-center tracking-wide whitespace-nowrap">
                 ¡Comienza ya!
             </a>
         </div>
+
 
     </main>
 
