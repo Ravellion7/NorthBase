@@ -195,7 +195,16 @@
                     device-orientation-permission-ui="enabled: false" class="w-full h-full" embedded>
 
                     <a-assets>
-                        <a-asset-item id="sultanesModel" src="./src/assets/Models/Sultanes.glb?v=2"></a-asset-item>
+                        <a-asset-item id="acererosModel" src="./src/assets/Models/Acereros.glb"></a-asset-item>
+                        <a-asset-item id="algodonerosModel" src="./src/assets/Models/Algodoneros.glb"></a-asset-item>
+                        <a-asset-item id="calientesModel" src="./src/assets/Models/Calientes.glb"></a-asset-item>
+                        <a-asset-item id="charrosModel" src="./src/assets/Models/Charros.glb"></a-asset-item>
+                        <a-asset-item id="doradosModel" src="./src/assets/Models/Dorados.glb"></a-asset-item>
+                        <a-asset-item id="rielerosModel" src="./src/assets/Models/Rieleros.glb"></a-asset-item>
+                        <a-asset-item id="saraperosModel" src="./src/assets/Models/Saraperos.glb"></a-asset-item>
+                        <a-asset-item id="sultanesModel" src="./src/assets/Models/Sultanes.glb"></a-asset-item>
+                        <a-asset-item id="tecosModel" src="./src/assets/Models/Tecos.glb"></a-asset-item>
+                        <a-asset-item id="torosModel" src="./src/assets/Models/Toros.glb"></a-asset-item>
                     </a-assets>
 
                     <a-camera position="0 0 0" look-controls="enabled: false">
@@ -203,9 +212,64 @@
                         <a-light type="ambient" color="#ffffff" intensity="1.8"></a-light>
                     </a-camera>
 
-                    <a-entity id="sultanes-target" mindar-image-target="targetIndex: 7">
-                        <a-gltf-model id="sultanes-model" src="#sultanesModel" position="0 0 0.1" scale="0.5 0.5 0.5"
-                            rotation="0 0 0" fix-materials
+
+                    <a-entity class="team-target" data-team="Acereros" mindar-image-target="targetIndex: 0">
+                        <a-gltf-model src="#acererosModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0"
+                            animation="property: rotation; to: 0 360 0; loop: true; dur: 8000; easing: linear">
+                        </a-gltf-model>
+                    </a-entity>
+
+
+                    <a-entity class="team-target" data-team="Algodoneros" mindar-image-target="targetIndex: 1">
+                        <a-gltf-model src="#algodonerosModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0"
+                            animation="property: rotation; to: 0 360 0; loop: true; dur: 8000; easing: linear">
+                        </a-gltf-model>
+                    </a-entity>
+
+                    <a-entity class="team-target" data-team="Calientes" mindar-image-target="targetIndex: 2">
+                        <a-gltf-model src="#calientesModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0"
+                            animation="property: rotation; to: 0 360 0; loop: true; dur: 8000; easing: linear">
+                        </a-gltf-model>
+                    </a-entity>
+
+                    <a-entity class="team-target" data-team="Charros" mindar-image-target="targetIndex: 3">
+                        <a-gltf-model src="#charrosModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0"
+                            animation="property: rotation; to: 0 360 0; loop: true; dur: 8000; easing: linear">
+                        </a-gltf-model>
+                    </a-entity>
+
+                    <a-entity class="team-target" data-team="Dorados" mindar-image-target="targetIndex: 4">
+                        <a-gltf-model src="#doradosModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0"
+                            animation="property: rotation; to: 0 360 0; loop: true; dur: 8000; easing: linear">
+                        </a-gltf-model>
+                    </a-entity>
+
+                    <a-entity class="team-target" data-team="Rieleros" mindar-image-target="targetIndex: 5">
+                        <a-gltf-model src="#rielerosModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0"
+                            animation="property: rotation; to: 0 360 0; loop: true; dur: 8000; easing: linear">
+                        </a-gltf-model>
+                    </a-entity>
+
+                    <a-entity class="team-target" data-team="Saraperos" mindar-image-target="targetIndex: 6">
+                        <a-gltf-model src="#saraperosModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0"
+                            animation="property: rotation; to: 0 360 0; loop: true; dur: 8000; easing: linear">
+                        </a-gltf-model>
+                    </a-entity>
+
+                    <a-entity class="team-target" data-team="Sultanes" mindar-image-target="targetIndex: 7">
+                        <a-gltf-model src="#sultanesModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0"
+                            animation="property: rotation; to: 0 360 0; loop: true; dur: 8000; easing: linear">
+                        </a-gltf-model>
+                    </a-entity>
+
+                    <a-entity class="team-target" data-team="Tecos" mindar-image-target="targetIndex: 8">
+                        <a-gltf-model src="#tecosModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0"
+                            animation="property: rotation; to: 0 360 0; loop: true; dur: 8000; easing: linear">
+                        </a-gltf-model>
+                    </a-entity>
+
+                    <a-entity class="team-target" data-team="Toros" mindar-image-target="targetIndex: 9">
+                        <a-gltf-model src="#torosModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0"
                             animation="property: rotation; to: 0 360 0; loop: true; dur: 8000; easing: linear">
                         </a-gltf-model>
                     </a-entity>
@@ -213,9 +277,10 @@
 
                 <div id="camera-status"
                     class="absolute top-20 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-sm border border-white/20 px-4 py-1.5 rounded-full text-white text-xs sm:text-sm font-['Poppins',sans-serif] pointer-events-none z-20 transition-opacity duration-300">
-                    Apunta la cámara al logo de Sultanes...
+                    Apunta la cámara al logo de un equipo...
                 </div>
             </div>
+
 
             <div
                 class="absolute bottom-4 sm:bottom-6 md:bottom-8 left-0 right-0 flex items-center justify-center gap-2.5 sm:gap-3.5 z-10">

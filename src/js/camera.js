@@ -1,26 +1,29 @@
 document.addEventListener('DOMContentLoaded', () => {
     const statusText = document.getElementById('camera-status');
-    const sultanesTarget = document.querySelector('#sultanes-target');
+    const teamTargets = document.querySelectorAll('.team-target');
 
-    if (sultanesTarget) {
-        sultanesTarget.addEventListener('targetFound', () => {
-            console.log('¡Logo de Sultanes detectado!');
+    // Listeners para los equipos
+    teamTargets.forEach(target => {
+        const teamName = target.getAttribute('data-team') || 'Equipo';
+
+        target.addEventListener('targetFound', () => {
+            console.log(`¡Logo de ${teamName} detectado!`);
             if (statusText) {
-                statusText.textContent = '¡Logo de Sultanes detectado! 🎉';
+                statusText.textContent = `¡Logo de ${teamName} detectado! 🎉`;
                 statusText.classList.add('bg-emerald-600/80', 'border-emerald-400');
                 statusText.classList.remove('bg-black/60');
             }
         });
 
-        sultanesTarget.addEventListener('targetLost', () => {
-            console.log('Logo de Sultanes fuera de vista');
+        target.addEventListener('targetLost', () => {
+            console.log(`Logo de ${teamName} fuera de vista`);
             if (statusText) {
-                statusText.textContent = 'Apunta la cámara al logo de Sultanes...';
+                statusText.textContent = 'Apunta la cámara al logo de un equipo...';
                 statusText.classList.remove('bg-emerald-600/80', 'border-emerald-400');
                 statusText.classList.add('bg-black/60');
             }
         });
-    }
+    });
 
     const circleButtons = document.querySelectorAll('.camera-circle-btn');
     circleButtons.forEach(btn => {
