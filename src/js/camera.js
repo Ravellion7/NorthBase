@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
         target.addEventListener('targetFound', () => {
             console.log(`¡Logo de ${teamName} detectado!`);
             if (statusText) {
-                statusText.textContent = `¡Logo de ${teamName} detectado! 🎉`;
+                statusText.textContent = `¡Logo de ${teamName} detectado!`;
                 statusText.classList.add('bg-emerald-600/80', 'border-emerald-400');
                 statusText.classList.remove('bg-black/60');
             }
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
         target.addEventListener('targetLost', () => {
             console.log(`Logo de ${teamName} fuera de vista`);
             if (statusText) {
-                statusText.textContent = 'Apunta la cámara al logo de un equipo...';
+                statusText.textContent = 'Apunta la cámara al logo de un equipo';
                 statusText.classList.remove('bg-emerald-600/80', 'border-emerald-400');
                 statusText.classList.add('bg-black/60');
             }
