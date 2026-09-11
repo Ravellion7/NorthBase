@@ -13,7 +13,10 @@
     <link rel="stylesheet" href="./dist/output.css">
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.5.4/dist/aframe-extras.min.js"></script>
     <script src="./src/js/camera.js"></script>
+
+
 
     <style>
         /* Hacer q la cámara de MindAR y el canvas de WebGL estén centrados y llenen el contenedor */
@@ -202,7 +205,7 @@
                         <a-asset-item id="doradosModel" src="./src/assets/Models/Dorados.glb"></a-asset-item>
                         <a-asset-item id="rielerosModel" src="./src/assets/Models/Rieleros.glb"></a-asset-item>
                         <a-asset-item id="saraperosModel" src="./src/assets/Models/Saraperos.glb"></a-asset-item>
-                        <a-asset-item id="sultanesModel" src="./src/assets/Models/Sultanes.glb"></a-asset-item>
+                        <a-asset-item id="sultanesModel" src="./src/assets/Models/Sultanes w anims.glb"></a-asset-item>
                         <a-asset-item id="tecosModel" src="./src/assets/Models/Tecos.glb"></a-asset-item>
                         <a-asset-item id="torosModel" src="./src/assets/Models/Toros.glb"></a-asset-item>
                     </a-assets>
@@ -257,8 +260,8 @@
                     </a-entity>
 
                     <a-entity class="team-target" data-team="Sultanes" mindar-image-target="targetIndex: 7">
-                        <a-gltf-model src="#sultanesModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0"
-                            animation="property: rotation; to: 0 360 0; loop: true; dur: 8000; easing: linear">
+                        <a-gltf-model id="sultanesGltf" src="#sultanesModel" position="0 0 0.1" scale="0.5 0.5 0.5"
+                            rotation="0 0 0">
                         </a-gltf-model>
                     </a-entity>
 
@@ -285,27 +288,32 @@
             <div
                 class="absolute bottom-4 sm:bottom-6 md:bottom-8 left-0 right-0 flex items-center justify-center gap-2.5 sm:gap-3.5 z-10">
 
-                <button type="button"
-                    class="camera-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-transparent border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer">
+                <!-- Animación 1 (ej. Bat / Hit) -->
+                <button type="button" data-anim-index="0" title="Animación 1"
+                    class="camera-anim-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-transparent border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center text-white text-xs font-bold">
+                    1
                 </button>
 
-                <button type="button"
-                    class="camera-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-transparent border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer">
+                <!-- Animación 2 (ej. Pitch) -->
+                <button type="button" data-anim-index="1" title="Animación 2"
+                    class="camera-anim-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-transparent border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center text-white text-xs font-bold">
+                    2
                 </button>
 
-                <button type="button"
-                    class="camera-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-transparent border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer">
+                <!-- Animación 3 (ej. Hit) -->
+                <button type="button" data-anim-index="2" title="Animación 3"
+                    class="camera-anim-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-transparent border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center text-white text-xs font-bold">
+                    3
                 </button>
 
-                <button type="button"
-                    class="camera-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-transparent border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer">
-                </button>
-
-                <button type="button"
-                    class="camera-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-transparent border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer">
+                <!-- Detener / Idle -->
+                <button type="button" data-anim-index="stop" title="Detener / Idle"
+                    class="camera-anim-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-transparent border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center text-white text-xs font-bold">
+                    ■
                 </button>
 
             </div>
+
 
         </div>
 
