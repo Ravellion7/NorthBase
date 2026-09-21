@@ -8,6 +8,7 @@ if (typeof AFRAME !== 'undefined') {
             type: { type: 'string', default: 'confetti' }
         },
 
+
         init: function () {
             console.log('>>> PARTICLE COMPONENT INIT:', this.data.type);
             this.velocities = [];
@@ -360,4 +361,78 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // ==========================================
+    // 4. CONTROL PARA TOMAR FOTO (SNAPSHOT)
+    // ==========================================
+    const captureBtn = document.getElementById('capture-btn');
+    const shutterFlash = document.getElementById('shutter-flash');
+
+    if (captureBtn) {
+        captureBtn.addEventListener('click', () => {
+            const video = document.querySelector('video');
+            const aScene = document.querySelector('a-scene');
+            const aCanvas = aScene ? (aScene.canvas || aScene.querySelector('canvas')) : null;
+
+            if (!video || !aCanvas) {
+                console.warn('Cámara o lienzo 3D no disponibles.');
+                return;
+            }
+
+            // Efecto de flash fotográfico
+            if (shutterFlash) {
+                shutterFlash.classList.remove('opacity-0');
+                shutterFlash.classList.add('opacity-90');
+                setTimeout(() => {
+                    shutterFlash.classList.remove('opacity-90');
+                    shutterFlash.classList.add('opacity-0');
+                }, 120);
+            }
+
+            // 1. FORZAR a A-Frame y Three.js a renderizar el modelo 3D y partículas en este preciso instante
+            if (aScene.renderer && aScene.camera) {
+                aScene.renderer.render(aScene.object3D, aScene.camera);
+            }
+
+            // Crear lienzo temporal de alta resolución
+            const snapshotCanvas = document.createElement('canvas');
+            const width = aCanvas.width;
+            const height = aCanvas.height;
+            snapshotCanvas.width = width;
+            snapshotCanvas.height = height;
+            const ctx = snapshotCanvas.getContext('2d');
+
+            // 2. Dibujar el video de la cámara con el mismo ajuste "object-fit: cover"
+            if (video.videoWidth && video.videoHeight) {
+                const videoRatio = video.videoWidth / video.videoHeight;
+                const canvasRatio = width / height;
+                let drawW, drawH, drawX, drawY;
+
+                if (videoRatio > canvasRatio) {
+                    drawH = height;
+                    drawW = height * videoRatio;
+                    drawX = (width - drawW) / 2;
+                    drawY = 0;
+                } else {
+                    drawW = width;
+                    drawH = width / videoRatio;
+                    drawX = 0;
+                    drawY = (height - drawH) / 2;
+                }
+                ctx.drawImage(video, drawX, drawY, drawW, drawH);
+            }
+
+            // 3. Dibujar la escena 3D (modelo + partículas) encima del video
+            ctx.drawImage(aCanvas, 0, 0, width, height);
+
+            // 4. Descargar la imagen
+            const imageURL = snapshotCanvas.toDataURL('image/png');
+            const downloadLink = document.createElement('a');
+            downloadLink.download = `NorthBase_AR_${Date.now()}.png`;
+            downloadLink.href = imageURL;
+            downloadLink.click();
+            console.log('¡Foto capturada con modelo y partículas!');
+        });
+    }
+
 });
