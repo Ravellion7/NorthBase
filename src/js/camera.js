@@ -211,6 +211,34 @@ if (typeof AFRAME !== 'undefined') {
     });
 }
 
+// Helper para guardar fotos en IndexedDB (Galería local)
+function savePhotoToIndexedDB(dataUrl) {
+    const request = indexedDB.open('NorthBaseDB', 1);
+
+    request.onupgradeneeded = (e) => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains('gallery_photos')) {
+            db.createObjectStore('gallery_photos', { keyPath: 'id', autoIncrement: true });
+        }
+    };
+
+    request.onsuccess = (e) => {
+        const db = e.target.result;
+        const tx = db.transaction('gallery_photos', 'readwrite');
+        tx.objectStore('gallery_photos').add({
+            src: dataUrl,
+            timestamp: Date.now(),
+            date: new Date().toLocaleDateString()
+        });
+        console.log('Foto guardada en IndexedDB con éxito.');
+    };
+
+    request.onerror = (e) => {
+        console.error('Error al acceder a IndexedDB:', e.target.error);
+    };
+}
+
+
 // ==========================================
 // LÓGICA PRINCIPAL
 // ==========================================
@@ -458,6 +486,7 @@ document.addEventListener('DOMContentLoaded', () => {
             downloadLink.download = `NorthBase_AR_${Date.now()}.png`;
             downloadLink.href = imageURL;
             downloadLink.click();
+            savePhotoToIndexedDB(imageURL);
             console.log('¡Foto capturada con modelo y partículas!');
         });
     }

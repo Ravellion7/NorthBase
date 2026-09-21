@@ -124,25 +124,16 @@
         </div>
 
 
-        <div
+        <!-- Contenedor Grid de Fotos Dinámicas -->
+        <div id="gallery-grid"
             class="w-full max-w-lg sm:max-w-xl md:w-[90vw] md:max-w-none grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 lg:gap-10 mb-10 sm:mb-14 md:mb-16">
-
-
-            <div
-                class="aspect-square md:aspect-[4/3] lg:aspect-[16/10] bg-white border border-slate-200 shadow-xl shadow-black/25 hover:shadow-2xl hover:shadow-black/35 rounded-xl sm:rounded-2xl flex items-center justify-center transition-all hover:scale-[1.02] cursor-pointer">
+            <!-- Las fotos tomadas con la cámara se insertarán aquí automáticamente -->
+            <div id="empty-gallery-msg"
+                class="col-span-full py-12 text-center text-slate-500 font-['Poppins',sans-serif] text-sm sm:text-base">
+                Aún no has tomado fotos con la cámara AR. ¡Apunta a los logos de los equipos para empezar tu colección!
             </div>
-
-
-            <div
-                class="aspect-square md:aspect-[4/3] lg:aspect-[16/10] bg-white border border-slate-200 shadow-xl shadow-black/25 hover:shadow-2xl hover:shadow-black/35 rounded-xl sm:rounded-2xl flex items-center justify-center transition-all hover:scale-[1.02] cursor-pointer">
-            </div>
-
-
-            <div
-                class="aspect-square md:aspect-[4/3] lg:aspect-[16/10] bg-white border border-slate-200 shadow-xl shadow-black/25 hover:shadow-2xl hover:shadow-black/35 rounded-xl sm:rounded-2xl flex items-center justify-center transition-all hover:scale-[1.02] cursor-pointer">
-            </div>
-
         </div>
+
 
 
         <div class="w-full max-w-lg sm:max-w-xl md:w-[90vw] md:max-w-none flex justify-start pl-2 sm:pl-3 mb-4 sm:mb-6">
@@ -158,10 +149,34 @@
             </div>
         </div>
 
+
+
     </main>
 
+    <!-- Modal para ver y eliminar fotos en grande -->
+    <div id="photo-modal"
+        class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="relative max-w-3xl w-full flex flex-col items-center">
+            <!-- Botón Cerrar -->
+            <button id="modal-close-btn"
+                class="absolute -top-12 right-0 text-white hover:text-[#C1121F] font-bold text-2xl cursor-pointer transition">
+                ✕
+            </button>
+
+            <img id="modal-img" src="" alt="Foto AR en grande"
+                class="max-h-[75vh] w-auto object-contain rounded-2xl shadow-2xl border border-white/20" />
+
+            <div class="flex items-center gap-4 mt-4">
+                <button id="modal-delete-btn"
+                    class="bg-[#C1121F] hover:bg-red-700 text-white font-['Poppins',sans-serif] text-xs sm:text-sm font-semibold px-4 py-2 rounded-full shadow-lg transition cursor-pointer flex items-center gap-1.5">
+                    <span>Eliminar foto</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./src/js/gallerycam.js"></script>
     <script src="./src/js/index.js"></script>
 </body>
-
 
 </html>
