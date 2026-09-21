@@ -220,6 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentActiveTarget = null;
     let currentActiveModel = null;
     let availableAnimations = [];
+    let sultanesAnimations = []; // Animaciones maestras exclusivas de Sultanes
     let currentEffectName = null;
 
     // ==========================================
@@ -233,8 +234,23 @@ document.addEventListener('DOMContentLoaded', () => {
         if (model) {
             model.addEventListener('model-loaded', () => {
                 const mesh = model.getObject3D('mesh');
-                if (mesh && mesh.animations && mesh.animations.length > 0) {
-                    console.log(`Animaciones encontradas en ${teamName}:`, mesh.animations.map(a => a.name));
+                if (!mesh) return;
+
+                // Si es el modelo de Sultanes, guardar sus 3 animaciones como la plantilla maestra
+                if (teamName === 'Sultanes' && mesh.animations && mesh.animations.length > 0) {
+                    console.log('Animaciones maestras de Sultanes cargadas:', mesh.animations.map(a => a.name));
+                    sultanesAnimations = mesh.animations;
+
+                    // Asignar inmediatamente las animaciones de Sultanes a todos los demás modelos
+                    document.querySelectorAll('.team-target a-gltf-model').forEach(m => {
+                        const otherMesh = m.getObject3D('mesh');
+                        if (otherMesh && m.closest('.team-target').getAttribute('data-team') !== 'Sultanes') {
+                            otherMesh.animations = sultanesAnimations;
+                        }
+                    });
+                } else if (teamName !== 'Sultanes' && sultanesAnimations.length > 0) {
+                    // Reemplazar cualquier animación propia de este equipo con las de Sultanes
+                    mesh.animations = sultanesAnimations;
                 }
             });
         }
@@ -246,10 +262,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (model) {
                 const mesh = model.getObject3D('mesh');
-                availableAnimations = (mesh && mesh.animations) ? mesh.animations.map(a => a.name) : [];
+                if (mesh) {
+                    // Si ya cargaron las animaciones de Sultanes, forzarlas en este modelo
+                    if (sultanesAnimations.length > 0) {
+                        mesh.animations = sultanesAnimations;
+                        availableAnimations = sultanesAnimations.map(a => a.name);
+                    } else {
+                        availableAnimations = mesh.animations ? mesh.animations.map(a => a.name) : [];
+                    }
+                }
             }
 
-            // Si hay un efecto seleccionado, adjuntarlo inmediatamente
+            // Si hay un efecto de partículas seleccionado, adjuntarlo inmediatamente
             if (currentEffectName) {
                 currentActiveTarget.setAttribute('particle-effect', { type: currentEffectName });
             }
@@ -261,13 +285,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        // Restaurar targetLost para limpiar la animación al perder de vista el logo
         target.addEventListener('targetLost', () => {
             console.log(`Logo de ${teamName} fuera de vista`);
-            if (currentActiveModel === model) {
+            if (currentActiveTarget === target) {
                 if (currentActiveModel) {
                     currentActiveModel.removeAttribute('animation-mixer');
                 }
-                // Quitar partículas del target
                 if (currentActiveTarget) {
                     currentActiveTarget.removeAttribute('particle-effect');
                 }
@@ -282,7 +306,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 statusText.classList.add('bg-black/60');
             }
         });
+
     });
+
+
 
     // ==========================================
     // 2. CONTROL BOTONES DE PARTÍCULAS (IZQUIERDA)
