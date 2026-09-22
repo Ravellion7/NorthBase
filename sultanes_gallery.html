@@ -193,6 +193,19 @@
         <div id="gallery-modal"
             class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center p-4 transition-opacity duration-300">
 
+            <!-- Filtro SVG para la cámara pixelada -->
+            <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" aria-hidden="true">
+                <defs>
+                    <filter id="pixelate" x="0" y="0">
+                        <feFlood x="2" y="2" height="4" width="4" />
+                        <feComposite width="10" height="10" />
+                        <feTile result="a" />
+                        <feComposite in="SourceGraphic" in2="a" operator="in" />
+                        <feMorphology operator="dilate" radius="5" />
+                    </filter>
+                </defs>
+            </svg>
+
 
             <button id="modal-close-btn" type="button"
                 class="absolute top-6 right-6 text-white/80 hover:text-white text-3xl font-bold p-2 z-50 transition-transform hover:scale-110 cursor-pointer"
@@ -214,30 +227,39 @@
 
             <div class="absolute bottom-8 left-0 right-0 flex items-center justify-center gap-3 sm:gap-4 z-50">
 
-                <button type="button"
-                    class="filter-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-transparent border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer">
+                <!-- 1. Pixelado -->
+                <button type="button" data-filter="pixelated" title="Cámara Pixelada"
+                    class="filter-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-transparent border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center text-sm sm:text-base">
+                    👾
+                </button>
+
+                <!-- 2. Cámara Térmica -->
+                <button type="button" data-filter="thermal" title="Cámara Térmica"
+                    class="filter-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-transparent border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center text-sm sm:text-base">
+                    🌡️
+                </button>
+
+                <!-- 3. Suavizado ✨ -->
+                <button type="button" data-filter="smooth" title="Cámara Suavizada"
+                    class="filter-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-transparent border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center text-sm sm:text-base">
+                    ✨
                 </button>
 
 
-                <button type="button"
-                    class="filter-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-transparent border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer">
+                <!-- 4. Desenfocada -->
+                <button type="button" data-filter="unfocused" title="Cámara Desenfocada"
+                    class="filter-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-transparent border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center text-sm sm:text-base">
+                    🌫️
                 </button>
 
-
-                <button type="button"
-                    class="filter-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-transparent border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer">
+                <!-- 5. Alta Saturación -->
+                <button type="button" data-filter="high-sat" title="Alta Saturación"
+                    class="filter-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-transparent border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center text-sm sm:text-base">
+                    🌈
                 </button>
 
-
-                <button type="button"
-                    class="filter-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-transparent border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer">
-                </button>
-
-
-                <button type="button"
-                    class="filter-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-transparent border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer">
-                </button>
             </div>
+
 
         </div>
 
