@@ -121,73 +121,39 @@
             class="w-full max-w-lg sm:max-w-xl md:w-[90vw] md:max-w-none flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 sm:mb-8">
 
             <div class="flex justify-start pl-2 sm:pl-3">
-                <img src="./src/assets/Sultanes Mty.png" alt="Sultanes de Monterrey"
+                <!-- ID agregado: gallery-team-img -->
+                <img id="gallery-team-img" src="./src/assets/Sultanes Mty.png" alt="Equipo"
                     class="w-52 sm:w-64 md:w-72 lg:w-80 h-auto object-contain drop-shadow-sm" />
             </div>
 
-
             <div class="flex justify-start md:justify-end pl-2 sm:pl-3 md:pl-0">
-                <a href="./sultanes.html"
+                <!-- ID agregado: gallery-back-btn -->
+                <a id="gallery-back-btn" href="./sultanes.html"
                     class="inline-flex items-center justify-center px-5 py-2 sm:px-6 sm:py-2.5 bg-white hover:bg-slate-100 text-black font-['Poppins',sans-serif] font-semibold text-xs sm:text-sm md:text-base border-2 border-black border-b-4 rounded-xl shadow-sm hover:shadow-md hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer tracking-wide whitespace-nowrap">
                     Regresar
                 </a>
             </div>
+
         </div>
 
 
-        <div
+        <!-- Contenedor Grid de Fotos Dinámicas (ID agregado: photos-grid) -->
+        <div id="photos-grid"
             class="w-full max-w-lg sm:max-w-xl md:w-[90vw] md:max-w-none grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 lg:gap-10 mb-10 sm:mb-14 md:mb-16">
-
-
-            <div
-                class="gallery-item aspect-square md:aspect-[4/3] lg:aspect-[16/10] shadow-xl shadow-black/25 hover:shadow-2xl hover:shadow-black/35 rounded-xl sm:rounded-2xl overflow-hidden flex items-center justify-center transition-all hover:scale-[1.02] cursor-pointer group">
-                <img src="./src/assets/sultanes pic.jpg" alt="Sultanes de Monterrey Foto 1"
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-            </div>
-
-
-            <div
-                class="gallery-item aspect-square md:aspect-[4/3] lg:aspect-[16/10] shadow-xl shadow-black/25 hover:shadow-2xl hover:shadow-black/35 rounded-xl sm:rounded-2xl overflow-hidden flex items-center justify-center transition-all hover:scale-[1.02] cursor-pointer group">
-                <img src="./src/assets/sultanes pic2.jpg" alt="Sultanes de Monterrey Foto 2"
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-            </div>
-
-
-            <div
-                class="gallery-item aspect-square md:aspect-[4/3] lg:aspect-[16/10] shadow-xl shadow-black/25 hover:shadow-2xl hover:shadow-black/35 rounded-xl sm:rounded-2xl overflow-hidden flex items-center justify-center transition-all hover:scale-[1.02] cursor-pointer group">
-                <img src="./src/assets/sultanes pic3.jpg" alt="Sultanes de Monterrey Foto 3"
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-            </div>
-
+            <!-- Las fotos se cargarán dinámicamente aquí -->
         </div>
-
 
         <div class="w-full max-w-lg sm:max-w-xl md:w-[90vw] md:max-w-none flex justify-start pl-2 sm:pl-3 mb-4 sm:mb-6">
             <img src="./src/assets/Videos.png" alt="Vídeos"
                 class="w-24 sm:w-28 md:w-32 h-auto object-contain drop-shadow-sm" />
         </div>
 
-
-        <div
+        <!-- Contenedor Grid de Videos Dinámicos (ID agregado: videos-grid) -->
+        <div id="videos-grid"
             class="w-full max-w-lg sm:max-w-xl md:w-[90vw] md:max-w-none grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 lg:gap-10">
-            <div
-                class="gallery-item aspect-square md:aspect-[4/3] lg:aspect-[16/10] shadow-xl shadow-black/25 hover:shadow-2xl hover:shadow-black/35 rounded-xl sm:rounded-2xl overflow-hidden flex items-center justify-center transition-all hover:scale-[1.02] cursor-pointer group relative bg-black">
-
-                <video src="./src/assets/sultanes vid.mp4" muted playsinline
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                </video>
-
-                <div
-                    class="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-transparent transition-colors pointer-events-none">
-                    <div
-                        class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
-                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-black fill-current ml-0.5" viewBox="0 0 24 24">
-                            <path d="M8 5v14l11-7z" />
-                        </svg>
-                    </div>
-                </div>
-            </div>
+            <!-- Los videos se cargarán dinámicamente aquí -->
         </div>
+
 
 
         <div id="gallery-modal"
@@ -271,9 +237,11 @@
 
     </main>
 
-    <script src="./src/js/index.js"></script>
+    <script src="./src/js/teams_info.js"></script>
     <script src="./src/js/gallery.js"></script>
+    <script src="./src/js/index.js"></script>
 </body>
+
 
 
 </html>

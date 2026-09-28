@@ -3,6 +3,14 @@ const TEAMS_DATABASE = {
         name: "Sultanes de Monterrey",
         titleImage: "./src/assets/Sultanes Mty.png",
         galleryUrl: "./sultanes_gallery.html?team=sultanes",
+        photos: [
+            "./src/assets/Sultanes Gallery/sultanes pic.jpg",
+            "./src/assets/Sultanes Gallery/sultanes pic2.jpg",
+            "./src/assets/Sultanes Gallery/sultanes pic3.jpg"
+        ],
+        videos: [
+            "./src/assets/Sultanes Gallery/sultanes vid.mp4"
+        ],
         info: `Los Sultanes de Monterrey, conocidos popularmente como los "Fantasmas Grises", son uno de los equipos más históricos, ganadores y tradicionales de la Liga Mexicana de Béisbol (LMB). Fundados en 1939, son la franquicia con más temporadas consecutivas jugando en el circuito veraniego.
         <br><br>
         Información General del Club<br>
@@ -16,8 +24,16 @@ const TEAMS_DATABASE = {
     },
     rieleros: {
         name: "Rieleros de Aguascalientes",
-        titleImage: "./src/assets/RIELEROS.png", // Tu imagen de RIELEROS
+        titleImage: "./src/assets/RIELEROS.png",
         galleryUrl: "./sultanes_gallery.html?team=rieleros",
+        photos: [
+            "./src/assets/Rieleros Gallery/Rieleros pic.jpg",
+            "./src/assets/Rieleros Gallery/Rieleros pic2.jpg",
+            "./src/assets/Rieleros Gallery/Rieleros pic3.jpg"
+        ],
+        videos: [
+            "./src/assets/Rieleros Gallery/Rieleros vid.mp4"
+        ],
         info: `Los Rieleros de Aguascalientes son un equipo profesional de béisbol con gran arraigo e historia en la Liga Mexicana de Béisbol (LMB), fundados en 1975 en la emblemática ciudad ferrocarrilera.
         <br><br>
         Información General del Club<br>
@@ -33,6 +49,14 @@ const TEAMS_DATABASE = {
         name: "Charros de Jalisco",
         titleImage: "./src/assets/CHARROS.png",
         galleryUrl: "./sultanes_gallery.html?team=charros",
+        photos: [
+            "./src/assets/Charros Gallery/Charros pic.jpg",
+            "./src/assets/Charros Gallery/Charros pic2.jpg",
+            "./src/assets/Charros Gallery/Charros pic3.jpg"
+        ],
+        videos: [
+            "./src/assets/Charros Gallery/Charros vid.mp4"
+        ],
         info: `Los Charros de Jalisco son una de las organizaciones con mayor arraigo e impacto mediático en el país. Presumen un estatus sumamente especial, ya que desde su regreso al circuito de verano en 2024 tras adquirir la franquicia de los Mariachis, se convirtieron en el único equipo en competir activamente tanto en la liga veraniega (LMB) como en la invernal (LMP). Su rica historia abarca grandes leyendas del béisbol mexicano, incluyendo a Fernando "El Toro" Valenzuela.
         <br><br>
         Información General del Club<br>
@@ -47,6 +71,14 @@ const TEAMS_DATABASE = {
         name: "Algodoneros del Unión Laguna",
         titleImage: "./src/assets/ALGODONEROS.png",
         galleryUrl: "./sultanes_gallery.html?team=algodoneros",
+        photos: [
+            "./src/assets/Algodoneros Gallery/Algodoneros pic.jpg",
+            "./src/assets/Algodoneros Gallery/Algodoneros pic2.jpg",
+            "./src/assets/Algodoneros Gallery/Algodoneros pic3.jpg"
+        ],
+        videos: [
+            "./src/assets/Algodoneros Gallery/Algodoneros vid.mp4"
+        ],
         info: `Los Algodoneros del Unión Laguna son una de las franquicias con mayor tradición en el circuito, representando orgullosamente a la Comarca Lagunera desde su fundación original en 1940. Tras algunas ausencias y cambios de nombre, la histórica identidad algodonera regresó con fuerza para consolidarse en el norte del país.
         <br><br>
         Información General del Club<br>
@@ -61,6 +93,14 @@ const TEAMS_DATABASE = {
         name: "Caliente de Durango",
         titleImage: "./src/assets/CALIENTE.png",
         galleryUrl: "./sultanes_gallery.html?team=caliente",
+        photos: [
+            "./src/assets/Caliente Gallery/Caliente pic.jpg",
+            "./src/assets/Caliente Gallery/Caliente pic2.jpg",
+            "./src/assets/Caliente Gallery/Caliente pic3.jpg"
+        ],
+        videos: [
+            "./src/assets/Caliente Gallery/Caliente vid.mp4"
+        ],
         info: `Caliente de Durango es una de las organizaciones más jóvenes del circuito, nacida en 2024 para darle continuidad al rey de los deportes en tierras duranguenses tras la salida de los Generales. Con una identidad renovada y agresiva, se han ganado rápidamente a su fanaticada.
         <br><br>
         Información General del Club<br>
@@ -75,6 +115,14 @@ const TEAMS_DATABASE = {
         name: "Acereros de Monclova",
         titleImage: "./src/assets/ACEREROS.png",
         galleryUrl: "./sultanes_gallery.html?team=acereros",
+        photos: [
+            "./src/assets/Acereros Gallery/Acereros pic.jpg",
+            "./src/assets/Acereros Gallery/Acereros pic2.jpg",
+            "./src/assets/Acereros Gallery/Acereros pic3.jpg"
+        ],
+        videos: [
+            "./src/assets/Acereros Gallery/Acereros vid.mp4"
+        ],
         info: `Los Acereros de MOnclova, conocidos popularmente como "La Furia Azul", son una escuadra sumamente competitiva y apasionada del estado de Coahuila. Fundados de forma definitiva en 1976 (con antecedentes previos en el circuito), se han caracterizado por armar planteles explosivos de primer nivel.
         <br><br>
         Información General del Club<br>
@@ -89,6 +137,14 @@ const TEAMS_DATABASE = {
         name: "Toros de Tijuana",
         titleImage: "./src/assets/TOROS.png",
         galleryUrl: "./sultanes_gallery.html?team=toros",
+        photos: [
+            "./src/assets/Toros Gallery/Toros pic.jpg",
+            "./src/assets/Toros Gallery/Toros pic2.jpg",
+            "./src/assets/Toros Gallery/Toros pic3.jpg"
+        ],
+        videos: [
+            "./src/assets/Toros Gallery/Toros vid.mp4"
+        ],
         info: `Los Toros de Tijuana son una de las potencias modernas de la LMB. Aunque tuvieron una breve etapa inicial en 2004, su regreso definitivo en 2014 revolucionó la forma de vivir el béisbol en la frontera, destacándose por sus grandes inversiones, dinámicas de entretenimiento y un protagonismo constante.
         <br><br>
         Información General del Club<br>
@@ -103,6 +159,14 @@ const TEAMS_DATABASE = {
         name: "Saraperos de Saltillo",
         titleImage: "./src/assets/SARAPEROS.png",
         galleryUrl: "./sultanes_gallery.html?team=saraperos",
+        photos: [
+            "./src/assets/Saraperos Gallery/Saraperos pic.jpg",
+            "./src/assets/Saraperos Gallery/Saraperos pic2.jpg",
+            "./src/assets/Saraperos Gallery/Saraperos pic3.jpg"
+        ],
+        videos: [
+            "./src/assets/Saraperos Gallery/Saraperos vid.mp4"
+        ],
         info: `Los Saraperos de Saltillo, cariñosamente apodados como "La Nave Verde", fueron fundados en 1970 y son uno de los equipos más estables, queridos y de mayor arrastre en el norte de México, recordados por su histórica época del bicampeonato.
         <br><br>
         Información General del Club<br>
@@ -117,6 +181,14 @@ const TEAMS_DATABASE = {
         name: "Tecos de los Dos Laredos",
         titleImage: "./src/assets/TECOS.png",
         galleryUrl: "./sultanes_gallery.html?team=tecos",
+        photos: [
+            "./src/assets/Tecos Gallery/Tecos pic.jpg",
+            "./src/assets/Tecos Gallery/Tecos pic2.jpg",
+            "./src/assets/Tecos Gallery/Tecos pic3.jpg"
+        ],
+        videos: [
+            "./src/assets/Tecos Gallery/Tecos vid.mp4"
+        ],
         info: `Los Tecos de los Dos Laredos son la única franquicia genuinamente binacional en el béisbol profesional, dividiendo sus encuentros como locales entre México y Estados Unidos. Fundados originalmente en 1940 como Tecolotes, presumen una rica e histórica herencia fronteriza.
         <br><br>
         Información General del Club<br>
@@ -131,6 +203,14 @@ const TEAMS_DATABASE = {
         name: "Dorados de Chihuahua",
         titleImage: "./src/assets/DORADOS.png",
         galleryUrl: "./sultanes_gallery.html?team=dorados",
+        photos: [
+            "./src/assets/Dorados Gallery/Dorados pic.jpg",
+            "./src/assets/Dorados Gallery/Dorados pic2.jpg",
+            "./src/assets/Dorados Gallery/Dorados pic3.jpg"
+        ],
+        videos: [
+            "./src/assets/Dorados Gallery/Dorados vid.mp4"
+        ],
         info: `Los Dorados de Chihuahua regresaron formalmente a la LMB en 2024 en su tercera etapa histórica dentro del circuito de verano. El "Estado Grande", meramente beisbolero, recuperó su plaza para revivir la espectacular tradición de la "División del Norte".
         <br><br>
         Información General del Club<br>
@@ -142,8 +222,9 @@ const TEAMS_DATABASE = {
    Con la incorporación a finales del verano del experimentado mánager ligamayorista Tony DeFrancesco, la directiva dorada continúa estructurando las bases sólidas de su proyecto deportivo para meterse de lleno a competir en las postemporadas venideras de la liga.`
     }
 
-    // Puedes ir agregando acereros, algodoneros, calientes, toros, saraperos, tecos, dorados...
 };
+
+TEAMS_DATABASE.calientes = TEAMS_DATABASE.caliente;
 
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Leer el parámetro ?team= de la URL
