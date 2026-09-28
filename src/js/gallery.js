@@ -28,10 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Función para limpiar el estado de los botones
     const clearButtonStyles = () => {
         filterBtns.forEach(b => {
-            b.classList.remove('bg-[#F5F5F5]', 'scale-125', 'shadow-lg');
-            b.classList.add('bg-transparent');
+            b.classList.remove('bg-white', 'border-[#C1121F]', 'scale-125', 'shadow-2xl');
+            b.classList.add('bg-white/80', 'border-white');
         });
     };
+
 
     // Abrir Modal al hacer clic en una foto o video
     galleryItems.forEach(item => {
@@ -92,16 +93,15 @@ document.addEventListener('DOMContentLoaded', () => {
             clearButtonStyles();
 
             if (isCurrentlyActive) {
-                // Si ya estaba activo, se apaga (vuelve a la vista normal)
                 applyFilter('none');
                 console.log('Filtro desactivado (Normal)');
             } else {
-                // Activar el nuevo filtro
-                btn.classList.remove('bg-transparent');
-                btn.classList.add('bg-[#F5F5F5]', 'scale-125', 'shadow-lg');
+                btn.classList.remove('bg-white/80', 'border-white');
+                btn.classList.add('bg-white', 'border-[#C1121F]', 'scale-125', 'shadow-2xl');
                 applyFilter(targetFilterStyle);
                 console.log(`Filtro aplicado: ${filterKey}`);
             }
+
         });
     });
 });
