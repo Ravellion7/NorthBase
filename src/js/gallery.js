@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const FILTERS = {
         'pixelated': 'url(#pixelate) contrast(120%)',
         'thermal': 'invert(100%) hue-rotate(240deg) saturate(350%) contrast(160%)',
-        'smooth': 'blur(0.5px) contrast(96%) brightness(104%) saturate(108%)',
+        'smooth': 'blur(0.8px) contrast(96%) brightness(104%) saturate(108%)',
         'unfocused': 'blur(8px) brightness(105%)',
         'high-sat': 'saturate(300%) contrast(125%)'
     };

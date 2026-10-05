@@ -1,7 +1,3 @@
-// ==========================================
-// BASE DE DATOS DE TRIVIAS - NORTHBASE
-// ==========================================
-
 const TRIVIA_DATABASE = {
     norteno: {
         title: "Desafío Norteño",
@@ -94,20 +90,20 @@ const TRIVIA_DATABASE = {
                 options: [
                     "Estadio Panamericano",
                     "Estadio de la UANL",
-                    "Estadio Monterrey (Walmart Park)",
+                    "Palacio Sultán",
                     "Estadio Kukulkán"
                 ],
-                answer: 2 // Estadio Monterrey (Walmart Park)
+                answer: 2 // Palacio Sultán
             },
             {
                 question: "¿Cuál de estos equipos de la Zona Norte tiene su sede en el estado de Coahuila?",
                 options: [
-                    "Dorados de Chihuahua",
+                    "Acereros de Monclova",
                     "Saraperos de Saltillo",
                     "Algodoneros de Unión Laguna",
-                    "Ambos B y C"
+                    "Todos los equipos mencionados"
                 ],
-                answer: 3 // Saraperos de Saltillo y Algodoneros de Unión Laguna
+                answer: 3 // Todos
             },
             {
                 question: "¿Qué equipo de la Zona Norte de la LMB es conocido por jugar sus partidos de local en dos ciudades fronterizas (Nuevo Laredo y Laredo, Texas)?",
@@ -147,10 +143,10 @@ const TRIVIA_DATABASE = {
                     "13",
                     "9"
                 ],
-                answer: 0 // 39
+                answer: 1 // 21
             },
             {
-                question: "¿Qué equipo de la Zona Norte fue fundado en el año de 1995 y se unió a la liga en su expansión hacia el norte?",
+                question: "¿Qué equipo de la Zona Norte fue fundado en el año de 1992 y se unió a la liga en su expansión hacia el norte?",
                 options: [
                     "Tecolotes de los Dos Laredos",
                     "Dorados de Chihuahua",
@@ -192,32 +188,32 @@ const TRIVIA_DATABASE = {
             {
                 question: "¿Cuál es el popular apodo con el que se le conoce históricamente a los Sultanes?",
                 options: [
-                    "La Furia Azul",
                     "Los Fantasmas Grises",
+                    "La Furia Azul",
                     "La Máquina del Norte",
                     "Los Astados"
                 ],
-                answer: 1 // Los Fantasmas Grises
+                answer: 0 // Los Fantasmas Grises
             },
             {
                 question: "¿Qué legendario bateador mexicano, 'El Superman de Chihuahua', es inmortal en Sultanes?",
                 options: [
                     "Vinicio Castilla",
-                    "Héctor Espino",
+                    "Adrián González",
                     "Fernando Valenzuela",
-                    "Adrián González"
+                    "Héctor Espino"
                 ],
-                answer: 1 // Héctor Espino
+                answer: 3 // Héctor Espino
             },
             {
                 question: "¿Cuál es el histórico rival de los Sultanes en el llamado 'Clásico de la LMB'?",
                 options: [
-                    "Toros de Tijuana",
                     "Diablos Rojos del México",
+                    "Toros de Tijuana",
                     "Saraperos de Saltillo",
                     "Charros de Jalisco"
                 ],
-                answer: 1 // Diablos Rojos del México
+                answer: 0 // Diablos Rojos del México
             }
         ]
     },
@@ -231,21 +227,21 @@ const TRIVIA_DATABASE = {
                 question: "¿En qué estadio juegan sus partidos como local los Charros de Jalisco en Zapopan?",
                 options: [
                     "Estadio Chevron",
-                    "Estadio Panamericano",
+                    "Estadio Francisco Villa",
                     "Estadio Monclova",
-                    "Estadio Francisco Villa"
+                    "Estadio Panamericano"
                 ],
-                answer: 1 // Estadio Panamericano
+                answer: 3 // Estadio Panamericano
             },
             {
                 question: "¿Qué característica única ostenta la franquicia de Charros en el béisbol mexicano?",
                 options: [
-                    "Juegan sin mánager extranjero",
                     "Compiten tanto en verano (LMB) como en invierno (LMP)",
+                    "Juegan sin mánager extranjero",
                     "Solo juegan con peloteros novatos",
                     "Juegan en tres estados simultáneos"
                 ],
-                answer: 1 // Compiten en ambas ligas
+                answer: 0 // Compiten en ambas ligas
             },
             {
                 question: "¿Quién es el reconocido mánager de Charros que también dirigió a México en el Clásico Mundial?",
@@ -261,11 +257,11 @@ const TRIVIA_DATABASE = {
                 question: "¿En qué años conquistó Charros sus dos campeonatos de verano en la historia de la LMB?",
                 options: [
                     "1950 y 1955",
-                    "1967 y 1971",
                     "1985 y 1990",
+                    "1967 y 1971",
                     "2000 y 2005"
                 ],
-                answer: 1 // 1967 y 1971
+                answer: 2 // 1967 y 1971
             },
             {
                 question: "¿Qué mítico lanzador zurdo mexicano de Grandes Ligas dejó una huella imborrable en Charros?",
@@ -290,40 +286,40 @@ const TRIVIA_DATABASE = {
                 options: [
                     "El Sarape Mecánico",
                     "La Furia Azul",
-                    "La Máquina del Riel",
+                    "La Máquina Pitia",
                     "La Tribu Hidrocálida"
                 ],
-                answer: 2 // La Máquina del Riel
+                answer: 2 // La Máquina Pitia
             },
             {
                 question: "¿En qué año consiguieron los Rieleros su histórico campeonato en la LMB?",
                 options: [
                     "1965",
-                    "1978",
                     "1989",
+                    "1978",
                     "2001"
                 ],
-                answer: 1 // 1978
+                answer: 2 // 1978
             },
             {
                 question: "¿Cómo se llama el tradicional parque de pelota de los Rieleros?",
                 options: [
-                    "Estadio Monumental",
                     "Parque Alberto Romo Chávez",
+                    "Estadio Monumental",
                     "Estadio de la Revolución",
                     "Parque La Junta"
                 ],
-                answer: 1 // Parque Alberto Romo Chávez
+                answer: 0 // Parque Alberto Romo Chávez
             },
             {
                 question: "¿Cuáles son los colores tradicionales representativos de los Rieleros?",
                 options: [
                     "Verde y rojo",
-                    "Azul marino y amarillo",
+                    "Guinda y blanco",
                     "Naranja y negro",
-                    "Guinda y blanco"
+                    "Azul marino y amarillo"
                 ],
-                answer: 1 // Azul marino y amarillo
+                answer: 3 // Azul marino y amarillo
             },
             {
                 question: "¿A qué se debe el nombre del club 'Rieleros' en Aguascalientes?",
@@ -387,11 +383,11 @@ const TRIVIA_DATABASE = {
                 question: "¿Contra qué equipo disputan el afamado 'Clásico de Coahuila'?",
                 options: [
                     "Sultanes de Monterrey",
-                    "Saraperos de Saltillo",
+                    "Tecolotes de los Dos Laredos",
                     "Toros de Tijuana",
-                    "Tecolotes de los Dos Laredos"
+                    "Saraperos de Saltillo"
                 ],
-                answer: 1 // Saraperos de Saltillo
+                answer: 3 // Saraperos de Saltillo
             }
         ]
     },
@@ -415,11 +411,11 @@ const TRIVIA_DATABASE = {
                 question: "¿Cuál es la casa de Caliente de Durango?",
                 options: [
                     "Estadio Monclova",
-                    "Estadio Francisco Villa",
+                    "Estadio Chevron",
                     "Estadio Panamericano",
-                    "Estadio Chevron"
+                    "Estadio Francisco Villa"
                 ],
-                answer: 1 // Estadio Francisco Villa
+                answer: 3 // Estadio Francisco Villa
             },
             {
                 question: "¿Quién asumió como mánager guiando al equipo a la postemporada?",
@@ -463,21 +459,21 @@ const TRIVIA_DATABASE = {
                 question: "¿En qué estadio juegan sus partidos como local los Toros de Tijuana?",
                 options: [
                     "Estadio Panamericano",
-                    "Estadio Chevron",
+                    "Estadio Francisco I. Madero",
                     "Estadio Romo Chávez",
-                    "Estadio Francisco I. Madero"
+                    "Estadio Chevron"
                 ],
-                answer: 1 // Estadio Chevron
+                answer: 3 // Estadio Chevron
             },
             {
                 question: "¿En qué temporadas se coronaron campeones de la LMB los Toros?",
                 options: [
-                    "2010 y 2014",
-                    "2017 y 2021",
-                    "2015 y 2019",
-                    "2012 y 2018"
+                    "2010, 2014 y 2026",
+                    "2017, 2021 y 2026",
+                    "2015, 2019 y 2026",
+                    "2012, 2018 y 2026"
                 ],
-                answer: 1 // 2017 y 2021
+                answer: 1 // 2017, 2021 y 2026
             },
             {
                 question: "¿Con qué apodo se le conoce habitualmente al conjunto tijuanense?",
@@ -493,11 +489,11 @@ const TRIVIA_DATABASE = {
                 question: "¿En las faldas de qué cerro tijuanense se encuentra ubicado el Estadio Chevron?",
                 options: [
                     "Cerro de la Silla",
-                    "Cerro Colorado",
                     "Cerro del Obispado",
+                    "Cerro Colorado",
                     "Cerro Coronel"
                 ],
-                answer: 1 // Cerro Colorado
+                answer: 2 // Cerro Colorado
             },
             {
                 question: "¿Qué ex figura de Grandes Ligas y guante de oro ha dirigido a los Toros?",
@@ -521,11 +517,11 @@ const TRIVIA_DATABASE = {
                 question: "¿Qué gran hazaña consiguieron los Saraperos de Saltillo en 2009 y 2010?",
                 options: [
                     "Récord de cuadrangulares",
-                    "El histórico Bicampeonato de la LMB",
                     "Temporada invicta",
+                    "El histórico Bicampeonato de la LMB",
                     "Ganar la Serie del Caribe"
                 ],
-                answer: 1 // El Bicampeonato
+                answer: 2 // El Bicampeonato
             },
             {
                 question: "¿Cómo se llama el estadio casa de los Saraperos en Saltillo?",
@@ -540,12 +536,12 @@ const TRIVIA_DATABASE = {
             {
                 question: "¿Cuál es el color tradicional y distintivo que identifica a la 'Nave Verde'?",
                 options: [
-                    "Azul cielo",
                     "Verde sarape",
+                    "Azul cielo",
                     "Naranja brillante",
                     "Morado"
                 ],
-                answer: 1 // Verde sarape
+                answer: 0 // Verde sarape
             },
             {
                 question: "¿Cuál es la carismática e histórica mascota de los Saraperos?",
@@ -561,11 +557,11 @@ const TRIVIA_DATABASE = {
                 question: "¿En qué año fue fundada la franquicia de los Saraperos de Saltillo?",
                 options: [
                     "1950",
-                    "1970",
+                    "1995",
                     "1985",
-                    "1995"
+                    "1970"
                 ],
-                answer: 1 // 1970
+                answer: 3 // 1970
             }
         ]
     },
@@ -579,31 +575,31 @@ const TRIVIA_DATABASE = {
                 question: "¿Por qué los Tecolotes son conocidos como el equipo de los 'Dos Laredos'?",
                 options: [
                     "Tienen dos dueños",
-                    "Juegan en Nuevo Laredo (México) y Laredo (Texas, EE.UU.)",
                     "Tienen dos mascotas",
+                    "Juegan en Nuevo Laredo (México) y Laredo (Texas, EE.UU.)",
                     "Cuentan con dos estadios en Tamaulipas"
                 ],
-                answer: 1 // Juegan en dos países
+                answer: 2 // Juegan en dos países
             },
             {
                 question: "¿Cuáles son los dos estadios donde disputan sus juegos como local?",
                 options: [
-                    "Parque La Junta y Uni-Trade Stadium",
-                    "Estadio Chevron y Estadio Monclova",
                     "Estadio Romo Chávez y Francisco Villa",
+                    "Estadio Chevron y Estadio Monclova",
+                    "Parque La Junta y Uni-Trade Stadium",
                     "Estadio Monterrey y Panamericano"
                 ],
-                answer: 0 // Parque La Junta y Uni-Trade Stadium
+                answer: 2 // Parque La Junta y Uni-Trade Stadium
             },
             {
                 question: "¿Cuántos títulos de la LMB ostentan los Tecolotes en su historia?",
                 options: [
                     "2 campeonatos",
-                    "5 campeonatos",
+                    "1 campeonato",
                     "8 campeonatos",
-                    "1 campeonato"
+                    "5 campeonatos"
                 ],
-                answer: 1 // 5 campeonatos (1953, 1954, 1958, 1977, 1989)
+                answer: 3 // 5 campeonatos
             },
             {
                 question: "¿Cuál es el ave emblemática que da nombre e identidad al club?",
@@ -618,7 +614,7 @@ const TRIVIA_DATABASE = {
             {
                 question: "¿En qué década consiguieron los Tecolotes su primer bicampeonato?",
                 options: [
-                    "Años 1950 (1953 y 1954)",
+                    "Años 1950",
                     "Años 1970",
                     "Años 1980",
                     "Años 2000"
@@ -631,7 +627,7 @@ const TRIVIA_DATABASE = {
     dorados: {
         title: "Desafío Dorados",
         description: "Demuestra tu pasión por la División del Norte de Chihuahua",
-        badgeColor: "bg-purple-100 text-purple-900 border-purple-300",
+        badgeColor: "bg-yellow-100 text-yellow-900 border-yellow-300",
         questions: [
             {
                 question: "¿Cómo se llama el estadio casa de los Dorados de Chihuahua?",
@@ -666,22 +662,22 @@ const TRIVIA_DATABASE = {
             {
                 question: "¿Cuáles son los colores tradicionales de los Dorados de Chihuahua?",
                 options: [
-                    "Oro y morado (púrpura)",
                     "Rojo y negro",
+                    "Oro y púrpura",
                     "Azul y blanco",
                     "Verde y plata"
                 ],
-                answer: 0 // Oro y morado
+                answer: 1 // Oro y purpura
             },
             {
                 question: "¿Cómo es conocido tradicionalmente el estado de Chihuahua en el béisbol?",
                 options: [
-                    "El Estado Grande",
+                    "El Corazón Minero",
                     "La Perla del Norte",
                     "La Bella Airosa",
-                    "El Corazón Minero"
+                    "El Estado Grande"
                 ],
-                answer: 0 // El Estado Grande
+                answer: 3 // El Estado Grande
             }
         ]
     },
@@ -704,12 +700,12 @@ const TRIVIA_DATABASE = {
             {
                 question: "¿Cómo se le conoce popularmente a los Acereros de Monclova?",
                 options: [
-                    "La Furia Azul",
+                    "La Nave de Acero",
                     "Los Fantasmas",
                     "Los Astados",
-                    "La Nave de Acero"
+                    "La Furia Azul"
                 ],
-                answer: 0 // La Furia Azul
+                answer: 3 // La Furia Azul
             },
             {
                 question: "¿Cómo es apodado el Estadio Monclova por su ambiente y clima?",
@@ -748,10 +744,6 @@ const TRIVIA_DATABASE = {
 // Aliases para compatibilidad
 TRIVIA_DATABASE.calientes = TRIVIA_DATABASE.caliente;
 TRIVIA_DATABASE.tecolotes = TRIVIA_DATABASE.tecos;
-
-// ==========================================
-// CONTROLADOR DE LA TRIVIA
-// ==========================================
 
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Obtener parámetro de URL (?trivia=sultanes, etc.)
