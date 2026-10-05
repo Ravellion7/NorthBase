@@ -129,13 +129,13 @@
         </h1>
 
 
-        <div
-            class="relative w-full max-w-xl sm:max-w-2xl md:max-w-3xl lg:max-w-4xl min-h-[200px] sm:min-h-[230px] md:min-h-[270px] lg:min-h-[290px] bg-white border-2 border-orange-200 border-b-[6px] border-r-[6px] md:border-b-8 md:border-r-8 border-b-orange-500 border-r-orange-500 rounded-xl sm:rounded-2xl p-6 sm:p-8 md:p-10 shadow-lg shadow-amber-400/40 flex flex-col md:flex-row justify-between items-center gap-6 mb-6 sm:mb-8 md:mb-12 transition-shadow">
-
+        <!-- 1. Desafío Norteño (Contenedor Principal) -->
+        <a href="./trivia.html?trivia=norteno"
+            class="group relative w-full max-w-xl sm:max-w-2xl md:max-w-3xl lg:max-w-4xl min-h-[200px] sm:min-h-[230px] md:min-h-[270px] lg:min-h-[290px] bg-white border-2 border-orange-200 border-b-[6px] border-r-[6px] md:border-b-8 md:border-r-8 border-b-orange-500 border-r-orange-500 rounded-xl sm:rounded-2xl p-6 sm:p-8 md:p-10 shadow-lg shadow-amber-400/40 flex flex-col md:flex-row justify-between items-center gap-6 mb-6 sm:mb-8 md:mb-12 hover:scale-[1.01] hover:shadow-amber-400/50 transition-all cursor-pointer block">
 
             <div class="flex-1 flex flex-col justify-center text-center md:text-left pr-0 md:pr-2">
                 <h2
-                    class="font-['Poppins',sans-serif] font-extrabold text-black text-lg sm:text-xl md:text-2xl lg:text-3xl tracking-wide drop-shadow-md mb-2 sm:mb-3">
+                    class="font-['Poppins',sans-serif] font-extrabold text-black text-lg sm:text-xl md:text-2xl lg:text-3xl tracking-wide drop-shadow-md mb-2 sm:mb-3 group-hover:text-[#C1121F] transition-colors">
                     Desafío Norteño
                 </h2>
                 <p
@@ -144,63 +144,130 @@
                 </p>
             </div>
 
-
             <div class="flex flex-col items-center justify-center gap-3 sm:gap-4 shrink-0 self-center">
-
                 <img src="./src/assets/baseball redblue.png" alt="Baseball"
-                    class="w-12 sm:w-14 md:w-16 lg:w-20 h-auto object-contain drop-shadow-sm" />
+                    class="w-12 sm:w-14 md:w-16 lg:w-20 h-auto object-contain drop-shadow-sm group-hover:rotate-12 transition-transform duration-300" />
 
-
-                <a href="./trivia.html"
-                    class="inline-block px-6 py-2.5 sm:px-7 sm:py-3 md:px-8 md:py-3.5 bg-[#C1121F] hover:bg-[#9b0e19] text-white font-['Poppins',sans-serif] font-bold text-xs sm:text-sm md:text-base rounded-full shadow-md hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 text-center tracking-wide whitespace-nowrap cursor-pointer">
+                <span
+                    class="inline-block px-6 py-2.5 sm:px-7 sm:py-3 md:px-8 md:py-3.5 bg-[#C1121F] group-hover:bg-[#9b0e19] text-white font-['Poppins',sans-serif] font-bold text-xs sm:text-sm md:text-base rounded-full shadow-md group-hover:shadow-xl group-hover:scale-105 active:scale-95 transition-all duration-200 text-center tracking-wide whitespace-nowrap">
                     ¡Prueba ahora!
-                </a>
+                </span>
             </div>
-        </div>
+        </a>
 
-
-
+        <!-- 2. Grid de Desafíos por Equipo -->
         <div
             class="w-full max-w-2xl sm:max-w-3xl md:max-w-5xl lg:max-w-6xl grid grid-cols-2 md:grid-cols-3 gap-6 sm:gap-10 md:gap-14 lg:gap-20">
 
-
-            <div
-                class="aspect-[4/3] bg-white border-2 border-orange-200 border-b-[6px] border-r-[6px] md:border-b-8 md:border-r-8 border-b-orange-500 border-r-orange-500 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-lg shadow-amber-400/35 flex flex-col items-center justify-between transition-all hover:scale-[1.02] hover:shadow-amber-400/50 cursor-pointer text-center">
+            <a href="./trivia.html?trivia=sultanes"
+                class="group aspect-[4/3] bg-white border-2 border-orange-200 border-b-[6px] border-r-[6px] md:border-b-8 md:border-r-8 border-b-orange-500 border-r-orange-500 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-lg shadow-amber-400/35 flex flex-col items-center justify-between transition-all hover:scale-[1.02] hover:shadow-amber-400/50 cursor-pointer text-center block">
                 <h3
-                    class="font-['Poppins',sans-serif] font-bold text-black text-sm sm:text-base md:text-xl lg:text-2xl tracking-wide drop-shadow-sm">
+                    class="font-['Poppins',sans-serif] font-bold text-black text-sm sm:text-base md:text-xl lg:text-2xl tracking-wide drop-shadow-sm group-hover:text-[#C1121F] transition-colors">
                     Desafío Sultán
                 </h3>
                 <div class="flex-1 flex items-center justify-center my-auto">
                     <img src="./src/assets/Sultanes logo.png" alt="Sultanes Logo"
-                        class="w-14 sm:w-16 md:w-20 lg:w-24 h-auto object-contain drop-shadow-sm" />
+                        class="w-14 sm:w-16 md:w-20 lg:w-24 h-auto object-contain drop-shadow-sm group-hover:scale-110 transition-transform duration-200" />
                 </div>
-            </div>
+            </a>
 
-
-            <div
-                class="aspect-[4/3] bg-white border-2 border-orange-200 border-b-[6px] border-r-[6px] md:border-b-8 md:border-r-8 border-b-orange-500 border-r-orange-500 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-lg shadow-amber-400/35 flex flex-col items-center justify-between transition-all hover:scale-[1.02] hover:shadow-amber-400/50 cursor-pointer text-center">
+            <a href="./trivia.html?trivia=charros"
+                class="group aspect-[4/3] bg-white border-2 border-orange-200 border-b-[6px] border-r-[6px] md:border-b-8 md:border-r-8 border-b-orange-500 border-r-orange-500 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-lg shadow-amber-400/35 flex flex-col items-center justify-between transition-all hover:scale-[1.02] hover:shadow-amber-400/50 cursor-pointer text-center block">
                 <h3
-                    class="font-['Poppins',sans-serif] font-bold text-black text-sm sm:text-base md:text-xl lg:text-2xl tracking-wide drop-shadow-sm">
+                    class="font-['Poppins',sans-serif] font-bold text-black text-sm sm:text-base md:text-xl lg:text-2xl tracking-wide drop-shadow-sm group-hover:text-[#C1121F] transition-colors">
                     Desafío Charro
                 </h3>
                 <div class="flex-1 flex items-center justify-center my-auto">
                     <img src="./src/assets/Charros logo.png" alt="Charros Logo"
-                        class="w-14 sm:w-16 md:w-20 lg:w-24 h-auto object-contain drop-shadow-sm" />
+                        class="w-14 sm:w-16 md:w-20 lg:w-24 h-auto object-contain drop-shadow-sm group-hover:scale-110 transition-transform duration-200" />
                 </div>
-            </div>
+            </a>
 
-
-            <div
-                class="flex aspect-[4/3] bg-white border-2 border-orange-200 border-b-[6px] border-r-[6px] md:border-b-8 md:border-r-8 border-b-orange-500 border-r-orange-500 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-lg shadow-amber-400/35 flex-col items-center justify-between transition-all hover:scale-[1.02] hover:shadow-amber-400/50 cursor-pointer text-center">
+            <a href="./trivia.html?trivia=rieleros"
+                class="group aspect-[4/3] bg-white border-2 border-orange-200 border-b-[6px] border-r-[6px] md:border-b-8 md:border-r-8 border-b-orange-500 border-r-orange-500 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-lg shadow-amber-400/35 flex flex-col items-center justify-between transition-all hover:scale-[1.02] hover:shadow-amber-400/50 cursor-pointer text-center block">
                 <h3
-                    class="font-['Poppins',sans-serif] font-bold text-black text-sm sm:text-base md:text-xl lg:text-2xl tracking-wide drop-shadow-sm">
+                    class="font-['Poppins',sans-serif] font-bold text-black text-sm sm:text-base md:text-xl lg:text-2xl tracking-wide drop-shadow-sm group-hover:text-[#C1121F] transition-colors">
                     Desafío Rielero
                 </h3>
                 <div class="flex-1 flex items-center justify-center my-auto">
                     <img src="./src/assets/rieleros logo.png" alt="Rieleros Logo"
-                        class="w-14 sm:w-16 md:w-20 lg:w-24 h-auto object-contain drop-shadow-sm" />
+                        class="w-14 sm:w-16 md:w-20 lg:w-24 h-auto object-contain drop-shadow-sm group-hover:scale-110 transition-transform duration-200" />
                 </div>
-            </div>
+            </a>
+
+            <a href="./trivia.html?trivia=algodoneros"
+                class="group aspect-[4/3] bg-white border-2 border-orange-200 border-b-[6px] border-r-[6px] md:border-b-8 md:border-r-8 border-b-orange-500 border-r-orange-500 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-lg shadow-amber-400/35 flex flex-col items-center justify-between transition-all hover:scale-[1.02] hover:shadow-amber-400/50 cursor-pointer text-center block">
+                <h3
+                    class="font-['Poppins',sans-serif] font-bold text-black text-sm sm:text-base md:text-xl lg:text-2xl tracking-wide drop-shadow-sm group-hover:text-[#C1121F] transition-colors">
+                    Desafío Algodonero
+                </h3>
+                <div class="flex-1 flex items-center justify-center my-auto">
+                    <img src="./src/assets/Algodoneros logo.png" alt="Algodoneros Logo"
+                        class="w-14 sm:w-16 md:w-20 lg:w-24 h-auto object-contain drop-shadow-sm group-hover:scale-110 transition-transform duration-200" />
+                </div>
+            </a>
+
+            <a href="./trivia.html?trivia=caliente"
+                class="group aspect-[4/3] bg-white border-2 border-orange-200 border-b-[6px] border-r-[6px] md:border-b-8 md:border-r-8 border-b-orange-500 border-r-orange-500 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-lg shadow-amber-400/35 flex flex-col items-center justify-between transition-all hover:scale-[1.02] hover:shadow-amber-400/50 cursor-pointer text-center block">
+                <h3
+                    class="font-['Poppins',sans-serif] font-bold text-black text-sm sm:text-base md:text-xl lg:text-2xl tracking-wide drop-shadow-sm group-hover:text-[#C1121F] transition-colors">
+                    Desafío Caliente
+                </h3>
+                <div class="flex-1 flex items-center justify-center my-auto">
+                    <img src="./src/assets/calientes logo.png" alt="Caliente Logo"
+                        class="w-14 sm:w-16 md:w-20 lg:w-24 h-auto object-contain drop-shadow-sm group-hover:scale-110 transition-transform duration-200" />
+                </div>
+            </a>
+
+            <a href="./trivia.html?trivia=toros"
+                class="group aspect-[4/3] bg-white border-2 border-orange-200 border-b-[6px] border-r-[6px] md:border-b-8 md:border-r-8 border-b-orange-500 border-r-orange-500 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-lg shadow-amber-400/35 flex flex-col items-center justify-between transition-all hover:scale-[1.02] hover:shadow-amber-400/50 cursor-pointer text-center block">
+                <h3
+                    class="font-['Poppins',sans-serif] font-bold text-black text-sm sm:text-base md:text-xl lg:text-2xl tracking-wide drop-shadow-sm group-hover:text-[#C1121F] transition-colors">
+                    Desafío Toros
+                </h3>
+                <div class="flex-1 flex items-center justify-center my-auto">
+                    <img src="./src/assets/toros logo.png" alt="Toros Logo"
+                        class="w-14 sm:w-16 md:w-20 lg:w-24 h-auto object-contain drop-shadow-sm group-hover:scale-110 transition-transform duration-200" />
+                </div>
+            </a>
+
+            <a href="./trivia.html?trivia=saraperos"
+                class="group aspect-[4/3] bg-white border-2 border-orange-200 border-b-[6px] border-r-[6px] md:border-b-8 md:border-r-8 border-b-orange-500 border-r-orange-500 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-lg shadow-amber-400/35 flex flex-col items-center justify-between transition-all hover:scale-[1.02] hover:shadow-amber-400/50 cursor-pointer text-center block">
+                <h3
+                    class="font-['Poppins',sans-serif] font-bold text-black text-sm sm:text-base md:text-xl lg:text-2xl tracking-wide drop-shadow-sm group-hover:text-[#C1121F] transition-colors">
+                    Desafío Saraperos
+                </h3>
+                <div class="flex-1 flex items-center justify-center my-auto">
+                    <img src="./src/assets/Saraperos logo.png" alt="Saraperos Logo"
+                        class="w-14 sm:w-16 md:w-20 lg:w-24 h-auto object-contain drop-shadow-sm group-hover:scale-110 transition-transform duration-200" />
+                </div>
+            </a>
+
+            <a href="./trivia.html?trivia=tecos"
+                class="group aspect-[4/3] bg-white border-2 border-orange-200 border-b-[6px] border-r-[6px] md:border-b-8 md:border-r-8 border-b-orange-500 border-r-orange-500 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-lg shadow-amber-400/35 flex flex-col items-center justify-between transition-all hover:scale-[1.02] hover:shadow-amber-400/50 cursor-pointer text-center block">
+                <h3
+                    class="font-['Poppins',sans-serif] font-bold text-black text-sm sm:text-base md:text-xl lg:text-2xl tracking-wide drop-shadow-sm group-hover:text-[#C1121F] transition-colors">
+                    Desafío Teco
+                </h3>
+                <div class="flex-1 flex items-center justify-center my-auto">
+                    <img src="./src/assets/Tecos logo.png" alt="Tecolotes Logo"
+                        class="w-14 sm:w-16 md:w-20 lg:w-24 h-auto object-contain drop-shadow-sm group-hover:scale-110 transition-transform duration-200" />
+                </div>
+            </a>
+
+            <a href="./trivia.html?trivia=dorados"
+                class="group aspect-[4/3] bg-white border-2 border-orange-200 border-b-[6px] border-r-[6px] md:border-b-8 md:border-r-8 border-b-orange-500 border-r-orange-500 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-lg shadow-amber-400/35 flex flex-col items-center justify-between transition-all hover:scale-[1.02] hover:shadow-amber-400/50 cursor-pointer text-center block">
+                <h3
+                    class="font-['Poppins',sans-serif] font-bold text-black text-sm sm:text-base md:text-xl lg:text-2xl tracking-wide drop-shadow-sm group-hover:text-[#C1121F] transition-colors">
+                    Desafío Dorados
+                </h3>
+                <div class="flex-1 flex items-center justify-center my-auto">
+                    <img src="./src/assets/Dorados logo.png" alt="Dorados Logo"
+                        class="w-14 sm:w-16 md:w-20 lg:w-24 h-auto object-contain drop-shadow-sm group-hover:scale-110 transition-transform duration-200" />
+                </div>
+            </a>
+        </div>
+
 
 
     </main>
