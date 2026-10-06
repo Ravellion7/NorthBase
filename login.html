@@ -56,7 +56,7 @@
                 </a>
 
                 <div class="drop-shadow-xl self-start">
-                    <a href="./home.html"
+                    <a href="./index.html"
                         class="w-20 h-24 sm:w-24 sm:h-28 md:w-36 md:h-44 lg:w-40 lg:h-48 bg-white flex items-center justify-center pt-1 pb-4 md:pt-3 md:pb-8 [clip-path:polygon(0_0,100%_0,100%_50%,50%_90%,0_50%)] hover:opacity-95 transition-opacity cursor-pointer block"
                         aria-label="Ir al inicio">
                         <img src="./src/assets/NorthBaseLogo.png" alt="NorthBase Logo"
@@ -90,7 +90,7 @@
             </div>
 
 
-            <form action="./home.html" method="GET" class="w-full flex flex-col gap-3.5 bg-transparent pt-4">
+            <form id="login-form-mobile" class="w-full flex flex-col gap-3.5 bg-transparent pt-4">
 
                 <div class="flex flex-col gap-1">
                     <label for="email-mobile"
@@ -142,7 +142,7 @@
             <div class="w-[40%] p-8 lg:p-12 flex flex-col justify-center items-center">
                 <div class="w-full max-w-sm flex flex-col items-center">
 
-                    <form action="./home.html" method="GET" class="w-full flex flex-col gap-4">
+                    <form id="login-form-desktop" class="w-full flex flex-col gap-4">
                         <div class="flex flex-col gap-1.5">
                             <label for="email-desktop"
                                 class="font-['Poppins',sans-serif] text-xs lg:text-sm font-semibold text-white">
@@ -188,6 +188,8 @@
 
 
         <script src="./src/js/index.js"></script>
+        <script src="./src/js/auth.js"></script>
+        <script src="./src/js/login.js"></script>
 
 </body>
 
