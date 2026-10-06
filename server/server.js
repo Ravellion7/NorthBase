@@ -216,6 +216,140 @@ app.post('/api/auth/login', async (req, res) => {
     }
 });
 
+// 3. OBTENER DETALLE DEL USUARIO
+app.get('/api/auth/user/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const [users] = await pool.query(
+            'SELECT * FROM usuarios WHERE id_usuario = ?',
+            [id]
+        );
+
+        if (users.length === 0) {
+            return res.status(404).json({ error: 'Usuario no encontrado.' });
+        }
+
+        const user = users[0];
+        delete user.password_hash;
+
+        res.json({ user });
+    } catch (error) {
+        console.error('Error en /api/auth/user/:id:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// 4. ACTUALIZAR PERFIL
+app.put('/api/auth/profile', async (req, res) => {
+    try {
+        const {
+            id_usuario,
+            name,
+            father_last_name,
+            mother_last_name,
+            email,
+            password,
+            favorite_team
+        } = req.body;
+
+        if (!id_usuario) {
+            return res.status(400).json({ error: 'Falta el identificador del usuario.' });
+        }
+
+        const [users] = await pool.query(
+            'SELECT * FROM usuarios WHERE id_usuario = ?',
+            [id_usuario]
+        );
+
+        if (users.length === 0) {
+            return res.status(404).json({ error: 'Usuario no encontrado.' });
+        }
+
+        const currentUser = users[0];
+        const cleanEmail = email ? email.trim().toLowerCase() : currentUser.email;
+
+        if (cleanEmail !== currentUser.email) {
+            const [existing] = await pool.query(
+                'SELECT id_usuario FROM usuarios WHERE email = ? AND id_usuario != ?',
+                [cleanEmail, id_usuario]
+            );
+            if (existing.length > 0) {
+                return res.status(409).json({ error: 'El nuevo correo ya está en uso por otra cuenta.' });
+            }
+        }
+
+        const cols = await getUserTableColumns();
+        const updateFields = [];
+        const updateValues = [];
+
+        if (cols.has('nombre') && name !== undefined) {
+            updateFields.push('nombre = ?');
+            updateValues.push(name.trim());
+        }
+        if (cols.has('apellido_paterno') && father_last_name !== undefined) {
+            updateFields.push('apellido_paterno = ?');
+            updateValues.push(father_last_name ? father_last_name.trim() : null);
+        }
+        if (cols.has('apellido_materno') && mother_last_name !== undefined) {
+            updateFields.push('apellido_materno = ?');
+            updateValues.push(mother_last_name ? mother_last_name.trim() : null);
+        }
+        if (cols.has('nombre_usuario')) {
+            const username = [name, father_last_name].filter(Boolean).join(' ').trim();
+            if (username) {
+                updateFields.push('nombre_usuario = ?');
+                updateValues.push(username);
+            }
+        }
+
+        if (cleanEmail) {
+            updateFields.push('email = ?');
+            updateValues.push(cleanEmail);
+        }
+
+        if (cols.has('equipo_favorito') && favorite_team !== undefined) {
+            updateFields.push('equipo_favorito = ?');
+            updateValues.push(favorite_team || null);
+        }
+
+        if (password && password.trim().length > 0) {
+            const passwordHash = await bcrypt.hash(password.trim(), 10);
+            updateFields.push('password_hash = ?');
+            updateValues.push(passwordHash);
+        }
+
+        if (updateFields.length > 0) {
+            updateValues.push(id_usuario);
+            const sql = `UPDATE usuarios SET ${updateFields.join(', ')} WHERE id_usuario = ?`;
+            await pool.query(sql, updateValues);
+        }
+
+        const [updatedRows] = await pool.query(
+            'SELECT * FROM usuarios WHERE id_usuario = ?',
+            [id_usuario]
+        );
+        const updatedUser = updatedRows[0];
+        delete updatedUser.password_hash;
+
+        const displayName = updatedUser.nombre || updatedUser.nombre_usuario || updatedUser.email.split('@')[0];
+
+        res.json({
+            message: 'Perfil actualizado exitosamente.',
+            user: {
+                id_usuario: updatedUser.id_usuario,
+                nombre: displayName,
+                email: updatedUser.email,
+                equipo_favorito: updatedUser.equipo_favorito || null,
+                apellido_paterno: updatedUser.apellido_paterno || null,
+                apellido_materno: updatedUser.apellido_materno || null
+            }
+        });
+    } catch (error) {
+        console.error('Error en /api/auth/profile:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // ==========================================
 // COLECCIONABLES Y LOGROS
 // ==========================================

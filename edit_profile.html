@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NorthBase - Perfil</title>
+    <title>NorthBase - Editar Perfil</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,17 +16,15 @@
 <body
     class="bg-[#0A1A32] overflow-x-hidden flex flex-col min-h-screen items-center justify-between m-0 p-0 relative font-['Poppins',sans-serif]">
 
-
+    <!-- Encabezado con Regresar y Cámara -->
     <header class="w-full bg-transparent px-4 sm:px-6 py-4 absolute top-0 left-0 z-30">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
-
 
             <a href="./profile.html"
                 class="inline-flex items-center gap-1.5 text-white/90 hover:text-white font-medium text-xs sm:text-sm py-1.5 px-3 rounded-lg hover:bg-white/10 transition-colors"
                 aria-label="Regresar al perfil">
-                <span>Regresar</span>
+                <span>← Regresar al perfil</span>
             </a>
-
 
             <a href="./camera.html"
                 class="flex items-center justify-center p-2 rounded-full hover:bg-white/10 transition-all cursor-pointer"
@@ -38,70 +36,97 @@
         </div>
     </header>
 
-
-    <div class="w-full h-[50vh] flex flex-col items-center justify-center pt-14 pb-4 px-4 z-10 shrink-0">
-
+    <!-- Sección Superior: Avatar y Nombre -->
+    <div class="w-full flex flex-col items-center justify-center pt-20 pb-6 px-4 z-10 shrink-0">
 
         <div
-            class="w-32 h-32 sm:w-36 sm:h-36 rounded-full border-4 border-white shadow-2xl overflow-hidden bg-white flex items-center justify-center">
+            class="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-4 border-white shadow-2xl overflow-hidden bg-white flex items-center justify-center">
             <img src="./src/assets/default profile.png" alt="Foto de perfil" class="w-full h-full object-cover" />
         </div>
 
-
-        <h1
-            class="text-white font-['Poppins',sans-serif] font-normal text-xl sm:text-2xl mt-4 sm:mt-5 tracking-wide drop-shadow-sm">
+        <h1 id="edit-profile-username"
+            class="text-white font-['Poppins',sans-serif] font-bold text-xl sm:text-2xl mt-3 tracking-wide drop-shadow-sm text-center">
             Usuario
         </h1>
 
     </div>
 
-
+    <!-- Contenedor Inferior: Formulario de Edición -->
     <div
-        class="w-full flex-1 bg-[#F5F5F5] rounded-t-[2.5rem] shadow-2xl px-6 pt-12 pb-10 sm:px-10 sm:pt-16 sm:pb-12 flex flex-col items-center justify-start z-20">
+        class="w-full flex-1 bg-[#F5F5F5] rounded-t-[2.5rem] shadow-2xl px-6 py-8 sm:px-10 sm:py-10 flex flex-col items-center justify-start z-20">
 
+        <form id="edit-profile-form"
+            class="w-full max-w-[320px] sm:max-w-sm flex flex-col gap-3 sm:gap-3.5 bg-transparent p-0">
 
-        <form action="./profile.html" method="GET"
-            class="w-full max-w-[300px] sm:max-w-xs flex flex-col gap-3 sm:gap-3.5 bg-transparent p-0">
+            <div class="flex flex-col gap-1">
+                <label for="name" class="text-xs font-semibold text-slate-700">Nombre(s)</label>
+                <input type="text" id="name" name="name" placeholder="Nombre(s)" aria-label="Nombre(s)" required
+                    class="w-full px-3.5 py-2 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-black transition shadow-sm" />
+            </div>
 
+            <div class="flex flex-col gap-1">
+                <label for="father_last_name" class="text-xs font-semibold text-slate-700">Apellido paterno</label>
+                <input type="text" id="father_last_name" name="father_last_name" placeholder="Apellido paterno"
+                    aria-label="Apellido paterno"
+                    class="w-full px-3.5 py-2 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-black transition shadow-sm" />
+            </div>
 
-            <input type="text" id="name" name="name" placeholder="Nombre(s)" aria-label="Nombre(s)"
-                class="w-full px-3.5 py-2 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-black transition shadow-sm" />
+            <div class="flex flex-col gap-1">
+                <label for="mother_last_name" class="text-xs font-semibold text-slate-700">Apellido materno</label>
+                <input type="text" id="mother_last_name" name="mother_last_name" placeholder="Apellido materno"
+                    aria-label="Apellido materno"
+                    class="w-full px-3.5 py-2 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-black transition shadow-sm" />
+            </div>
 
+            <div class="flex flex-col gap-1">
+                <label for="email" class="text-xs font-semibold text-slate-700">Correo electrónico</label>
+                <input type="email" id="email" name="email" placeholder="Correo" aria-label="Correo" required
+                    class="w-full px-3.5 py-2 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-black transition shadow-sm" />
+            </div>
 
-            <input type="text" id="father_last_name" name="father_last_name" placeholder="Apellido paterno"
-                aria-label="Apellido paterno"
-                class="w-full px-3.5 py-2 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-black transition shadow-sm" />
+            <div class="flex flex-col gap-1">
+                <label for="favorite_team" class="text-xs font-semibold text-slate-700">Equipo favorito</label>
+                <select id="favorite_team" name="favorite_team" aria-label="Equipo favorito"
+                    class="w-full px-3.5 py-2 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 font-['Poppins',sans-serif] text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-black transition shadow-sm cursor-pointer">
+                    <option value="" disabled selected>Selecciona tu equipo favorito</option>
+                    <option value="sultanes">Sultanes de Monterrey</option>
+                    <option value="acereros">Acereros de Monclova</option>
+                    <option value="algodoneros">Algodoneros del Unión Laguna</option>
+                    <option value="caliente">Caliente de Durango</option>
+                    <option value="charros">Charros de Jalisco</option>
+                    <option value="dorados">Dorados de Chihuahua</option>
+                    <option value="rieleros">Rieleros de Aguascalientes</option>
+                    <option value="saraperos">Saraperos de Saltillo</option>
+                    <option value="tecos">Tecos de los Dos Laredos</option>
+                    <option value="toros">Toros de Tijuana</option>
+                </select>
+            </div>
 
+            <div class="pt-2 border-t border-slate-200 mt-1">
+                <p class="text-[11px] text-slate-500 mb-2 font-medium">¿Deseas cambiar tu contraseña? (opcional)</p>
 
-            <input type="text" id="mother_last_name" name="mother_last_name" placeholder="Apellido materno"
-                aria-label="Apellido materno"
-                class="w-full px-3.5 py-2 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-black transition shadow-sm" />
+                <div class="flex flex-col gap-2.5">
+                    <input type="password" id="password" name="password" placeholder="Nueva contraseña (opcional)"
+                        aria-label="Contraseña"
+                        class="w-full px-3.5 py-2 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-black transition shadow-sm" />
 
-
-            <input type="email" id="email" name="email" placeholder="Correo" aria-label="Correo"
-                class="w-full px-3.5 py-2 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-black transition shadow-sm" />
-
-
-            <input type="password" id="password" name="password" placeholder="Contraseña" aria-label="Contraseña"
-                class="w-full px-3.5 py-2 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-black transition shadow-sm" />
-
-
-            <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmar contraseña"
-                aria-label="Confirmar contraseña"
-                class="w-full px-3.5 py-2 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-black transition shadow-sm" />
-
+                    <input type="password" id="confirm_password" name="confirm_password"
+                        placeholder="Confirmar nueva contraseña" aria-label="Confirmar contraseña"
+                        class="w-full px-3.5 py-2 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-black transition shadow-sm" />
+                </div>
+            </div>
 
             <button type="submit"
-                class="w-full mt-6 sm:mt-8 py-2.5 px-6 bg-[#C1121F] hover:bg-[#9b0e19] text-white font-['Poppins',sans-serif] font-bold text-xs sm:text-sm rounded-full shadow-md hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer tracking-wide text-center">
-                Registrar
+                class="w-full mt-4 sm:mt-6 py-2.5 px-6 bg-[#C1121F] hover:bg-[#9b0e19] text-white font-['Poppins',sans-serif] font-bold text-xs sm:text-sm rounded-full shadow-md hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer tracking-wide text-center">
+                Actualizar
             </button>
 
         </form>
 
     </div>
 
-
-
+    <script src="./src/js/auth.js"></script>
+    <script src="./src/js/edit_profile.js"></script>
 </body>
 
 </html>
