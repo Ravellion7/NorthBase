@@ -29,9 +29,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (logoutBtn) {
         logoutBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            if (confirm('¿Deseas cerrar tu sesión?')) {
-                logout();
-            }
+            logout('./index.html');
         });
     }
 
@@ -135,13 +133,11 @@ function renderUserCollectibles(container, items) {
 function renderEmptyCollectibles(container, message) {
     container.innerHTML = `
         <div class="aspect-[3/4] max-w-[130px] sm:max-w-[150px] md:max-w-[160px] w-full mx-auto bg-white/40 border-2 border-dashed border-orange-400 rounded-2xl shadow-md p-3 flex flex-col items-center justify-center text-center transition-all hover:border-orange-500 hover:scale-[1.02] cursor-pointer group">
-            <span class="text-2xl mb-1.5 opacity-80 group-hover:scale-110 transition-transform">🔒</span>
             <span class="font-['Poppins',sans-serif] font-bold text-[11px] text-slate-700">Carta 1</span>
             <span class="text-[9px] text-slate-500 mt-0.5">Juega Trivia</span>
         </div>
 
         <div class="aspect-[3/4] max-w-[130px] sm:max-w-[150px] md:max-w-[160px] w-full mx-auto bg-white/40 border-2 border-dashed border-orange-400 rounded-2xl shadow-md p-3 flex flex-col items-center justify-center text-center transition-all hover:border-orange-500 hover:scale-[1.02] cursor-pointer group">
-            <span class="text-2xl mb-1.5 opacity-80 group-hover:scale-110 transition-transform">🔒</span>
             <span class="font-['Poppins',sans-serif] font-bold text-[11px] text-slate-700">Carta 2</span>
             <span class="text-[9px] text-slate-500 mt-0.5">Juega Memorama</span>
         </div>

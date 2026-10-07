@@ -27,10 +27,10 @@ function setAuthSession(user, token) {
 /**
  * Cerrar sesión del usuario
  */
-function logout() {
+function logout(redirectUrl = './index.html') {
     localStorage.removeItem('northbase_user');
     localStorage.removeItem('northbase_token');
-    window.location.href = './login.html';
+    window.location.href = redirectUrl;
 }
 
 /**

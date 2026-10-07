@@ -434,7 +434,33 @@ app.post('/api/memorama/save', async (req, res) => {
             [id_usuario, dificultad || 'medio', movimientos, tiempo_segundos, completado ?? true]
         );
 
-        res.json({ message: 'Partida de memorama registrada.' });
+        // Desbloquear coleccionable de Memorama automáticamente al completar la partida
+        if (completado) {
+            try {
+                let [existing] = await pool.query(
+                    "SELECT id_coleccionable FROM coleccionables WHERE tipo = 'juego' LIMIT 1"
+                );
+                let colId;
+                if (existing.length === 0) {
+                    const [created] = await pool.query(
+                        "INSERT INTO coleccionables (nombre, descripcion, tipo, imagen_url) VALUES (?, ?, ?, ?)",
+                        ['Maestro del Diamante', 'Completa el juego de memorama de la Zona Norte', 'juego', './src/assets/Memory Game.png']
+                    );
+                    colId = created.insertId;
+                } else {
+                    colId = existing[0].id_coleccionable;
+                }
+
+                await pool.query(
+                    `INSERT IGNORE INTO usuario_coleccionables (id_usuario, id_coleccionable) VALUES (?, ?)`,
+                    [id_usuario, colId]
+                );
+            } catch (errCol) {
+                console.warn('Nota: No se pudo auto-vincular el coleccionable:', errCol.message);
+            }
+        }
+
+        res.json({ message: 'Partida de memorama registrada y coleccionable actualizado.' });
     } catch (error) {
         console.error('Error al guardar memorama:', error);
         res.status(500).json({ error: error.message });
