@@ -381,14 +381,31 @@ app.post('/api/collectibles/unlock', async (req, res) => {
             return res.status(400).json({ error: 'Faltan parámetros requeridos.' });
         }
 
-        // INSERT IGNORE o ON DUPLICATE para evitar errores si ya lo tiene
-        await pool.query(
+        // INSERT IGNORE para evitar duplicados si ya lo tiene
+        const [result] = await pool.query(
             `INSERT IGNORE INTO usuario_coleccionables (id_usuario, id_coleccionable) 
              VALUES (?, ?)`,
             [id_usuario, id_coleccionable]
         );
 
-        res.json({ message: 'Coleccionable desbloqueado exitosamente.' });
+        const isNew = result.affectedRows > 0;
+
+        // Consultar los detalles del coleccionable para la notificación emergente
+        const [items] = await pool.query(
+            `SELECT id_coleccionable, nombre, descripcion, tipo, imagen_url 
+             FROM coleccionables 
+             WHERE id_coleccionable = ?`,
+            [id_coleccionable]
+        );
+
+        const collectible = items.length > 0 ? items[0] : null;
+
+        res.json({
+            success: true,
+            isNew,
+            message: isNew ? '¡Nuevo coleccionable desbloqueado!' : 'Coleccionable ya obtenido previamente.',
+            collectible
+        });
     } catch (error) {
         console.error('Error al desbloquear coleccionable:', error);
         res.status(500).json({ error: error.message });

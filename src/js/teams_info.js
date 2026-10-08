@@ -226,6 +226,21 @@ const TEAMS_DATABASE = {
 
 TEAMS_DATABASE.calientes = TEAMS_DATABASE.caliente;
 
+// Mapeo oficial de los 10 estadios de la Zona Norte a sus IDs coleccionables (31 al 40)
+const TEAM_STADIUM_MAP = {
+    sultanes: 31,     // Estadio: Walmart Park (Estadio Monterrey)
+    toros: 32,        // Estadio: Chevron
+    charros: 33,      // Estadio: Panamericano
+    acereros: 34,     // Estadio: Monclova
+    rieleros: 35,     // Estadio: Alberto Romo Chávez
+    saraperos: 36,    // Estadio: Francisco I. Madero
+    tecos: 37,        // Estadio: Parque La Junta
+    dorados: 38,      // Estadio: Monumental Chihuahua
+    algodoneros: 39,  // Estadio: De la Revolución
+    caliente: 40,     // Estadio: Francisco Villa
+    calientes: 40
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Leer el parámetro ?team= de la URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -254,4 +269,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Actualizar título de la pestaña del navegador
     document.title = `NorthBase - ${teamData.name}`;
+
+    // 4. Desbloquear el coleccionable del estadio del equipo al visitarlo
+    const stadiumId = TEAM_STADIUM_MAP[teamKey];
+    if (stadiumId && typeof awardCollectible === 'function') {
+        setTimeout(() => {
+            awardCollectible(stadiumId);
+        }, 600);
+    }
 });
