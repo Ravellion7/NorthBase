@@ -100,53 +100,139 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderEmptyCollectibles(collectiblesContainer);
         }
     }
+    // 5. Configurar listeners del modal de visualización
+    const closeBtn = document.getElementById('close-collectible-modal');
+    const modal = document.getElementById('collectible-modal');
+    if (closeBtn) closeBtn.addEventListener('click', closeCollectibleModal);
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeCollectibleModal();
+        });
+    }
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeCollectibleModal();
+    });
 });
 
-// Renderizar las cartas reales obtenidas
+// Renderizar las cartas reales obtenidas con tamaño amplio y nítido
 function renderUserCollectibles(container, items) {
     container.innerHTML = '';
     items.forEach(item => {
         const card = document.createElement('div');
-        card.className = 'aspect-[3/4] max-w-[140px] sm:max-w-[150px] md:max-w-[160px] w-full mx-auto bg-gradient-to-b from-white to-slate-100 border-2 border-amber-500 rounded-2xl shadow-lg shadow-amber-500/20 hover:shadow-amber-500/40 p-3 flex flex-col items-center justify-between text-center transition-all hover:scale-105 cursor-pointer relative overflow-hidden group';
+        card.className = 'w-full bg-white border-2 border-amber-300/80 hover:border-[#FCBF49] rounded-2xl shadow-md hover:shadow-xl hover:shadow-amber-500/20 p-2.5 sm:p-3.5 flex flex-col items-center justify-between transition-all duration-300 hover:-translate-y-1.5 cursor-pointer group relative overflow-hidden select-none';
 
         card.innerHTML = `
-            <div class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-amber-400 animate-pulse"></div>
-            <div class="w-12 h-12 sm:w-14 sm:h-14 mt-2 flex items-center justify-center">
+            <!-- Indicador brillante -->
+            <div class="absolute top-2 right-2 w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse z-10"></div>
+            
+            <!-- Imagen SVG del coleccionable en tamaño grande y nítido -->
+            <div class="w-full aspect-square flex items-center justify-center bg-[#003049]/5 rounded-xl p-1 sm:p-1.5 overflow-hidden group-hover:scale-105 transition-transform duration-300">
                 <img src="${item.imagen_url || './src/assets/trophy icon.png'}" 
                      alt="${item.nombre}" 
-                     class="max-w-full max-h-full object-contain drop-shadow" />
+                     class="w-full h-full object-contain drop-shadow-md" />
             </div>
-            <div class="w-full">
-                <h3 class="font-['Poppins',sans-serif] font-bold text-[11px] sm:text-xs text-slate-900 leading-tight line-clamp-2">
+
+            <!-- Título y pie de la tarjeta -->
+            <div class="w-full mt-2 flex flex-col items-center">
+                <h3 class="font-['Poppins',sans-serif] font-bold text-xs sm:text-sm text-slate-900 leading-tight line-clamp-1 text-center group-hover:text-[#C1121F] transition-colors" title="${item.nombre}">
                     ${item.nombre}
                 </h3>
-                <span class="block text-[9px] text-amber-700 font-semibold uppercase tracking-wider mt-1">
-                    ${item.tipo || 'Coleccionable'}
-                </span>
+                <div class="flex items-center justify-between w-full mt-2 pt-1.5 border-t border-slate-100">
+                    <span class="text-[9px] sm:text-[10px] text-amber-600 font-bold uppercase tracking-wider">
+                        ${item.tipo || 'Coleccionable'}
+                    </span>
+                </div>
             </div>
         `;
+
+        // Abrir en grande al hacer clic
+        card.addEventListener('click', () => openCollectibleModal(item));
+
         container.appendChild(card);
     });
+}
+
+// Abrir modal con imagen en grande
+function openCollectibleModal(item) {
+    const modal = document.getElementById('collectible-modal');
+    const modalContent = document.getElementById('collectible-modal-content');
+    const modalImg = document.getElementById('modal-card-img');
+    const modalTag = document.getElementById('modal-card-tag');
+    const modalName = document.getElementById('modal-card-name');
+    const modalDesc = document.getElementById('modal-card-desc');
+    const modalDate = document.getElementById('modal-card-date');
+
+    if (!modal) return;
+
+    if (modalImg) modalImg.src = item.imagen_url || './src/assets/trophy icon.png';
+    if (modalTag) modalTag.textContent = (item.tipo || 'COLECCIONABLE').toUpperCase();
+    if (modalName) modalName.textContent = item.nombre || 'Coleccionable NorthBase';
+    if (modalDesc) modalDesc.textContent = item.descripcion || 'Coleccionable oficial de la Zona Norte.';
+
+    if (modalDate) {
+        if (item.fecha_desbloqueo) {
+            try {
+                const date = new Date(item.fecha_desbloqueo);
+                modalDate.textContent = `Desbloqueado el ${date.toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' })}`;
+            } catch (e) {
+                modalDate.textContent = 'Coleccionable Desbloqueado';
+            }
+        } else {
+            modalDate.textContent = 'Coleccionable Desbloqueado';
+        }
+    }
+
+    modal.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
+    modal.classList.add('flex', 'opacity-100', 'pointer-events-auto');
+    if (modalContent) {
+        modalContent.classList.remove('scale-95');
+        modalContent.classList.add('scale-100');
+    }
+}
+
+// Cerrar modal
+function closeCollectibleModal() {
+    const modal = document.getElementById('collectible-modal');
+    const modalContent = document.getElementById('collectible-modal-content');
+    if (!modal) return;
+
+    if (modalContent) {
+        modalContent.classList.remove('scale-100');
+        modalContent.classList.add('scale-95');
+    }
+    modal.classList.remove('opacity-100', 'pointer-events-auto');
+    modal.classList.add('opacity-0', 'pointer-events-none');
+    setTimeout(() => {
+        modal.classList.remove('flex');
+        modal.classList.add('hidden');
+    }, 250);
 }
 
 // Renderizar espacios vacíos/bloqueados cuando el usuario recién empieza
 function renderEmptyCollectibles(container, message) {
     container.innerHTML = `
-        <div class="aspect-[3/4] max-w-[130px] sm:max-w-[150px] md:max-w-[160px] w-full mx-auto bg-white/40 border-2 border-dashed border-orange-400 rounded-2xl shadow-md p-3 flex flex-col items-center justify-center text-center transition-all hover:border-orange-500 hover:scale-[1.02] cursor-pointer group">
-            <span class="font-['Poppins',sans-serif] font-bold text-[11px] text-slate-700">Carta 1</span>
-            <span class="text-[9px] text-slate-500 mt-0.5">Juega Trivia</span>
+        <div class="w-full bg-white/60 border-2 border-dashed border-orange-300 rounded-2xl shadow-sm p-4 sm:p-5 flex flex-col items-center justify-center text-center transition-all hover:border-orange-500 hover:scale-[1.02] cursor-pointer group">
+            <div class="w-12 h-12 sm:w-14 sm:h-14 mb-2 rounded-xl bg-orange-100/70 flex items-center justify-center text-orange-500 text-xl font-bold">
+                ?
+            </div>
+            <span class="font-['Poppins',sans-serif] font-bold text-xs sm:text-sm text-slate-700">Coleccionable</span>
+            <span class="text-[10px] text-slate-500 mt-0.5">Juega Trivia</span>
         </div>
 
-        <div class="aspect-[3/4] max-w-[130px] sm:max-w-[150px] md:max-w-[160px] w-full mx-auto bg-white/40 border-2 border-dashed border-orange-400 rounded-2xl shadow-md p-3 flex flex-col items-center justify-center text-center transition-all hover:border-orange-500 hover:scale-[1.02] cursor-pointer group">
-            <span class="font-['Poppins',sans-serif] font-bold text-[11px] text-slate-700">Carta 2</span>
-            <span class="text-[9px] text-slate-500 mt-0.5">Juega Memorama</span>
+        <div class="w-full bg-white/60 border-2 border-dashed border-orange-300 rounded-2xl shadow-sm p-4 sm:p-5 flex flex-col items-center justify-center text-center transition-all hover:border-orange-500 hover:scale-[1.02] cursor-pointer group">
+            <div class="w-12 h-12 sm:w-14 sm:h-14 mb-2 rounded-xl bg-orange-100/70 flex items-center justify-center text-orange-500 text-xl font-bold">
+                ?
+            </div>
+            <span class="font-['Poppins',sans-serif] font-bold text-xs sm:text-sm text-slate-700">Coleccionable</span>
+            <span class="text-[10px] text-slate-500 mt-0.5">Juega Memorama</span>
         </div>
     `;
 
     if (message) {
         const hint = document.createElement('p');
-        hint.className = 'col-span-full text-center text-xs text-slate-500 max-w-sm mx-auto mt-2 font-normal';
+        hint.className = 'col-span-full text-center text-xs sm:text-sm text-slate-500 max-w-sm mx-auto mt-4 font-normal';
         hint.textContent = message;
         container.appendChild(hint);
     }
 }
+
