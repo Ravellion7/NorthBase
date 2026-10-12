@@ -114,35 +114,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 });
 
-// Renderizar las cartas reales obtenidas con tamaño amplio y nítido
+// Renderizar las cartas reales obtenidas: completas, sin bordes y sin texto previo
 function renderUserCollectibles(container, items) {
     container.innerHTML = '';
     items.forEach(item => {
         const card = document.createElement('div');
-        card.className = 'w-full bg-white border-2 border-amber-300/80 hover:border-[#FCBF49] rounded-2xl shadow-md hover:shadow-xl hover:shadow-amber-500/20 p-2.5 sm:p-3.5 flex flex-col items-center justify-between transition-all duration-300 hover:-translate-y-1.5 cursor-pointer group relative overflow-hidden select-none';
+        // Tamaño grande y nítido en computadora, compacto y proporcionado en celular
+        card.className = 'w-full max-w-[290px] sm:max-w-[320px] md:max-w-[420px] lg:max-w-[460px] xl:max-w-[500px] aspect-square flex items-center justify-center cursor-pointer transition-transform duration-300 hover:scale-105 active:scale-95 group relative select-none mx-auto';
 
         card.innerHTML = `
-            <!-- Indicador brillante -->
-            <div class="absolute top-2 right-2 w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse z-10"></div>
-            
-            <!-- Imagen SVG del coleccionable en tamaño grande y nítido -->
-            <div class="w-full aspect-square flex items-center justify-center bg-[#003049]/5 rounded-xl p-1 sm:p-1.5 overflow-hidden group-hover:scale-105 transition-transform duration-300">
-                <img src="${item.imagen_url || './src/assets/trophy icon.png'}" 
-                     alt="${item.nombre}" 
-                     class="w-full h-full object-contain drop-shadow-md" />
-            </div>
-
-            <!-- Título y pie de la tarjeta -->
-            <div class="w-full mt-2 flex flex-col items-center">
-                <h3 class="font-['Poppins',sans-serif] font-bold text-xs sm:text-sm text-slate-900 leading-tight line-clamp-1 text-center group-hover:text-[#C1121F] transition-colors" title="${item.nombre}">
-                    ${item.nombre}
-                </h3>
-                <div class="flex items-center justify-between w-full mt-2 pt-1.5 border-t border-slate-100">
-                    <span class="text-[9px] sm:text-[10px] text-amber-600 font-bold uppercase tracking-wider">
-                        ${item.tipo || 'Coleccionable'}
-                    </span>
-                </div>
-            </div>
+            <img src="${item.imagen_url || './src/assets/trophy icon.png'}" 
+                 alt="${item.nombre}" 
+                 class="w-full h-full object-contain drop-shadow-xl group-hover:drop-shadow-2xl transition-all duration-300 pointer-events-none" />
         `;
 
         // Abrir en grande al hacer clic
@@ -152,7 +135,7 @@ function renderUserCollectibles(container, items) {
     });
 }
 
-// Abrir modal con imagen en grande
+// Abrir modal con imagen en grande e información completa
 function openCollectibleModal(item) {
     const modal = document.getElementById('collectible-modal');
     const modalContent = document.getElementById('collectible-modal-content');
@@ -165,7 +148,16 @@ function openCollectibleModal(item) {
     if (!modal) return;
 
     if (modalImg) modalImg.src = item.imagen_url || './src/assets/trophy icon.png';
-    if (modalTag) modalTag.textContent = (item.tipo || 'COLECCIONABLE').toUpperCase();
+
+    // Etiqueta clara de obtención: Trivia, Juego o Logro
+    const methodMap = {
+        trivia: 'Obtenido mediante: Trivia',
+        juego: 'Obtenido mediante: Juego',
+        logro: 'Obtenido mediante: Logro'
+    };
+    const methodText = methodMap[(item.tipo || '').toLowerCase()] || `Obtenido mediante: ${item.tipo || 'Especial'}`;
+    if (modalTag) modalTag.textContent = methodText.toUpperCase();
+
     if (modalName) modalName.textContent = item.nombre || 'Coleccionable NorthBase';
     if (modalDesc) modalDesc.textContent = item.descripcion || 'Coleccionable oficial de la Zona Norte.';
 
@@ -211,26 +203,26 @@ function closeCollectibleModal() {
 // Renderizar espacios vacíos/bloqueados cuando el usuario recién empieza
 function renderEmptyCollectibles(container, message) {
     container.innerHTML = `
-        <div class="w-full bg-white/60 border-2 border-dashed border-orange-300 rounded-2xl shadow-sm p-4 sm:p-5 flex flex-col items-center justify-center text-center transition-all hover:border-orange-500 hover:scale-[1.02] cursor-pointer group">
-            <div class="w-12 h-12 sm:w-14 sm:h-14 mb-2 rounded-xl bg-orange-100/70 flex items-center justify-center text-orange-500 text-xl font-bold">
+        <div class="w-full max-w-[290px] sm:max-w-[320px] md:max-w-[420px] lg:max-w-[460px] xl:max-w-[500px] aspect-square bg-white/70 border-2 border-dashed border-orange-300 rounded-3xl shadow-sm p-6 flex flex-col items-center justify-center text-center transition-all hover:border-orange-500 hover:scale-[1.02] cursor-pointer group mx-auto">
+            <div class="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 mb-3 rounded-2xl bg-orange-100/70 flex items-center justify-center text-orange-500 text-3xl md:text-4xl font-extrabold shadow-inner">
                 ?
             </div>
-            <span class="font-['Poppins',sans-serif] font-bold text-xs sm:text-sm text-slate-700">Coleccionable</span>
-            <span class="text-[10px] text-slate-500 mt-0.5">Juega Trivia</span>
+            <span class="font-['Poppins',sans-serif] font-bold text-sm sm:text-base md:text-lg text-slate-800">Coleccionable</span>
+            <span class="text-xs md:text-sm text-slate-500 mt-1">Juega Trivia</span>
         </div>
 
-        <div class="w-full bg-white/60 border-2 border-dashed border-orange-300 rounded-2xl shadow-sm p-4 sm:p-5 flex flex-col items-center justify-center text-center transition-all hover:border-orange-500 hover:scale-[1.02] cursor-pointer group">
-            <div class="w-12 h-12 sm:w-14 sm:h-14 mb-2 rounded-xl bg-orange-100/70 flex items-center justify-center text-orange-500 text-xl font-bold">
+        <div class="w-full max-w-[290px] sm:max-w-[320px] md:max-w-[420px] lg:max-w-[460px] xl:max-w-[500px] aspect-square bg-white/70 border-2 border-dashed border-orange-300 rounded-3xl shadow-sm p-6 flex flex-col items-center justify-center text-center transition-all hover:border-orange-500 hover:scale-[1.02] cursor-pointer group mx-auto">
+            <div class="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 mb-3 rounded-2xl bg-orange-100/70 flex items-center justify-center text-orange-500 text-3xl md:text-4xl font-extrabold shadow-inner">
                 ?
             </div>
-            <span class="font-['Poppins',sans-serif] font-bold text-xs sm:text-sm text-slate-700">Coleccionable</span>
-            <span class="text-[10px] text-slate-500 mt-0.5">Juega Memorama</span>
+            <span class="font-['Poppins',sans-serif] font-bold text-sm sm:text-base md:text-lg text-slate-800">Coleccionable</span>
+            <span class="text-xs md:text-sm text-slate-500 mt-1">Juega Memorama</span>
         </div>
     `;
 
     if (message) {
         const hint = document.createElement('p');
-        hint.className = 'col-span-full text-center text-xs sm:text-sm text-slate-500 max-w-sm mx-auto mt-4 font-normal';
+        hint.className = 'col-span-full text-center text-sm text-slate-500 max-w-md mx-auto mt-6 font-medium';
         hint.textContent = message;
         container.appendChild(hint);
     }

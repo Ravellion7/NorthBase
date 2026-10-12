@@ -3,6 +3,7 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
+const path = require('path');
 const { pool, testConnection } = require('./db');
 
 dotenv.config();
@@ -15,6 +16,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'northbase_secret_key_default';
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, '..')));
 
 // Detectar dinámicamente las columnas de la tabla usuarios para máxima compatibilidad
 async function getUserTableColumns() {
