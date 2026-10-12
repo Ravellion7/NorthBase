@@ -416,7 +416,23 @@ app.post('/api/collectibles/unlock', async (req, res) => {
 // REGISTRO DE PARTIDAS (TRIVIA Y MEMORAMA)
 // ==========================================
 
-// Guardar resultado de una trivia
+// Mapeo oficial de trivias a su coleccionable correspondiente al sacar 100% (IDs 1 al 11)
+const TRIVIA_TEAM_COLLECTIBLES = {
+    sultanes: 1,     // Bateador: Víctor Mendoza
+    toros: 2,        // Bateador: Justin Turner
+    charros: 3,      // Bateador: Kyle Garlick
+    acereros: 4,     // Bateador: Ramón Hernández
+    rieleros: 5,     // Bateador: Ángel Reyes
+    saraperos: 6,    // Bateador: Fernando Villegas
+    tecos: 7,        // Bateador: Kennys Vargas
+    dorados: 8,      // Bateador: Juan Yépez
+    algodoneros: 9,  // Bateador: Nick Torres
+    caliente: 10,    // Bateador: Víctor Márquez
+    calientes: 10,   // alias
+    norteno: 11      // Lanzador: Juan Gámez (Desafío Norteño)
+};
+
+// Guardar resultado de una trivia y evaluar coleccionables desbloqueados
 app.post('/api/trivias/save', async (req, res) => {
     try {
         const { id_usuario, trivia_key, puntaje, total_preguntas, porcentaje } = req.body;
@@ -424,13 +440,97 @@ app.post('/api/trivias/save', async (req, res) => {
             return res.status(400).json({ error: 'Faltan datos de la partida.' });
         }
 
+        const normalizedKey = trivia_key.toLowerCase();
+        const scorePercent = Number(porcentaje) || ((Number(puntaje) / Number(total_preguntas)) * 100);
+        const isPerfect = scorePercent >= 100 || (Number(puntaje) === Number(total_preguntas) && Number(total_preguntas) > 0);
+
+        // 1. Registrar partida en historial
         await pool.query(
             `INSERT INTO historial_trivias (id_usuario, trivia_key, puntaje, total_preguntas, porcentaje)
              VALUES (?, ?, ?, ?, ?)`,
-            [id_usuario, trivia_key, puntaje, total_preguntas, porcentaje]
+            [id_usuario, normalizedKey, puntaje, total_preguntas, scorePercent]
         );
 
-        res.json({ message: 'Resultado de trivia registrado.' });
+        // 2. Determinar coleccionables candidatos a desbloquear
+        const candidateIds = [];
+
+        // Hito ID 12: Primera Jugada (Responder y completar tu primera trivia con cualquier calificación)
+        candidateIds.push(12);
+
+        // Si la trivia fue perfecta (100%):
+        if (isPerfect) {
+            // Coleccionable específico de equipo (IDs 1 al 11)
+            const teamColId = TRIVIA_TEAM_COLLECTIBLES[normalizedKey];
+            if (teamColId) {
+                candidateIds.push(teamColId);
+            }
+
+            // Hito ID 26: Fanático de Corazón (100% en la trivia de tu equipo favorito)
+            const [userRows] = await pool.query(
+                `SELECT equipo_favorito FROM usuarios WHERE id_usuario = ?`,
+                [id_usuario]
+            );
+            if (userRows.length > 0 && userRows[0].equipo_favorito) {
+                const fav = userRows[0].equipo_favorito.toLowerCase();
+                if (fav === normalizedKey || (fav === 'caliente' && normalizedKey === 'calientes')) {
+                    candidateIds.push(26);
+                }
+            }
+        }
+
+        // Hitos acumulativos:
+        // Contar trivias únicas completadas
+        const [uniqueRows] = await pool.query(
+            `SELECT COUNT(DISTINCT trivia_key) AS total_uniques FROM historial_trivias WHERE id_usuario = ?`,
+            [id_usuario]
+        );
+        const totalUniques = uniqueRows[0]?.total_uniques || 0;
+        if (totalUniques >= 11) {
+            // ID 13: Bateador Constante (completar las 11 trivias)
+            candidateIds.push(13);
+        }
+
+        // Contar trivias únicas perfectas (100%)
+        const [perfectRows] = await pool.query(
+            `SELECT COUNT(DISTINCT trivia_key) AS total_perfects 
+             FROM historial_trivias 
+             WHERE id_usuario = ? AND (porcentaje >= 100 OR puntaje = total_preguntas)`,
+            [id_usuario]
+        );
+        const totalPerfects = perfectRows[0]?.total_perfects || 0;
+        if (totalPerfects >= 5) {
+            // ID 14: Medio Camino a la Gloria (al menos 5 trivias al 100%)
+            candidateIds.push(14);
+        }
+        if (totalPerfects >= 11) {
+            // ID 15: Grand Slam del Saber (las 11 trivias al 100%)
+            candidateIds.push(15);
+        }
+
+        // 3. Otorgar los coleccionables candidatos que sean nuevos
+        const newCollectibles = [];
+        for (const cid of candidateIds) {
+            const [insertRes] = await pool.query(
+                `INSERT IGNORE INTO usuario_coleccionables (id_usuario, id_coleccionable) VALUES (?, ?)`,
+                [id_usuario, cid]
+            );
+
+            if (insertRes.affectedRows > 0) {
+                const [colInfo] = await pool.query(
+                    `SELECT id_coleccionable, nombre, descripcion, tipo, imagen_url FROM coleccionables WHERE id_coleccionable = ?`,
+                    [cid]
+                );
+                if (colInfo.length > 0) {
+                    newCollectibles.push(colInfo[0]);
+                }
+            }
+        }
+
+        res.json({
+            success: true,
+            message: 'Resultado de trivia registrado exitosamente.',
+            newCollectibles
+        });
     } catch (error) {
         console.error('Error al guardar trivia:', error);
         res.status(500).json({ error: error.message });

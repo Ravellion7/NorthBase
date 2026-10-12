@@ -5,16 +5,6 @@ const TRIVIA_DATABASE = {
         badgeColor: "bg-amber-100 text-amber-900 border-amber-300",
         questions: [
             {
-                question: "¿En qué años consiguieron los Saraperos de Saltillo su histórico bicampeonato en la Liga Mexicana de Béisbol?",
-                options: [
-                    "2004 y 2005",
-                    "2009 y 2010",
-                    "2012 y 2013",
-                    "2018 y 2019"
-                ],
-                answer: 1 // 2009 y 2010
-            },
-            {
                 question: "¿Qué clásica rivalidad es conocida como el tradicional 'Clásico de Coahuila'?",
                 options: [
                     "Sultanes vs Toros",
@@ -33,16 +23,6 @@ const TRIVIA_DATABASE = {
                     "Acereros de Monclova"
                 ],
                 answer: 1 // Tecolotes de los Dos Laredos
-            },
-            {
-                question: "¿En qué año consiguieron los Acereros de Monclova su histórico primer campeonato de la LMB?",
-                options: [
-                    "1995",
-                    "2007",
-                    "2019",
-                    "2022"
-                ],
-                answer: 2 // 2019
             },
             {
                 question: "¿Cuál es el estadio de béisbol con mayor capacidad en toda la Zona Norte de la LMB?",
@@ -74,26 +54,6 @@ const TRIVIA_DATABASE = {
                     "Tecolotes de los Dos Laredos"
                 ],
                 answer: 2 // Sultanes de Monterrey (10 campeonatos)
-            },
-            {
-                question: "¿Qué legendario jardinero mexicano, conocido como 'El Superman de Chihuahua', tuvo dos etapas con los Sultanes?",
-                options: [
-                    "Vinicio Castilla",
-                    "Héctor Espino",
-                    "Joaquín 'El Güero' Venegas",
-                    "Jorge Orta"
-                ],
-                answer: 1 // Héctor Espino
-            },
-            {
-                question: "¿Cómo se conoce popularmente al histórico estadio de los Sultanes de Monterrey?",
-                options: [
-                    "Estadio Panamericano",
-                    "Estadio de la UANL",
-                    "Palacio Sultán",
-                    "Estadio Kukulkán"
-                ],
-                answer: 2 // Palacio Sultán
             },
             {
                 question: "¿Cuál de estos equipos de la Zona Norte tiene su sede en el estado de Coahuila?",
@@ -134,16 +94,6 @@ const TRIVIA_DATABASE = {
                     "Jalisco"
                 ],
                 answer: 0 // Coahuila
-            },
-            {
-                question: "¿Qué icónico número portaba el legendario bateador sinaloense Héctor Espino en su dorsal con los Sultanes?",
-                options: [
-                    "39",
-                    "21",
-                    "13",
-                    "9"
-                ],
-                answer: 1 // 21
             },
             {
                 question: "¿Qué equipo de la Zona Norte fue fundado en el año de 1992 y se unió a la liga en su expansión hacia el norte?",
@@ -949,23 +899,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         quizCard.innerHTML = `
-            <div class="w-full flex flex-col items-center justify-center text-center py-6 sm:py-8">
+            <div class="w-full flex flex-col items-center justify-center text-center py-6 sm:py-8 font-['Poppins',sans-serif]">
                 <div class="mb-4 flex items-center justify-center">
                     <img src="${iconSrc}" alt="Resultado" class="w-16 h-16 sm:w-20 sm:h-20 object-contain drop-shadow-md" />
                 </div>
                 
-                <h2 class="font-['Poppins',sans-serif] text-2xl sm:text-3xl font-extrabold text-[#0A1A32] mb-2 tracking-wide">
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0A1A32] mb-2 tracking-wide">
                     ${resultTitle}
                 </h2>
                 
-                <p class="font-['Poppins',sans-serif] text-xs sm:text-sm text-slate-600 max-w-md mb-6 leading-relaxed">
+                <p class="text-xs sm:text-sm text-slate-600 max-w-md mb-6 leading-relaxed">
                     ${resultMsg}
                 </p>
 
                 <!-- Tarjeta de Puntuación -->
-                <div class="w-full max-w-xs bg-slate-50 border-2 border-orange-200 border-b-4 border-r-4 border-b-orange-400 border-r-orange-400 rounded-2xl p-5 mb-8 shadow-md">
+                <div class="w-full max-w-xs bg-slate-50 border-2 border-orange-200 border-b-4 border-r-4 border-b-orange-400 border-r-orange-400 rounded-2xl p-5 mb-6 shadow-md">
                     <span class="block text-xs uppercase font-bold text-slate-500 tracking-wider mb-1">Tu Puntuación</span>
-                    <div class="text-4xl sm:text-5xl font-extrabold text-[#C1121F] font-['Poppins',sans-serif]">
+                    <div class="text-4xl sm:text-5xl font-extrabold text-[#C1121F]">
                         ${score} <span class="text-xl text-slate-400 font-semibold">/ ${totalQuestions}</span>
                     </div>
                     <span class="block text-xs font-semibold text-slate-600 mt-2">
@@ -973,18 +923,24 @@ document.addEventListener('DOMContentLoaded', () => {
                     </span>
                 </div>
 
+                <!-- Contenedor dinámico de Coleccionables Desbloqueados -->
+                <div id="trivia-collectibles-unlocked" class="w-full max-w-sm mb-6 flex flex-col gap-2.5">
+                </div>
+
                 <!-- Botones de Acción -->
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 w-full max-w-sm">
                     <button id="trivia-retry-btn" type="button"
-                        class="w-full sm:w-auto flex-1 px-6 py-3 bg-[#C1121F] hover:bg-[#9b0e19] text-white font-['Poppins',sans-serif] font-bold text-xs sm:text-sm rounded-full shadow-md hover:shadow-xl hover:scale-105 active:scale-95 transition-all text-center tracking-wide whitespace-nowrap cursor-pointer">
+                        class="w-full sm:w-auto flex-1 px-6 py-3 bg-[#C1121F] hover:bg-[#9b0e19] text-white font-bold text-xs sm:text-sm rounded-full shadow-md hover:shadow-xl hover:scale-105 active:scale-95 transition-all text-center tracking-wide whitespace-nowrap cursor-pointer">
                         Reintentar Desafío
                     </button>
 
                     <a href="./trivia_select.html"
-                        class="w-full sm:w-auto flex-1 px-6 py-3 bg-[#0A1A32] hover:bg-[#132c54] text-white font-['Poppins',sans-serif] font-bold text-xs sm:text-sm rounded-full shadow-md hover:shadow-xl hover:scale-105 active:scale-95 transition-all text-center tracking-wide whitespace-nowrap cursor-pointer">
+                        class="w-full sm:w-auto flex-1 px-6 py-3 bg-[#0A1A32] hover:bg-[#132c54] text-white font-bold text-xs sm:text-sm rounded-full shadow-md hover:shadow-xl hover:scale-105 active:scale-95 transition-all text-center tracking-wide whitespace-nowrap cursor-pointer">
                         Elegir Otra Trivia
                     </a>
                 </div>
+
+                <div id="trivia-auth-hint" class="mt-4"></div>
             </div>
         `;
 
@@ -993,6 +949,69 @@ document.addEventListener('DOMContentLoaded', () => {
             retryBtn.addEventListener('click', () => {
                 location.reload();
             });
+        }
+
+        // Guardar resultado y evaluar coleccionables desbloqueados
+        const user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
+        const unlockedContainer = document.getElementById('trivia-collectibles-unlocked');
+        const authHint = document.getElementById('trivia-auth-hint');
+
+        if (user && user.id_usuario) {
+            const apiBase = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'http://localhost:3000/api';
+            fetch(`${apiBase}/trivias/save`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id_usuario: user.id_usuario,
+                    trivia_key: triviaKey,
+                    puntaje: score,
+                    total_preguntas: totalQuestions,
+                    porcentaje: percent
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.newCollectibles && data.newCollectibles.length > 0) {
+                    // 1. Mostrar toasts dorados flotantes con intervalo
+                    data.newCollectibles.forEach((col, index) => {
+                        setTimeout(() => {
+                            if (typeof showCollectibleToast === 'function') {
+                                showCollectibleToast(col);
+                            }
+                        }, index * 2000);
+                    });
+
+                    // 2. Mostrar banner de felicitación en la pantalla de resultados
+                    if (unlockedContainer) {
+                        data.newCollectibles.forEach(col => {
+                            const rewardEl = document.createElement('div');
+                            rewardEl.className = 'w-full p-3 rounded-2xl bg-[#003049] border-2 border-[#FCBF49] text-white flex items-center gap-3 shadow-lg shadow-amber-500/20 text-left';
+                            rewardEl.innerHTML = `
+                                <div class="w-12 h-12 shrink-0 bg-white/10 rounded-xl p-1 flex items-center justify-center">
+                                    <img src="${col.imagen_url || './src/assets/trophy icon.png'}" alt="${col.nombre}" class="w-full h-full object-contain" />
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <span class="inline-block text-[10px] font-bold text-[#FCBF49] uppercase tracking-wider">
+                                        ⭐ ¡NUEVO COLECCIONABLE DESBLOQUEADO!
+                                    </span>
+                                    <h4 class="font-bold text-xs sm:text-sm text-white truncate">${col.nombre}</h4>
+                                    <span class="text-[10px] text-[#669BBC]">${col.tipo ? col.tipo.toUpperCase() : 'COLECCIONABLE'}</span>
+                                </div>
+                            `;
+                            unlockedContainer.appendChild(rewardEl);
+                        });
+                    }
+                }
+            })
+            .catch(err => {
+                console.warn('Error al guardar trivia:', err);
+            });
+        } else if (authHint) {
+            authHint.innerHTML = `
+                <p class="text-xs text-slate-500">
+                    <a href="./login.html" class="underline text-[#C1121F] font-bold">Inicia sesión</a> para registrar tus récords y desbloquear cartas de jugadores.
+                </p>
+            `;
         }
     }
 
