@@ -79,7 +79,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // 4. Cargar coleccionables desde la API de MySQL
+    // 4. Si el usuario tiene equipo favorito, asegurar que tenga el coleccionable ID 25 (Enrique Reyes)
+    if (user.equipo_favorito && typeof awardCollectible === 'function') {
+        try {
+            await awardCollectible(25);
+        } catch (e) {
+            console.warn('Error al verificar coleccionable de equipo favorito:', e);
+        }
+    }
+
+    // 5. Cargar coleccionables desde la API de MySQL
     if (collectiblesContainer) {
         try {
             const res = await fetch(`${API_BASE_URL}/collectibles/user/${user.id_usuario}`);

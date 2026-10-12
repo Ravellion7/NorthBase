@@ -488,6 +488,25 @@ document.addEventListener('DOMContentLoaded', () => {
             downloadLink.click();
             savePhotoToIndexedDB(imageURL);
             console.log('¡Foto capturada con modelo y partículas!');
+
+            // ==========================================
+            // DESBLOQUEO DE COLECCIONABLES - FASE 4
+            // ==========================================
+            if (typeof awardCollectible === 'function') {
+                // ID 29: Ramón Santiago (Foto interactiva con filtros de la cámara)
+                if (currentEffectName) {
+                    setTimeout(() => {
+                        awardCollectible(29);
+                    }, 400);
+                }
+
+                // ID 30: Óscar Robles (Foto con modelo 3D escaneado por AR)
+                if (currentActiveModel) {
+                    setTimeout(() => {
+                        awardCollectible(30);
+                    }, 800);
+                }
+            }
         });
     }
 

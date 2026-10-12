@@ -27,6 +27,21 @@ document.addEventListener('DOMContentLoaded', () => {
             backBtn.href = `./sultanes.html?team=${teamKey}`;
         }
         document.title = `NorthBase - Galería ${teamData.name}`;
+
+        // Desbloquear ID 28 (Tony DeFrancesco) al explorar la galería de al menos 3 equipos
+        try {
+            const visitedGalleries = new Set(JSON.parse(localStorage.getItem('northbase_visited_galleries') || '[]'));
+            visitedGalleries.add(teamKey);
+            localStorage.setItem('northbase_visited_galleries', JSON.stringify([...visitedGalleries]));
+
+            if (visitedGalleries.size >= 3 && typeof awardCollectible === 'function') {
+                setTimeout(() => {
+                    awardCollectible(28);
+                }, 600);
+            }
+        } catch (e) {
+            console.warn('Error al registrar galería de equipo visitada:', e);
+        }
     }
 
     // 3. Definición de los 5 filtros de cámara

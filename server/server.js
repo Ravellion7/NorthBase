@@ -128,6 +128,18 @@ app.post('/api/auth/register', async (req, res) => {
 
         const newUserId = result.insertId;
 
+        // Si seleccionó equipo favorito, otorgar coleccionable ID 25 (Mánager: Enrique Reyes)
+        if (favorite_team) {
+            try {
+                await pool.query(
+                    `INSERT IGNORE INTO usuario_coleccionables (id_usuario, id_coleccionable) VALUES (?, 25)`,
+                    [newUserId]
+                );
+            } catch (errCol) {
+                console.warn('Error al vincular coleccionable de bienvenida:', errCol.message);
+            }
+        }
+
         // Generar Token JWT
         const token = jwt.sign(
             { id_usuario: newUserId, email: cleanEmail },
@@ -324,6 +336,18 @@ app.put('/api/auth/profile', async (req, res) => {
             updateValues.push(id_usuario);
             const sql = `UPDATE usuarios SET ${updateFields.join(', ')} WHERE id_usuario = ?`;
             await pool.query(sql, updateValues);
+        }
+
+        // Si seleccionó o actualizó su equipo favorito, otorgar coleccionable ID 25 (Enrique Reyes)
+        if (favorite_team) {
+            try {
+                await pool.query(
+                    `INSERT IGNORE INTO usuario_coleccionables (id_usuario, id_coleccionable) VALUES (?, 25)`,
+                    [id_usuario]
+                );
+            } catch (errCol) {
+                console.warn('Error al vincular coleccionable de equipo favorito:', errCol.message);
+            }
         }
 
         const [updatedRows] = await pool.query(
