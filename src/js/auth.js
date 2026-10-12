@@ -149,7 +149,6 @@ function showCollectibleToast(collectible) {
         <!-- Información del coleccionable -->
         <div class="flex-1 min-w-0 pr-6">
             <div class="flex items-center gap-1.5 mb-0.5">
-                <span class="inline-block w-2 h-2 rounded-full bg-[#F77F00] animate-ping"></span>
                 <span class="text-[10px] font-bold tracking-widest text-[#FCBF49] uppercase">
                     ¡COLECCIONABLE DESBLOQUEADO!
                 </span>
@@ -158,7 +157,7 @@ function showCollectibleToast(collectible) {
                 ${cardTitle}
             </h4>
             <p class="text-[11px] text-[#669BBC] font-medium truncate mb-2">
-                ${cardType} • Añadido a tu vitrina
+                ${cardType} Añadido a tu vitrina
             </p>
             <div class="flex items-center gap-2">
                 <a href="./profile.html" 
