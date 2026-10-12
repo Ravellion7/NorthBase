@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Estado de carga
             if (submitBtn) {
                 submitBtn.disabled = true;
-                submitBtn.textContent = 'Ingresando...';
+                submitBtn.textContent = 'Ingresando';
                 submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
             }
 
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Guardar sesión
                 setAuthSession(data.user, data.token);
 
-                showFormMessage(form, '¡Bienvenido de vuelta! Redirigiendo...', false);
+                showFormMessage(form, '¡Bienvenido de vuelta!', false);
 
                 setTimeout(() => {
                     window.location.href = './home.html';

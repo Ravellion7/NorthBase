@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Estado de carga en el botón
             if (submitBtn) {
                 submitBtn.disabled = true;
-                submitBtn.textContent = 'Registrando...';
+                submitBtn.textContent = 'Registrando';
                 submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
             }
 
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 setAuthSession(data.user, data.token);
 
                 // Feedback visual de éxito
-                showFormMessage(form, '¡Cuenta creada con éxito! Redirigiendo...', false);
+                showFormMessage(form, '¡Cuenta creada con éxito!', false);
 
                 // Redirigir a Home
                 setTimeout(() => {

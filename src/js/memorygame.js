@@ -173,6 +173,13 @@ function startNewGame(difficulty) {
 
     updateStatsDisplay();
 
+    // Resetear contenedor de coleccionables en el modal
+    const victoryColContainer = document.getElementById('victory-collectibles-container');
+    if (victoryColContainer) {
+        victoryColContainer.innerHTML = '';
+        victoryColContainer.classList.add('hidden');
+    }
+
     // Actualizar indicador de dificultad
     const diffLabel = document.getElementById('current-mode-label');
     if (diffLabel) {
@@ -480,9 +487,44 @@ async function handleVictory() {
             });
 
             if (response.ok) {
-                if (syncStatusEl) {
-                    syncStatusEl.innerHTML = '✓ ¡Récord guardado y coleccionable desbloqueado en tu perfil!';
-                    syncStatusEl.className = 'text-xs text-emerald-600 font-semibold mt-2';
+                const data = await response.json();
+                const newCols = data.newCollectibles || [];
+
+                if (newCols.length > 0) {
+                    if (syncStatusEl) {
+                        syncStatusEl.innerHTML = `¡Felicidades! Desbloqueaste <strong>${newCols.length} nuevo${newCols.length > 1 ? 's' : ''} coleccionable${newCols.length > 1 ? 's' : ''}</strong>.`;
+                        syncStatusEl.className = 'text-xs text-amber-600 font-bold mt-2';
+                    }
+
+                    const colContainer = document.getElementById('victory-collectibles-container');
+                    if (colContainer) {
+                        colContainer.innerHTML = `
+                            <div class="p-3.5 bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/10 border-2 border-[#FCBF49] rounded-2xl shadow-inner">
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-amber-800 flex items-center justify-center gap-1.5 mb-2.5">
+                                    ¡Nuevas Cartas Desbloqueadas!
+                                </span>
+                                <div class="space-y-2">
+                                    ${newCols.map(col => `
+                                        <div class="flex items-center gap-3 bg-white p-2.5 rounded-xl border border-amber-200/80 shadow-sm">
+                                            <div class="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-amber-50 rounded-lg p-1 overflow-hidden">
+                                                <img src="${col.imagen_url || './src/assets/trophy icon.png'}" alt="${col.nombre}" class="w-full h-full object-contain" />
+                                            </div>
+                                            <div class="flex-1 min-w-0 text-left">
+                                                <h5 class="text-xs font-bold text-slate-900 truncate">${col.nombre}</h5>
+                                                <p class="text-[10px] text-slate-500 leading-tight line-clamp-2 mt-0.5">${col.descripcion}</p>
+                                            </div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `;
+                        colContainer.classList.remove('hidden');
+                    }
+                } else {
+                    if (syncStatusEl) {
+                        syncStatusEl.innerHTML = '¡Récord guardado exitosamente en tu perfil!';
+                        syncStatusEl.className = 'text-xs text-emerald-600 font-semibold mt-2';
+                    }
                 }
             } else {
                 if (syncStatusEl) {

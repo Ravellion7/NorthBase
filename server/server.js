@@ -539,7 +539,9 @@ app.post('/api/trivias/save', async (req, res) => {
     }
 });
 
-// Guardar resultado del memorama
+// ==========================================
+// FASE 3: GUARDAR MEMORAMA Y RECOMPENSAS DE COLECCIONABLES
+// ==========================================
 app.post('/api/memorama/save', async (req, res) => {
     try {
         const { id_usuario, dificultad, movimientos, tiempo_segundos, completado } = req.body;
@@ -547,39 +549,95 @@ app.post('/api/memorama/save', async (req, res) => {
             return res.status(400).json({ error: 'Faltan datos de la partida de memorama.' });
         }
 
+        const isCompleted = completado !== false && completado !== 0;
+        const diff = (dificultad || 'medio').toLowerCase();
+        const moves = parseInt(movimientos, 10) || 0;
+        const seconds = parseInt(tiempo_segundos, 10) || 0;
+
+        // 1. Guardar la partida en la base de datos
         await pool.query(
             `INSERT INTO partidas_memorama (id_usuario, dificultad, movimientos, tiempo_segundos, completado)
              VALUES (?, ?, ?, ?, ?)`,
-            [id_usuario, dificultad || 'medio', movimientos, tiempo_segundos, completado ?? true]
+            [id_usuario, diff, moves, seconds, isCompleted ? 1 : 0]
         );
 
-        // Desbloquear coleccionable de Memorama automáticamente al completar la partida
-        if (completado) {
-            try {
-                let [existing] = await pool.query(
-                    "SELECT id_coleccionable FROM coleccionables WHERE tipo = 'juego' LIMIT 1"
-                );
-                let colId;
-                if (existing.length === 0) {
-                    const [created] = await pool.query(
-                        "INSERT INTO coleccionables (nombre, descripcion, tipo, imagen_url) VALUES (?, ?, ?, ?)",
-                        ['Maestro del Diamante', 'Completa el juego de memorama de la Zona Norte', 'juego', './src/assets/Memory Game.png']
-                    );
-                    colId = created.insertId;
-                } else {
-                    colId = existing[0].id_coleccionable;
-                }
+        const candidateIds = [];
 
-                await pool.query(
-                    `INSERT IGNORE INTO usuario_coleccionables (id_usuario, id_coleccionable) VALUES (?, ?)`,
-                    [id_usuario, colId]
-                );
-            } catch (errCol) {
-                console.warn('Nota: No se pudo auto-vincular el coleccionable:', errCol.message);
+        // 2. Evaluar criterios de coleccionables de la Fase 3 solo si la partida fue completada
+        if (isCompleted) {
+            // A. Victorias por nivel de dificultad
+            // ID 16: Lanzador: Zach Morth (Ganar tu primera partida en modo Fácil)
+            if (diff === 'facil') candidateIds.push(16);
+
+            // ID 17: Lanzador: Nate Antone (Ganar una partida en modo Medio)
+            if (diff === 'medio') candidateIds.push(17);
+
+            // ID 18: Lanzador: Darel Torres (Vencer el reto en modo Difícil)
+            if (diff === 'dificil') candidateIds.push(18);
+
+            // B. Récords de velocidad (Tiempo)
+            // ID 19: Lanzador: Erasmo Ramírez (Completar modo Fácil en menos de 30 segundos)
+            if (diff === 'facil' && seconds < 30) candidateIds.push(19);
+
+            // ID 20: Lanzador: Odrisamer Despaigne (Completar modo Medio en menos de 60 segundos)
+            if (diff === 'medio' && seconds < 60) candidateIds.push(20);
+
+            // ID 21: Mánager: Henry Blanco (Resolver modo Difícil en menos de 90 segundos)
+            if (diff === 'dificil' && seconds < 90) candidateIds.push(21);
+
+            // C. Récords de precisión (Movimientos)
+            // ID 22: Mánager: Roberto Kelly (Completar modo Fácil con menos de 8 movimientos)
+            if (diff === 'facil' && moves < 8) candidateIds.push(22);
+
+            // ID 23: Mánager: Benjamín Gil (Resolver modo Medio con menos de 16 movimientos)
+            if (diff === 'medio' && moves < 16) candidateIds.push(23);
+
+            // D. Hito Maestro: ID 24: Mánager: Juan Gabriel Castro
+            // (Ganar al menos una partida en Fácil, Medio y Difícil)
+            const [diffRows] = await pool.query(
+                `SELECT DISTINCT dificultad FROM partidas_memorama WHERE id_usuario = ? AND completado = 1`,
+                [id_usuario]
+            );
+            const wonDiffs = new Set(diffRows.map(r => r.dificultad.toLowerCase()));
+            if (wonDiffs.has('facil') && wonDiffs.has('medio') && wonDiffs.has('dificil')) {
+                candidateIds.push(24);
+            }
+
+            // E. Hito de Racha: ID 27: Mánager: Mendy López
+            // (Ganar 3 partidas consecutivas de memorama)
+            const [recentGames] = await pool.query(
+                `SELECT completado FROM partidas_memorama WHERE id_usuario = ? ORDER BY id_partida DESC LIMIT 3`,
+                [id_usuario]
+            );
+            if (recentGames.length >= 3 && recentGames.every(g => g.completado === 1 || g.completado === true)) {
+                candidateIds.push(27);
             }
         }
 
-        res.json({ message: 'Partida de memorama registrada y coleccionable actualizado.' });
+        // 3. Otorgar los coleccionables candidatos que sean nuevos para el usuario
+        const newCollectibles = [];
+        for (const cid of candidateIds) {
+            const [insertRes] = await pool.query(
+                `INSERT IGNORE INTO usuario_coleccionables (id_usuario, id_coleccionable) VALUES (?, ?)`,
+                [id_usuario, cid]
+            );
+
+            if (insertRes.affectedRows > 0) {
+                const [colInfo] = await pool.query(
+                    `SELECT id_coleccionable, nombre, descripcion, tipo, imagen_url FROM coleccionables WHERE id_coleccionable = ?`,
+                    [cid]
+                );
+                if (colInfo.length > 0) {
+                    newCollectibles.push(colInfo[0]);
+                }
+            }
+        }
+
+        res.json({
+            success: true,
+            message: 'Partida de memorama registrada exitosamente.',
+            newCollectibles
+        });
     } catch (error) {
         console.error('Error al guardar memorama:', error);
         res.status(500).json({ error: error.message });
