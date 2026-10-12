@@ -487,8 +487,6 @@ document.addEventListener('DOMContentLoaded', () => {
             downloadLink.href = imageURL;
             downloadLink.click();
             savePhotoToIndexedDB(imageURL);
-            console.log('¡Foto capturada con modelo y partículas!');
-
             // ==========================================
             // DESBLOQUEO DE COLECCIONABLES - FASE 4
             // ==========================================

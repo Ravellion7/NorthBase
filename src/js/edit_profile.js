@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const token = localStorage.getItem('northbase_token');
                 setAuthSession(result.user, token);
 
-                showFormMessage(form, '¡Perfil actualizado con éxito! Redirigiendo...', false);
+                showFormMessage(form, '¡Perfil actualizado con éxito!', false);
 
                 // Redirigir a profile.html
                 setTimeout(() => {

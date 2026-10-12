@@ -395,10 +395,6 @@ function checkMatch() {
             card1.element.classList.add('matched');
             card2.element.classList.add('matched');
 
-            // Efecto visual de hit
-            card1.element.querySelector('.memory-card-front').classList.add('ring-4', 'ring-emerald-400', 'ring-offset-2');
-            card2.element.querySelector('.memory-card-front').classList.add('ring-4', 'ring-emerald-400', 'ring-offset-2');
-
             flippedCards = [];
             isBoardLocked = false;
 
@@ -459,7 +455,7 @@ async function handleVictory() {
     const syncStatusEl = document.getElementById('victory-sync-status');
 
     if (finalTimeEl) finalTimeEl.textContent = formatTime(timerSeconds);
-    if (finalMovesEl) finalMovesEl.textContent = `${moves} movimientos`;
+    if (finalMovesEl) finalMovesEl.textContent = `${moves}`;
     if (finalDiffEl) finalDiffEl.textContent = currentDifficulty.toUpperCase();
 
     if (modal) {
@@ -469,7 +465,7 @@ async function handleVictory() {
     // Guardar en la base de datos MySQL si está autenticado
     if (user && user.id_usuario) {
         if (syncStatusEl) {
-            syncStatusEl.textContent = 'Guardando récord en la base de datos...';
+            syncStatusEl.textContent = 'Guardando récord en la base de datos.';
             syncStatusEl.className = 'text-xs text-amber-600 font-semibold mt-2';
         }
 

@@ -172,12 +172,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (isCurrentlyActive) {
                 applyFilter('none');
-                console.log('Filtro desactivado (Normal)');
             } else {
                 btn.classList.remove('bg-white/80', 'border-white');
                 btn.classList.add('bg-white', 'border-[#C1121F]', 'scale-125', 'shadow-2xl');
                 applyFilter(targetFilterStyle);
-                console.log(`Filtro aplicado: ${filterKey}`);
             }
         });
     });
