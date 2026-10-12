@@ -52,13 +52,13 @@ function showFormMessage(formElement, message, isError = true) {
     }
 
     msgContainer.classList.remove('hidden', 'bg-red-100', 'text-red-700', 'border-red-300', 'bg-emerald-100', 'text-emerald-800', 'border-emerald-300');
-    
+
     if (isError) {
         msgContainer.classList.add('bg-red-100', 'text-red-700', 'border', 'border-red-300');
-        msgContainer.innerHTML = `⚠️ ${message}`;
+        msgContainer.innerHTML = `Error: ${message}`;
     } else {
         msgContainer.classList.add('bg-emerald-100', 'text-emerald-800', 'border', 'border-emerald-300');
-        msgContainer.innerHTML = `✓ ${message}`;
+        msgContainer.innerHTML = `Success: ${message}`;
     }
 }
 
@@ -142,7 +142,7 @@ function showCollectibleToast(collectible) {
                 <img src="${cardImage}" alt="${cardTitle}" class="w-full h-full object-cover rounded-lg" onerror="this.src='./src/assets/trophy icon.png';" />
             </div>
             <div class="absolute -top-1.5 -left-1.5 w-5 h-5 bg-gradient-to-tr from-[#F77F00] to-[#FCBF49] rounded-full flex items-center justify-center shadow text-[10px]">
-                ⭐
+                
             </div>
         </div>
 

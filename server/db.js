@@ -22,8 +22,8 @@ async function testConnection() {
         connection.release();
         return true;
     } catch (error) {
-        console.error('❌ Error al conectar con la base de datos MySQL:', error.message);
-        console.error('💡 Verifica que MySQL esté iniciado (XAMPP/Workbench) y los datos en tu archivo .env sean correctos.');
+        console.error('Error al conectar con la base de datos MySQL:', error.message);
+        console.error('Verifica que MySQL esté iniciado (XAMPP/Workbench) y los datos en tu archivo .env sean correctos.');
         return false;
     }
 }
