@@ -668,6 +668,158 @@ app.post('/api/memorama/save', async (req, res) => {
     }
 });
 
+// ==========================================
+// API EXTERNA - ESTADÍSTICAS EN VIVO LMB (MLB STATS API)
+// ==========================================
+const MLB_TEAM_IDS = {
+    sultanes: 562,
+    charros: 6304,
+    acereros: 560,
+    rieleros: 528,
+    toros: 5010,
+    saraperos: 502,
+    tecos: 536,
+    caliente: 4444,
+    calientes: 4444,
+    dorados: 575,
+    algodoneros: 447
+};
+
+// Cache en memoria con TTL de 5 minutos para rendimiento y evitar rate-limiting
+const externalStatsCache = new Map();
+const STATS_CACHE_TTL = 5 * 60 * 1000;
+
+app.get('/api/external/teams/:teamKey/stats', async (req, res) => {
+    try {
+        const teamKey = (req.params.teamKey || '').toLowerCase();
+        const teamId = MLB_TEAM_IDS[teamKey];
+
+        if (!teamId) {
+            return res.status(404).json({
+                error: `Equipo '${teamKey}' no encontrado en el mapeo de la Zona Norte LMB.`
+            });
+        }
+
+        // Revisar si existe en caché válido
+        const cached = externalStatsCache.get(teamKey);
+        if (cached && (Date.now() - cached.timestamp < STATS_CACHE_TTL)) {
+            return res.json({
+                ...cached.data,
+                cached: true
+            });
+        }
+
+        // Consultar concurrentemente los 4 endpoints de MLB Stats API
+        const [standingsRes, hittingRes, pitchingRes, rosterRes] = await Promise.allSettled([
+            fetch('https://statsapi.mlb.com/api/v1/standings?leagueId=125&season=2024').then(r => r.json()),
+            fetch(`https://statsapi.mlb.com/api/v1/teams/${teamId}/stats?stats=season&season=2024&group=hitting`).then(r => r.json()),
+            fetch(`https://statsapi.mlb.com/api/v1/teams/${teamId}/stats?stats=season&season=2024&group=pitching`).then(r => r.json()),
+            fetch(`https://statsapi.mlb.com/api/v1/teams/${teamId}/roster`).then(r => r.json())
+        ]);
+
+        // 1. Extraer standing de Zona Norte
+        let standingsData = {
+            divisionRank: '-',
+            wins: 0,
+            losses: 0,
+            pct: '.000',
+            gamesBack: '-',
+            runDifferential: 0
+        };
+
+        if (standingsRes.status === 'fulfilled' && standingsRes.value.records) {
+            for (const rec of standingsRes.value.records) {
+                const foundTeam = rec.teamRecords?.find(t => t.team?.id === teamId);
+                if (foundTeam) {
+                    standingsData = {
+                        divisionRank: foundTeam.divisionRank || '-',
+                        wins: foundTeam.leagueRecord?.wins || 0,
+                        losses: foundTeam.leagueRecord?.losses || 0,
+                        pct: foundTeam.leagueRecord?.pct || '.000',
+                        gamesBack: foundTeam.gamesBack || '-',
+                        runDifferential: foundTeam.runDifferential || 0
+                    };
+                    break;
+                }
+            }
+        }
+
+        // 2. Extraer Bateo (Hitting)
+        const hittingStat = (hittingRes.status === 'fulfilled' && hittingRes.value.stats?.[0]?.splits?.[0]?.stat) || {};
+
+        // 3. Extraer Pitcheo (Pitching)
+        const pitchingStat = (pitchingRes.status === 'fulfilled' && pitchingRes.value.stats?.[0]?.splits?.[0]?.stat) || {};
+
+        // 4. Extraer Roster activo
+        let rosterList = [];
+        if (rosterRes.status === 'fulfilled' && Array.isArray(rosterRes.value.roster)) {
+            rosterList = rosterRes.value.roster.map(player => ({
+                id: player.person?.id,
+                name: player.person?.fullName || 'Desconocido',
+                jersey: player.jerseyNumber || '-',
+                position: player.position?.abbreviation || player.position?.name || 'POS',
+                positionType: player.position?.type || 'Jugador',
+                status: player.status?.description || 'Activo'
+            }));
+        }
+
+        const payload = {
+            success: true,
+            teamKey,
+            mlbTeamId: teamId,
+            season: '2024',
+            league: 'Liga Mexicana de Béisbol (LMB) - Zona Norte',
+            source: 'MLB Stats API Oficial',
+            standings: standingsData,
+            hitting: {
+                gamesPlayed: hittingStat.gamesPlayed || 0,
+                avg: hittingStat.avg || '.000',
+                obp: hittingStat.obp || '.000',
+                slg: hittingStat.slg || '.000',
+                ops: hittingStat.ops || '.000',
+                runs: hittingStat.runs || 0,
+                hits: hittingStat.hits || 0,
+                homeRuns: hittingStat.homeRuns || 0,
+                rbi: hittingStat.rbi || 0,
+                doubles: hittingStat.doubles || 0,
+                triples: hittingStat.triples || 0,
+                strikeOuts: hittingStat.strikeOuts || 0,
+                baseOnBalls: hittingStat.baseOnBalls || 0,
+                stolenBases: hittingStat.stolenBases || 0
+            },
+            pitching: {
+                era: pitchingStat.era || '0.00',
+                whip: pitchingStat.whip || '0.00',
+                wins: pitchingStat.wins || 0,
+                losses: pitchingStat.losses || 0,
+                saves: pitchingStat.saves || 0,
+                strikeOuts: pitchingStat.strikeOuts || 0,
+                inningsPitched: pitchingStat.inningsPitched || '0.0',
+                hitsAllowed: pitchingStat.hits || 0,
+                runsAllowed: pitchingStat.runs || 0,
+                shutouts: pitchingStat.shutouts || 0
+            },
+            roster: rosterList,
+            cached: false,
+            updatedAt: new Date().toISOString()
+        };
+
+        // Guardar en caché
+        externalStatsCache.set(teamKey, {
+            data: payload,
+            timestamp: Date.now()
+        });
+
+        res.json(payload);
+    } catch (error) {
+        console.error('Error al obtener estadísticas externas LMB:', error);
+        res.status(500).json({
+            error: 'No se pudieron recuperar las estadísticas de la API de la LMB.',
+            details: error.message
+        });
+    }
+});
+
 // Iniciar servidor
 app.listen(PORT, async () => {
     console.log(`\n==================================================`);

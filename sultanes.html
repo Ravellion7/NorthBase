@@ -144,6 +144,37 @@
             </p>
         </div>
 
+        <!-- SECCIÓN DE ESTADÍSTICAS EN VIVO DE LA LMB -->
+        <section id="team-stats-section" class="w-full max-w-lg sm:max-w-xl md:w-[90vw] md:max-w-none mt-4 sm:mt-8">
+            <!-- Encabezado de la Sección con indicador de API en vivo -->
+            <div
+                class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 bg-white/80 backdrop-blur-md p-4 sm:p-6 rounded-2xl border border-slate-200/90 shadow-sm">
+                <div>
+
+                    <h2 class="text-xl sm:text-2xl font-['Montserrat',sans-serif] font-extrabold text-[#0A1A32] mt-2">
+                        Estadísticas y Roster de Temporada
+                    </h2>
+                </div>
+                <div class="flex items-center gap-2 self-start sm:self-auto">
+                    <span
+                        class="px-3.5 py-1.5 rounded-xl bg-[#0A1A32] text-white text-xs font-bold tracking-wider uppercase">
+                        Temporada Oficial LMB
+                    </span>
+                </div>
+            </div>
+
+            <!-- Contenedor Principal de Datos (Cargado dinámicamente por JS) -->
+            <div id="stats-content-area" class="w-full space-y-6">
+                <div
+                    class="flex flex-col items-center justify-center p-12 bg-white/70 backdrop-blur-sm rounded-2xl border border-slate-200">
+                    <div
+                        class="w-10 h-10 border-4 border-[#C1121F] border-t-transparent rounded-full animate-spin mb-4">
+                    </div>
+                    <p class="text-slate-600 font-medium text-sm">Consultando estadísticas oficiales de la LMB...</p>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <script src="./src/js/auth.js"></script>

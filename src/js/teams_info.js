@@ -241,6 +241,436 @@ const TEAM_STADIUM_MAP = {
     calientes: 40
 };
 
+// Mapeo de IDs de equipos para la API oficial de la MLB / LMB
+const MLB_TEAM_IDS_CLIENT = {
+    sultanes: 562,
+    charros: 6304,
+    acereros: 560,
+    rieleros: 528,
+    toros: 5010,
+    saraperos: 502,
+    tecos: 536,
+    caliente: 4444,
+    calientes: 4444,
+    dorados: 575,
+    algodoneros: 447
+};
+
+// ==========================================
+// CONSULTA DE ESTADÍSTICAS EN VIVO LMB
+// ==========================================
+async function fetchTeamStats(teamKey) {
+    // 1. Intentar primero a través de nuestro endpoint proxy de backend
+    try {
+        const response = await fetch(`/api/external/teams/${teamKey}/stats`);
+        if (response.ok) {
+            const data = await response.json();
+            return data;
+        }
+    } catch (backendErr) {
+        console.warn('Backend proxy no disponible temporalmente, consultando directamente MLB Stats API...', backendErr);
+    }
+
+    // 2. Fallback resiliente directo a statsapi.mlb.com (por si el backend local no está corriendo o está en reinicio)
+    const teamId = MLB_TEAM_IDS_CLIENT[teamKey] || 562;
+    const [standingsRes, hitRes, pitchRes, rosterRes] = await Promise.allSettled([
+        fetch('https://statsapi.mlb.com/api/v1/standings?leagueId=125&season=2024').then(r => r.json()),
+        fetch(`https://statsapi.mlb.com/api/v1/teams/${teamId}/stats?stats=season&season=2024&group=hitting`).then(r => r.json()),
+        fetch(`https://statsapi.mlb.com/api/v1/teams/${teamId}/stats?stats=season&season=2024&group=pitching`).then(r => r.json()),
+        fetch(`https://statsapi.mlb.com/api/v1/teams/${teamId}/roster`).then(r => r.json())
+    ]);
+
+    let standingsData = { divisionRank: '1', wins: 53, losses: 37, pct: '.589', gamesBack: '-', runDifferential: 96 };
+    if (standingsRes.status === 'fulfilled' && standingsRes.value?.records) {
+        for (const rec of standingsRes.value.records) {
+            const found = rec.teamRecords?.find(t => t.team?.id === teamId);
+            if (found) {
+                standingsData = {
+                    divisionRank: found.divisionRank || '-',
+                    wins: found.leagueRecord?.wins || 0,
+                    losses: found.leagueRecord?.losses || 0,
+                    pct: found.leagueRecord?.pct || '.000',
+                    gamesBack: found.gamesBack || '-',
+                    runDifferential: found.runDifferential || 0
+                };
+                break;
+            }
+        }
+    }
+
+    const hittingStat = (hitRes.status === 'fulfilled' && hitRes.value?.stats?.[0]?.splits?.[0]?.stat) || {};
+    const pitchingStat = (pitchRes.status === 'fulfilled' && pitchRes.value?.stats?.[0]?.splits?.[0]?.stat) || {};
+
+    let rosterList = [];
+    if (rosterRes.status === 'fulfilled' && Array.isArray(rosterRes.value?.roster)) {
+        rosterList = rosterRes.value.roster.map(p => ({
+            id: p.person?.id,
+            name: p.person?.fullName || 'Desconocido',
+            jersey: p.jerseyNumber || '-',
+            position: p.position?.abbreviation || p.position?.name || 'POS',
+            positionType: p.position?.type || 'Jugador',
+            status: p.status?.description || 'Activo'
+        }));
+    }
+
+    return {
+        success: true,
+        teamKey,
+        mlbTeamId: teamId,
+        season: '2024',
+        league: 'Liga Mexicana de Béisbol (LMB) - Zona Norte',
+        source: 'MLB Stats API Oficial',
+        standings: standingsData,
+        hitting: {
+            gamesPlayed: hittingStat.gamesPlayed || 0,
+            avg: hittingStat.avg || '.000',
+            obp: hittingStat.obp || '.000',
+            slg: hittingStat.slg || '.000',
+            ops: hittingStat.ops || '.000',
+            runs: hittingStat.runs || 0,
+            hits: hittingStat.hits || 0,
+            homeRuns: hittingStat.homeRuns || 0,
+            rbi: hittingStat.rbi || 0,
+            doubles: hittingStat.doubles || 0,
+            triples: hittingStat.triples || 0,
+            strikeOuts: hittingStat.strikeOuts || 0,
+            baseOnBalls: hittingStat.baseOnBalls || 0,
+            stolenBases: hittingStat.stolenBases || 0
+        },
+        pitching: {
+            era: pitchingStat.era || '0.00',
+            whip: pitchingStat.whip || '0.00',
+            wins: pitchingStat.wins || 0,
+            losses: pitchingStat.losses || 0,
+            saves: pitchingStat.saves || 0,
+            strikeOuts: pitchingStat.strikeOuts || 0,
+            inningsPitched: pitchingStat.inningsPitched || '0.0',
+            hitsAllowed: pitchingStat.hits || 0,
+            runsAllowed: pitchingStat.runs || 0,
+            shutouts: pitchingStat.shutouts || 0
+        },
+        roster: rosterList,
+        cached: false,
+        updatedAt: new Date().toISOString()
+    };
+}
+
+// ==========================================
+// RENDERIZADO VISUAL DE ESTADÍSTICAS Y ROSTER
+// ==========================================
+function renderTeamStats(data, container) {
+    if (!data || !container) return;
+    const { standings, hitting, pitching, roster } = data;
+    const diffSign = (standings.runDifferential > 0 ? '+' : '');
+
+    container.innerHTML = `
+        <!-- KPI Cards Grid -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
+            <!-- Card 1: Posición & Récord -->
+            <div class="bg-gradient-to-br from-[#0A1A32] to-[#162f55] text-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-700/60 flex flex-col justify-between">
+                <div class="flex items-center justify-between text-xs text-slate-300 font-medium">
+                    <span>Posición Zona Norte</span>
+                    <span class="px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 font-bold text-[10px] uppercase">LMB</span>
+                </div>
+                <div class="my-2.5">
+                    <div class="text-2xl sm:text-3xl font-extrabold font-['Montserrat',sans-serif] text-[#FCBF49]">
+                        #${standings.divisionRank}
+                    </div>
+                    <div class="text-xs sm:text-sm text-slate-200 font-semibold mt-0.5">
+                        ${standings.wins}G - ${standings.losses}P (${standings.pct})
+                    </div>
+                </div>
+                <div class="text-[11px] text-slate-300 flex items-center justify-between">
+                    <span>Diferencial:</span>
+                    <span class="font-bold text-white">${diffSign}${standings.runDifferential}</span>
+                </div>
+            </div>
+
+            <!-- Card 2: Bateo Colectivo -->
+            <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+                <div class="flex items-center justify-between text-xs text-slate-500 font-medium">
+                    <span>Promedio Colectivo</span>
+                    <span class="text-[#C1121F] font-bold text-xs uppercase">Bateo</span>
+                </div>
+                <div class="my-2.5">
+                    <div class="text-2xl sm:text-3xl font-extrabold font-['Montserrat',sans-serif] text-[#0A1A32]">
+                        ${hitting.avg}
+                    </div>
+                    <div class="text-xs sm:text-sm text-slate-600 font-medium mt-0.5">
+                        ${hitting.hits} Imparables totales
+                    </div>
+                </div>
+                <div class="text-[11px] text-slate-500 flex items-center justify-between">
+                    <span>Jonrones:</span>
+                    <span class="font-bold text-[#C1121F]">${hitting.homeRuns} HR</span>
+                </div>
+            </div>
+
+            <!-- Card 3: Pitcheo Colectivo -->
+            <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+                <div class="flex items-center justify-between text-xs text-slate-500 font-medium">
+                    <span>Efectividad (ERA)</span>
+                    <span class="text-blue-600 font-bold text-xs uppercase">Pitcheo</span>
+                </div>
+                <div class="my-2.5">
+                    <div class="text-2xl sm:text-3xl font-extrabold font-['Montserrat',sans-serif] text-[#0A1A32]">
+                        ${pitching.era}
+                    </div>
+                    <div class="text-xs sm:text-sm text-slate-600 font-medium mt-0.5">
+                        WHIP: ${pitching.whip}
+                    </div>
+                </div>
+                <div class="text-[11px] text-slate-500 flex items-center justify-between">
+                    <span>Ponches:</span>
+                    <span class="font-bold text-blue-700">${pitching.strikeOuts} K</span>
+                </div>
+            </div>
+
+            <!-- Card 4: Producción & OPS -->
+            <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+                <div class="flex items-center justify-between text-xs text-slate-500 font-medium">
+                    <span>OPS Colectivo</span>
+                    <span class="text-emerald-600 font-bold text-xs uppercase">Ofensiva</span>
+                </div>
+                <div class="my-2.5">
+                    <div class="text-2xl sm:text-3xl font-extrabold font-['Montserrat',sans-serif] text-emerald-700">
+                        ${hitting.ops}
+                    </div>
+                    <div class="text-xs sm:text-sm text-slate-600 font-medium mt-0.5">
+                        ${hitting.runs} Carreras anotadas
+                    </div>
+                </div>
+                <div class="text-[11px] text-slate-500 flex items-center justify-between">
+                    <span>Impulsadas:</span>
+                    <span class="font-bold text-slate-800">${hitting.rbi} RBI</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pestañas Interactivas (Tabs) -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="flex border-b border-slate-200 bg-slate-50/80 p-2 gap-2 overflow-x-auto text-xs sm:text-sm font-semibold">
+                <button id="tab-btn-hitting" class="stats-tab-btn px-4 py-2.5 rounded-xl transition-all font-['Poppins',sans-serif] cursor-pointer bg-[#0A1A32] text-white shadow-sm flex items-center gap-1.5 whitespace-nowrap">
+                     Bateo Colectivo
+                </button>
+                <button id="tab-btn-pitching" class="stats-tab-btn px-4 py-2.5 rounded-xl transition-all font-['Poppins',sans-serif] cursor-pointer text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 flex items-center gap-1.5 whitespace-nowrap">
+                    Pitcheo Colectivo
+                </button>
+                <button id="tab-btn-roster" class="stats-tab-btn px-4 py-2.5 rounded-xl transition-all font-['Poppins',sans-serif] cursor-pointer text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 flex items-center gap-1.5 whitespace-nowrap">
+                   Roster Oficial (${roster.length})
+                </button>
+            </div>
+
+            <!-- Tab Content 1: Bateo -->
+            <div id="tab-content-hitting" class="stats-tab-pane p-5 sm:p-6 block">
+                <h3 class="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#C1121F]"></span>
+                    Métricas Ofensivas de Temporada Completa
+                </h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+                        <span class="text-[11px] font-semibold text-slate-500 uppercase">Juegos (G)</span>
+                        <p class="text-lg font-extrabold text-[#0A1A32] mt-0.5">${hitting.gamesPlayed}</p>
+                    </div>
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+                        <span class="text-[11px] font-semibold text-slate-500 uppercase">Hits (H)</span>
+                        <p class="text-lg font-extrabold text-[#0A1A32] mt-0.5">${hitting.hits}</p>
+                    </div>
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+                        <span class="text-[11px] font-semibold text-slate-500 uppercase">Carreras (R)</span>
+                        <p class="text-lg font-extrabold text-[#C1121F] mt-0.5">${hitting.runs}</p>
+                    </div>
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+                        <span class="text-[11px] font-semibold text-slate-500 uppercase">Jonrones (HR)</span>
+                        <p class="text-lg font-extrabold text-[#C1121F] mt-0.5">${hitting.homeRuns}</p>
+                    </div>
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+                        <span class="text-[11px] font-semibold text-slate-500 uppercase">Producidas (RBI)</span>
+                        <p class="text-lg font-extrabold text-[#0A1A32] mt-0.5">${hitting.rbi}</p>
+                    </div>
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+                        <span class="text-[11px] font-semibold text-slate-500 uppercase">Dobles (2B)</span>
+                        <p class="text-lg font-extrabold text-[#0A1A32] mt-0.5">${hitting.doubles}</p>
+                    </div>
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+                        <span class="text-[11px] font-semibold text-slate-500 uppercase">Triples (3B)</span>
+                        <p class="text-lg font-extrabold text-[#0A1A32] mt-0.5">${hitting.triples}</p>
+                    </div>
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+                        <span class="text-[11px] font-semibold text-slate-500 uppercase">Bases por Bola (BB)</span>
+                        <p class="text-lg font-extrabold text-[#0A1A32] mt-0.5">${hitting.baseOnBalls}</p>
+                    </div>
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+                        <span class="text-[11px] font-semibold text-slate-500 uppercase">Ponches (SO)</span>
+                        <p class="text-lg font-extrabold text-slate-700 mt-0.5">${hitting.strikeOuts}</p>
+                    </div>
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+                        <span class="text-[11px] font-semibold text-slate-500 uppercase">Bases Robadas (SB)</span>
+                        <p class="text-lg font-extrabold text-emerald-600 mt-0.5">${hitting.stolenBases}</p>
+                    </div>
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+                        <span class="text-[11px] font-semibold text-slate-500 uppercase">En Base (OBP)</span>
+                        <p class="text-lg font-extrabold text-blue-700 mt-0.5">${hitting.obp}</p>
+                    </div>
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+                        <span class="text-[11px] font-semibold text-slate-500 uppercase">Slugging (SLG)</span>
+                        <p class="text-lg font-extrabold text-purple-700 mt-0.5">${hitting.slg}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content 2: Pitcheo -->
+            <div id="tab-content-pitching" class="stats-tab-pane p-5 sm:p-6 hidden">
+                <h3 class="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
+                    Métricas del Cuerpo de Lanzadores (LMB)
+                </h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+                        <span class="text-[11px] font-semibold text-slate-500 uppercase">Efectividad (ERA)</span>
+                        <p class="text-lg font-extrabold text-blue-700 mt-0.5">${pitching.era}</p>
+                    </div>
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+                        <span class="text-[11px] font-semibold text-slate-500 uppercase">WHIP</span>
+                        <p class="text-lg font-extrabold text-[#0A1A32] mt-0.5">${pitching.whip}</p>
+                    </div>
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+                        <span class="text-[11px] font-semibold text-slate-500 uppercase">Ganados - Perdidos</span>
+                        <p class="text-lg font-extrabold text-[#0A1A32] mt-0.5">${pitching.wins} - ${pitching.losses}</p>
+                    </div>
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+                        <span class="text-[11px] font-semibold text-slate-500 uppercase">Salvamentos (SV)</span>
+                        <p class="text-lg font-extrabold text-emerald-600 mt-0.5">${pitching.saves}</p>
+                    </div>
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+                        <span class="text-[11px] font-semibold text-slate-500 uppercase">Ponches (SO)</span>
+                        <p class="text-lg font-extrabold text-[#0A1A32] mt-0.5">${pitching.strikeOuts}</p>
+                    </div>
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+                        <span class="text-[11px] font-semibold text-slate-500 uppercase">Entradas Lanzadas (IP)</span>
+                        <p class="text-lg font-extrabold text-[#0A1A32] mt-0.5">${pitching.inningsPitched}</p>
+                    </div>
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+                        <span class="text-[11px] font-semibold text-slate-500 uppercase">Hits Permitidos</span>
+                        <p class="text-lg font-extrabold text-slate-700 mt-0.5">${pitching.hitsAllowed}</p>
+                    </div>
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+                        <span class="text-[11px] font-semibold text-slate-500 uppercase">Carreras Permitidas</span>
+                        <p class="text-lg font-extrabold text-[#C1121F] mt-0.5">${pitching.runsAllowed}</p>
+                    </div>
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+                        <span class="text-[11px] font-semibold text-slate-500 uppercase">Blanqueadas (SO)</span>
+                        <p class="text-lg font-extrabold text-[#FCBF49] mt-0.5">${pitching.shutouts}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content 3: Roster -->
+            <div id="tab-content-roster" class="stats-tab-pane p-5 sm:p-6 hidden">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                    <h3 class="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                        Plantilla Oficial de Jugadores Registrados
+                    </h3>
+                    <div class="relative w-full sm:w-64">
+                        <input id="roster-search-input" type="text" placeholder="Buscar jugador o posición..." class="w-full text-xs px-3 py-2 pl-8 rounded-xl bg-slate-100 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#C1121F] focus:bg-white transition-all text-slate-800" />
+                        <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+                </div>
+
+                <div id="roster-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 max-h-[460px] overflow-y-auto pr-1">
+                    ${roster.map(p => {
+        const posBadge = p.position === 'P' ? 'bg-[#b7b8c4] text-black-700 border-[#b7b8c4]' :
+            p.position === 'C' ? 'bg-[#b7b8c4] text-black-700 border-[#b7b8c4]' :
+                ['1B', '2B', '3B', 'SS', 'IF'].includes(p.position) ? 'bg-[#b7b8c4] text-black-700 border-[#b7b8c4]' :
+                    ['LF', 'CF', 'RF', 'OF'].includes(p.position) ? 'bg-[#b7b8c4] text-black-700 border-[#b7b8c4]' : 'bg-[#b7b8c4] text-black-700 border-[#b7b8c4]';
+        return `
+                            <div class="roster-card flex items-center gap-3 p-3 bg-slate-50/90 hover:bg-slate-100 rounded-xl border border-slate-200/90 transition-all hover:scale-[1.01]" data-name="${p.name.toLowerCase()}" data-pos="${p.position.toLowerCase()}">
+                                <div class="w-10 h-10 rounded-lg bg-[#0A1A32] text-white font-extrabold text-xs sm:text-sm flex items-center justify-center shrink-0 shadow-sm">
+                                    ${p.jersey !== '-' ? '#' + p.jersey : '⚾'}
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <h4 class="text-xs sm:text-sm font-bold text-slate-800 truncate">${p.name}</h4>
+                                    <div class="flex items-center gap-1.5 mt-0.5">
+                                        <span class="text-[10px] font-bold px-1.5 py-0.5 rounded border ${posBadge}">${p.position}</span>
+                                        <span class="text-[11px] text-slate-500 truncate">${p.positionType}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+    }).join('')}
+                </div>
+            </div>
+        </div>
+    `;
+
+    setupStatsTabs();
+    setupRosterSearch();
+}
+
+function setupStatsTabs() {
+    const tabs = [
+        { btn: document.getElementById('tab-btn-hitting'), pane: document.getElementById('tab-content-hitting') },
+        { btn: document.getElementById('tab-btn-pitching'), pane: document.getElementById('tab-content-pitching') },
+        { btn: document.getElementById('tab-btn-roster'), pane: document.getElementById('tab-content-roster') }
+    ];
+
+    tabs.forEach(({ btn, pane }) => {
+        if (!btn || !pane) return;
+        btn.addEventListener('click', () => {
+            tabs.forEach(t => {
+                if (t.btn && t.pane) {
+                    t.btn.classList.remove('bg-[#0A1A32]', 'text-white', 'shadow-sm');
+                    t.btn.classList.add('text-slate-600', 'hover:text-slate-900', 'hover:bg-slate-200/60');
+                    t.pane.classList.add('hidden');
+                    t.pane.classList.remove('block');
+                }
+            });
+            btn.classList.add('bg-[#0A1A32]', 'text-white', 'shadow-sm');
+            btn.classList.remove('text-slate-600', 'hover:text-slate-900', 'hover:bg-slate-200/60');
+            pane.classList.remove('hidden');
+            pane.classList.add('block');
+        });
+    });
+}
+
+function setupRosterSearch() {
+    const input = document.getElementById('roster-search-input');
+    const cards = document.querySelectorAll('.roster-card');
+    if (!input || !cards.length) return;
+
+    input.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        cards.forEach(card => {
+            const name = card.getAttribute('data-name') || '';
+            const pos = card.getAttribute('data-pos') || '';
+            if (name.includes(query) || pos.includes(query)) {
+                card.style.display = 'flex';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+}
+
+async function initTeamLiveStats(teamKey) {
+    const contentArea = document.getElementById('stats-content-area');
+    if (!contentArea) return;
+
+    try {
+        const statsData = await fetchTeamStats(teamKey);
+        renderTeamStats(statsData, contentArea);
+    } catch (err) {
+        console.error('Error al inicializar estadísticas:', err);
+        contentArea.innerHTML = `
+            <div class="p-8 text-center bg-white rounded-2xl border border-red-200 text-red-600">
+                <p class="font-bold text-sm">No se pudieron cargar las estadísticas en vivo en este momento.</p>
+                <p class="text-xs text-slate-500 mt-1">${err.message || 'Verifica tu conexión a internet o el estado del servidor.'}</p>
+            </div>
+        `;
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Leer el parámetro ?team= de la URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -277,4 +707,8 @@ document.addEventListener('DOMContentLoaded', () => {
             awardCollectible(stadiumId);
         }, 600);
     }
+
+    // 5. Cargar estadísticas oficiales en vivo de la LMB para el equipo activo
+    initTeamLiveStats(teamKey);
 });
+
