@@ -957,7 +957,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const authHint = document.getElementById('trivia-auth-hint');
 
         if (user && user.id_usuario) {
-            const apiBase = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'http://localhost:3000/api';
+            const apiBase = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : '/api';
             fetch(`${apiBase}/trivias/save`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

@@ -2,7 +2,11 @@
 // NORTHBASE - UTILIDADES DE AUTENTICACIÓN
 // ==========================================
 
-const API_BASE_URL = 'http://localhost:3000/api';
+// Si se ejecuta mediante túnel (Cloudflare Tunnel) o mismo host, usar ruta relativa /api
+// Si se corre desde Live Server (puerto 5500 u otro), apuntar al backend local en 3000
+const API_BASE_URL = (window.location.port !== '3000' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'))
+    ? 'http://localhost:3000/api'
+    : '/api';
 
 /**
  * Obtener el usuario autenticado actualmente almacenado en localStorage
