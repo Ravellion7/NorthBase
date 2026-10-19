@@ -247,9 +247,108 @@ document.addEventListener('DOMContentLoaded', () => {
     const teamTargets = document.querySelectorAll('.team-target');
     let currentActiveTarget = null;
     let currentActiveModel = null;
+    let activeTeamName = null;
     let availableAnimations = [];
     let sultanesAnimations = []; // Animaciones maestras exclusivas de Sultanes
     let currentEffectName = null;
+
+    // Mapeo oficial de nombres para redirección a página de equipos
+    const TEAM_URL_MAP = {
+        'acereros': 'acereros',
+        'algodoneros': 'algodoneros',
+        'caliente': 'caliente',
+        'calientes': 'caliente',
+        'charros': 'charros',
+        'dorados': 'dorados',
+        'rieleros': 'rieleros',
+        'saraperos': 'saraperos',
+        'sultanes': 'sultanes',
+        'tecos': 'tecos',
+        'toros': 'toros'
+    };
+
+    function navigateToTeam(team) {
+        if (!team) return;
+        const cleanKey = team.toLowerCase().trim();
+        const teamKey = TEAM_URL_MAP[cleanKey] || cleanKey;
+        console.log(`Redirigiendo a estadísticas del equipo: ${teamKey}`);
+        window.location.href = `./sultanes.html?team=${teamKey}`;
+    }
+
+    // Listener para el banner flotante (ideal para pulsar en celular)
+    if (statusText) {
+        statusText.addEventListener('click', () => {
+            if (activeTeamName) {
+                navigateToTeam(activeTeamName);
+            }
+        });
+    }
+
+    // ==========================================
+    // DETECCIÓN ROBUSTA DE CLIC EN EL MODELO 3D (THREE.JS RAYCASTER)
+    // ==========================================
+    const sceneEl = document.querySelector('a-scene');
+
+    function checkRaycastHit(clientX, clientY) {
+        if (!currentActiveTarget || !activeTeamName || !sceneEl) return false;
+        
+        const camera = sceneEl.camera;
+        if (!camera) return false;
+
+        const canvas = sceneEl.canvas || sceneEl.querySelector('canvas');
+        if (!canvas) return false;
+
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = ((clientX - rect.left) / rect.width) * 2 - 1;
+        const mouseY = -((clientY - rect.top) / rect.height) * 2 + 1;
+
+        const raycaster = new THREE.Raycaster();
+        raycaster.setFromCamera(new THREE.Vector2(mouseX, mouseY), camera);
+
+        // Comprobar colisión con todos los objetos, mallas y hitbox del equipo activo
+        const intersects = raycaster.intersectObjects(currentActiveTarget.object3D.children, true);
+        if (intersects && intersects.length > 0) {
+            console.log(`Three.js Raycaster detectó clic en modelo de ${activeTeamName}`);
+            navigateToTeam(activeTeamName);
+            return true;
+        }
+        return false;
+    }
+
+    // Escuchar clic en PC/laptop
+    window.addEventListener('click', (e) => {
+        if (e.target.closest('button, a, #camera-status')) return;
+        checkRaycastHit(e.clientX, e.clientY);
+    });
+
+    // Escuchar toque táctil en móviles
+    window.addEventListener('touchend', (e) => {
+        if (!e.changedTouches || e.changedTouches.length === 0) return;
+        const touch = e.changedTouches[0];
+        if (touch.target.closest('button, a, #camera-status')) return;
+        checkRaycastHit(touch.clientX, touch.clientY);
+    });
+
+    // Cursor pointer al pasar el mouse por encima del modelo en PC
+    window.addEventListener('mousemove', (e) => {
+        if (!currentActiveTarget || !activeTeamName || !sceneEl) return;
+        const camera = sceneEl.camera;
+        const canvas = sceneEl.canvas || sceneEl.querySelector('canvas');
+        if (!camera || !canvas) return;
+
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        const mouseY = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+        const raycaster = new THREE.Raycaster();
+        raycaster.setFromCamera(new THREE.Vector2(mouseX, mouseY), camera);
+        const intersects = raycaster.intersectObjects(currentActiveTarget.object3D.children, true);
+        if (intersects && intersects.length > 0) {
+            document.body.style.cursor = 'pointer';
+        } else {
+            document.body.style.cursor = 'default';
+        }
+    });
 
     // ==========================================
     // 1. LISTENERS DE DETECCIÓN AR (TARGETS)
@@ -259,7 +358,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const teamName = target.getAttribute('data-team') || 'Equipo';
         const model = target.querySelector('a-gltf-model');
 
+        // Clic directo sobre el modelo 3D (para PC/Laptop y pantallas táctiles)
         if (model) {
+            model.addEventListener('click', () => {
+                navigateToTeam(teamName);
+            });
+
+            // Feedback de cursor en mouse
+            model.addEventListener('mouseenter', () => {
+                document.body.style.cursor = 'pointer';
+            });
+            model.addEventListener('mouseleave', () => {
+                document.body.style.cursor = 'default';
+            });
+
             model.addEventListener('model-loaded', () => {
                 const mesh = model.getObject3D('mesh');
                 if (!mesh) return;
@@ -283,10 +395,16 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        // Clic en la entidad target completa como respaldo
+        target.addEventListener('click', () => {
+            navigateToTeam(teamName);
+        });
+
         target.addEventListener('targetFound', () => {
             console.log(`¡Logo de ${teamName} detectado!`);
             currentActiveTarget = target;
             currentActiveModel = model;
+            activeTeamName = teamName;
 
             if (model) {
                 const mesh = model.getObject3D('mesh');
@@ -306,10 +424,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentActiveTarget.setAttribute('particle-effect', { type: currentEffectName });
             }
 
+            // Banner interactivo: muestra información y permite tocar para redirigir
             if (statusText) {
-                statusText.textContent = `¡Logo de ${teamName} detectado!`;
-                statusText.classList.add('bg-emerald-600/80', 'border-emerald-400');
-                statusText.classList.remove('bg-black/60');
+                statusText.innerHTML = `
+                    <div class="flex items-center justify-center gap-2">
+                        <span class="font-bold">¡Logo de ${teamName} detectado!</span>
+                        <span class="text-[11px] bg-white/25 hover:bg-white/40 text-white font-semibold px-2.5 py-0.5 rounded-full transition-all">Ver estadísticas ➔</span>
+                    </div>
+                `;
+                statusText.classList.remove('pointer-events-none', 'bg-black/60', 'border-white/20');
+                statusText.classList.add('pointer-events-auto', 'cursor-pointer', 'bg-emerald-600/90', 'border-emerald-400', 'hover:scale-105', 'active:scale-95');
             }
         });
 
@@ -325,13 +449,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 currentActiveTarget = null;
                 currentActiveModel = null;
+                activeTeamName = null;
                 availableAnimations = [];
             }
 
+            document.body.style.cursor = 'default';
+
             if (statusText) {
-                statusText.textContent = 'Apunta la cámara al logo de un equipo';
-                statusText.classList.remove('bg-emerald-600/80', 'border-emerald-400');
-                statusText.classList.add('bg-black/60');
+                statusText.textContent = 'Apunta la cámara al logo de un equipo...';
+                statusText.classList.remove('pointer-events-auto', 'cursor-pointer', 'bg-emerald-600/90', 'border-emerald-400', 'hover:scale-105', 'active:scale-95');
+                statusText.classList.add('pointer-events-none', 'bg-black/60', 'border-white/20');
             }
         });
 

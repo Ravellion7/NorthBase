@@ -229,67 +229,66 @@
                         <a-asset-item id="torosModel" src="./src/assets/Models/Toros.glb"></a-asset-item>
                     </a-assets>
 
-                    <a-camera position="0 0 0" look-controls="enabled: false">
+                    <a-camera position="0 0 0" look-controls="enabled: false" cursor="rayOrigin: mouse" raycaster="objects: .clickable">
                         <a-light type="directional" color="#ffffff" intensity="2" position="0 0 1"></a-light>
                         <a-light type="ambient" color="#ffffff" intensity="1.8"></a-light>
                     </a-camera>
 
 
-                    <a-entity class="team-target" data-team="Acereros" mindar-image-target="targetIndex: 0">
-                        <a-gltf-model src="#acererosModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0">
-                        </a-gltf-model>
+                    <a-entity class="team-target clickable" data-team="Acereros" mindar-image-target="targetIndex: 0">
+                        <a-gltf-model class="clickable" src="#acererosModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0"></a-gltf-model>
+                        <a-box class="clickable team-hitbox" position="0 0.2 0.1" scale="0.85 1.1 0.85" material="opacity: 0; transparent: true"></a-box>
                     </a-entity>
 
 
-                    <a-entity class="team-target" data-team="Algodoneros" mindar-image-target="targetIndex: 1">
-                        <a-gltf-model src="#algodonerosModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0">
-                        </a-gltf-model>
+                    <a-entity class="team-target clickable" data-team="Algodoneros" mindar-image-target="targetIndex: 1">
+                        <a-gltf-model class="clickable" src="#algodonerosModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0"></a-gltf-model>
+                        <a-box class="clickable team-hitbox" position="0 0.2 0.1" scale="0.85 1.1 0.85" material="opacity: 0; transparent: true"></a-box>
                     </a-entity>
 
-                    <a-entity class="team-target" data-team="Calientes" mindar-image-target="targetIndex: 2">
-                        <a-gltf-model src="#calientesModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0">
-                        </a-gltf-model>
+                    <a-entity class="team-target clickable" data-team="Calientes" mindar-image-target="targetIndex: 2">
+                        <a-gltf-model class="clickable" src="#calientesModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0"></a-gltf-model>
+                        <a-box class="clickable team-hitbox" position="0 0.2 0.1" scale="0.85 1.1 0.85" material="opacity: 0; transparent: true"></a-box>
                     </a-entity>
 
-                    <a-entity class="team-target" data-team="Charros" mindar-image-target="targetIndex: 3">
-                        <a-gltf-model src="#charrosModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0">
-                        </a-gltf-model>
+                    <a-entity class="team-target clickable" data-team="Charros" mindar-image-target="targetIndex: 3">
+                        <a-gltf-model class="clickable" src="#charrosModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0"></a-gltf-model>
+                        <a-box class="clickable team-hitbox" position="0 0.2 0.1" scale="0.85 1.1 0.85" material="opacity: 0; transparent: true"></a-box>
                     </a-entity>
 
-                    <a-entity class="team-target" data-team="Dorados" mindar-image-target="targetIndex: 4">
-                        <a-gltf-model src="#doradosModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0">
-                        </a-gltf-model>
+                    <a-entity class="team-target clickable" data-team="Dorados" mindar-image-target="targetIndex: 4">
+                        <a-gltf-model class="clickable" src="#doradosModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0"></a-gltf-model>
+                        <a-box class="clickable team-hitbox" position="0 0.2 0.1" scale="0.85 1.1 0.85" material="opacity: 0; transparent: true"></a-box>
                     </a-entity>
 
-                    <a-entity class="team-target" data-team="Rieleros" mindar-image-target="targetIndex: 5">
-                        <a-gltf-model src="#rielerosModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0">
-                        </a-gltf-model>
+                    <a-entity class="team-target clickable" data-team="Rieleros" mindar-image-target="targetIndex: 5">
+                        <a-gltf-model class="clickable" src="#rielerosModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0"></a-gltf-model>
+                        <a-box class="clickable team-hitbox" position="0 0.2 0.1" scale="0.85 1.1 0.85" material="opacity: 0; transparent: true"></a-box>
                     </a-entity>
 
-                    <a-entity class="team-target" data-team="Saraperos" mindar-image-target="targetIndex: 6">
-                        <a-gltf-model src="#saraperosModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0">
-                        </a-gltf-model>
+                    <a-entity class="team-target clickable" data-team="Saraperos" mindar-image-target="targetIndex: 6">
+                        <a-gltf-model class="clickable" src="#saraperosModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0"></a-gltf-model>
+                        <a-box class="clickable team-hitbox" position="0 0.2 0.1" scale="0.85 1.1 0.85" material="opacity: 0; transparent: true"></a-box>
                     </a-entity>
 
-                    <a-entity class="team-target" data-team="Sultanes" mindar-image-target="targetIndex: 7">
-                        <a-gltf-model id="sultanesGltf" src="#sultanesModel" position="0 0 0.1" scale="0.5 0.5 0.5"
-                            rotation="0 0 0">
-                        </a-gltf-model>
+                    <a-entity class="team-target clickable" data-team="Sultanes" mindar-image-target="targetIndex: 7">
+                        <a-gltf-model id="sultanesGltf" class="clickable" src="#sultanesModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0"></a-gltf-model>
+                        <a-box class="clickable team-hitbox" position="0 0.2 0.1" scale="0.85 1.1 0.85" material="opacity: 0; transparent: true"></a-box>
                     </a-entity>
 
-                    <a-entity class="team-target" data-team="Tecos" mindar-image-target="targetIndex: 8">
-                        <a-gltf-model src="#tecosModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0">
-                        </a-gltf-model>
+                    <a-entity class="team-target clickable" data-team="Tecos" mindar-image-target="targetIndex: 8">
+                        <a-gltf-model class="clickable" src="#tecosModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0"></a-gltf-model>
+                        <a-box class="clickable team-hitbox" position="0 0.2 0.1" scale="0.85 1.1 0.85" material="opacity: 0; transparent: true"></a-box>
                     </a-entity>
 
-                    <a-entity class="team-target" data-team="Toros" mindar-image-target="targetIndex: 9">
-                        <a-gltf-model src="#torosModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0">
-                        </a-gltf-model>
+                    <a-entity class="team-target clickable" data-team="Toros" mindar-image-target="targetIndex: 9">
+                        <a-gltf-model class="clickable" src="#torosModel" position="0 0 0.1" scale="0.5 0.5 0.5" rotation="0 0 0"></a-gltf-model>
+                        <a-box class="clickable team-hitbox" position="0 0.2 0.1" scale="0.85 1.1 0.85" material="opacity: 0; transparent: true"></a-box>
                     </a-entity>
                 </a-scene>
 
                 <div id="camera-status"
-                    class="absolute top-20 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-sm border border-white/20 px-4 py-1.5 rounded-full text-white text-xs sm:text-sm font-['Poppins',sans-serif] pointer-events-none z-20 transition-opacity duration-300">
+                    class="absolute top-3 sm:top-4 right-3 sm:right-4 md:right-6 max-w-[280px] sm:max-w-xs bg-black/60 backdrop-blur-sm border border-white/20 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-2xl sm:rounded-full text-white text-xs sm:text-sm font-['Poppins',sans-serif] pointer-events-none z-20 transition-all duration-300 text-center shadow-lg select-none">
                     Apunta la cámara al logo de un equipo...
                 </div>
             </div>

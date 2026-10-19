@@ -261,8 +261,12 @@ const MLB_TEAM_IDS_CLIENT = {
 // ==========================================
 async function fetchTeamStats(teamKey) {
     // 1. Intentar primero a través de nuestro endpoint proxy de backend
+    // (Si se abre con Live Server en puerto 5500, apuntar al backend en puerto 3000)
     try {
-        const response = await fetch(`/api/external/teams/${teamKey}/stats`);
+        const apiOrigin = (window.location.port !== '3000' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'))
+            ? 'http://localhost:3000'
+            : '';
+        const response = await fetch(`${apiOrigin}/api/external/teams/${teamKey}/stats?season=2026`);
         if (response.ok) {
             const data = await response.json();
             return data;
@@ -274,13 +278,13 @@ async function fetchTeamStats(teamKey) {
     // 2. Fallback resiliente directo a statsapi.mlb.com (por si el backend local no está corriendo o está en reinicio)
     const teamId = MLB_TEAM_IDS_CLIENT[teamKey] || 562;
     const [standingsRes, hitRes, pitchRes, rosterRes] = await Promise.allSettled([
-        fetch('https://statsapi.mlb.com/api/v1/standings?leagueId=125&season=2024').then(r => r.json()),
-        fetch(`https://statsapi.mlb.com/api/v1/teams/${teamId}/stats?stats=season&season=2024&group=hitting`).then(r => r.json()),
-        fetch(`https://statsapi.mlb.com/api/v1/teams/${teamId}/stats?stats=season&season=2024&group=pitching`).then(r => r.json()),
+        fetch('https://statsapi.mlb.com/api/v1/standings?leagueId=125&season=2026').then(r => r.json()),
+        fetch(`https://statsapi.mlb.com/api/v1/teams/${teamId}/stats?stats=season&season=2026&group=hitting`).then(r => r.json()),
+        fetch(`https://statsapi.mlb.com/api/v1/teams/${teamId}/stats?stats=season&season=2026&group=pitching`).then(r => r.json()),
         fetch(`https://statsapi.mlb.com/api/v1/teams/${teamId}/roster`).then(r => r.json())
     ]);
 
-    let standingsData = { divisionRank: '1', wins: 53, losses: 37, pct: '.589', gamesBack: '-', runDifferential: 96 };
+    let standingsData = { divisionRank: '-', wins: 0, losses: 0, pct: '.000', gamesBack: '-', runDifferential: 0 };
     if (standingsRes.status === 'fulfilled' && standingsRes.value?.records) {
         for (const rec of standingsRes.value.records) {
             const found = rec.teamRecords?.find(t => t.team?.id === teamId);
@@ -317,7 +321,7 @@ async function fetchTeamStats(teamKey) {
         success: true,
         teamKey,
         mlbTeamId: teamId,
-        season: '2024',
+        season: '2026',
         league: 'Liga Mexicana de Béisbol (LMB) - Zona Norte',
         source: 'MLB Stats API Oficial',
         standings: standingsData,

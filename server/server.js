@@ -700,8 +700,11 @@ app.get('/api/external/teams/:teamKey/stats', async (req, res) => {
             });
         }
 
+        const season = req.query.season || '2026';
+        const cacheKey = `${teamKey}_${season}`;
+
         // Revisar si existe en caché válido
-        const cached = externalStatsCache.get(teamKey);
+        const cached = externalStatsCache.get(cacheKey);
         if (cached && (Date.now() - cached.timestamp < STATS_CACHE_TTL)) {
             return res.json({
                 ...cached.data,
@@ -711,9 +714,9 @@ app.get('/api/external/teams/:teamKey/stats', async (req, res) => {
 
         // Consultar concurrentemente los 4 endpoints de MLB Stats API
         const [standingsRes, hittingRes, pitchingRes, rosterRes] = await Promise.allSettled([
-            fetch('https://statsapi.mlb.com/api/v1/standings?leagueId=125&season=2024').then(r => r.json()),
-            fetch(`https://statsapi.mlb.com/api/v1/teams/${teamId}/stats?stats=season&season=2024&group=hitting`).then(r => r.json()),
-            fetch(`https://statsapi.mlb.com/api/v1/teams/${teamId}/stats?stats=season&season=2024&group=pitching`).then(r => r.json()),
+            fetch(`https://statsapi.mlb.com/api/v1/standings?leagueId=125&season=${season}`).then(r => r.json()),
+            fetch(`https://statsapi.mlb.com/api/v1/teams/${teamId}/stats?stats=season&season=${season}&group=hitting`).then(r => r.json()),
+            fetch(`https://statsapi.mlb.com/api/v1/teams/${teamId}/stats?stats=season&season=${season}&group=pitching`).then(r => r.json()),
             fetch(`https://statsapi.mlb.com/api/v1/teams/${teamId}/roster`).then(r => r.json())
         ]);
 
@@ -767,7 +770,7 @@ app.get('/api/external/teams/:teamKey/stats', async (req, res) => {
             success: true,
             teamKey,
             mlbTeamId: teamId,
-            season: '2024',
+            season: season,
             league: 'Liga Mexicana de Béisbol (LMB) - Zona Norte',
             source: 'MLB Stats API Oficial',
             standings: standingsData,
@@ -805,7 +808,7 @@ app.get('/api/external/teams/:teamKey/stats', async (req, res) => {
         };
 
         // Guardar en caché
-        externalStatsCache.set(teamKey, {
+        externalStatsCache.set(cacheKey, {
             data: payload,
             timestamp: Date.now()
         });
@@ -823,7 +826,7 @@ app.get('/api/external/teams/:teamKey/stats', async (req, res) => {
 // Iniciar servidor
 app.listen(PORT, async () => {
     console.log(`\n==================================================`);
-    console.log(`⚾ Servidor NorthBase corriendo en: http://localhost:${PORT}`);
+    console.log(`Servidor NorthBase corriendo en: http://localhost:${PORT}`);
     console.log(`==================================================`);
     await testConnection();
 });
