@@ -213,12 +213,15 @@ if (typeof AFRAME !== 'undefined') {
 
 // Helper para guardar fotos en IndexedDB (Galería local)
 function savePhotoToIndexedDB(dataUrl) {
-    const request = indexedDB.open('NorthBaseDB', 1);
+    const request = indexedDB.open('NorthBaseDB', 2);
 
     request.onupgradeneeded = (e) => {
         const db = e.target.result;
         if (!db.objectStoreNames.contains('gallery_photos')) {
             db.createObjectStore('gallery_photos', { keyPath: 'id', autoIncrement: true });
+        }
+        if (!db.objectStoreNames.contains('gallery_videos')) {
+            db.createObjectStore('gallery_videos', { keyPath: 'id', autoIncrement: true });
         }
     };
 
@@ -235,6 +238,37 @@ function savePhotoToIndexedDB(dataUrl) {
 
     request.onerror = (e) => {
         console.error('Error al acceder a IndexedDB:', e.target.error);
+    };
+}
+
+// Helper para guardar videos en IndexedDB (Galería local)
+function saveVideoToIndexedDB(blob, durationSec) {
+    const request = indexedDB.open('NorthBaseDB', 2);
+
+    request.onupgradeneeded = (e) => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains('gallery_photos')) {
+            db.createObjectStore('gallery_photos', { keyPath: 'id', autoIncrement: true });
+        }
+        if (!db.objectStoreNames.contains('gallery_videos')) {
+            db.createObjectStore('gallery_videos', { keyPath: 'id', autoIncrement: true });
+        }
+    };
+
+    request.onsuccess = (e) => {
+        const db = e.target.result;
+        const tx = db.transaction('gallery_videos', 'readwrite');
+        tx.objectStore('gallery_videos').add({
+            blob: blob,
+            duration: durationSec || 0,
+            timestamp: Date.now(),
+            date: new Date().toLocaleDateString()
+        });
+        console.log('Video guardado en IndexedDB con éxito.');
+    };
+
+    request.onerror = (e) => {
+        console.error('Error al guardar video en IndexedDB:', e.target.error);
     };
 }
 
@@ -567,46 +601,211 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================
-    // 4. CONTROL PARA TOMAR FOTO (SNAPSHOT)
+    // 4. CONTROL DE CAPTURA (FOTO Y VIDEO)
     // ==========================================
     const captureBtn = document.getElementById('capture-btn');
+    const capturePhotoIcon = document.getElementById('capture-photo-icon');
+    const captureVideoDot = document.getElementById('capture-video-dot');
+    const captureStopBox = document.getElementById('capture-stop-box');
+
+    const modeToggleBtn = document.getElementById('camera-mode-toggle');
+    const toggleVideoIcon = document.getElementById('toggle-video-icon');
+    const togglePhotoIcon = document.getElementById('toggle-photo-icon');
+
+    const recordingIndicator = document.getElementById('recording-indicator');
+    const recordingTimeText = document.getElementById('recording-time-text');
     const shutterFlash = document.getElementById('shutter-flash');
 
+    let currentCameraMode = 'photo'; // 'photo' o 'video'
+    let isRecording = false;
+    let mediaRecorder = null;
+    let recordedChunks = [];
+    let recordTimerInterval = null;
+    let recordSeconds = 0;
+    let recordAnimFrameId = null;
+    const MAX_RECORD_SECONDS = 15;
+
+    // Alternar entre modo Foto y modo Video
+    if (modeToggleBtn) {
+        modeToggleBtn.addEventListener('click', () => {
+            if (isRecording) {
+                stopVideoRecording();
+            }
+
+            if (currentCameraMode === 'photo') {
+                currentCameraMode = 'video';
+                captureBtn.title = 'Grabar Video';
+                modeToggleBtn.title = 'Cambiar a Modo Foto';
+
+                capturePhotoIcon?.classList.add('hidden');
+                captureVideoDot?.classList.remove('hidden');
+                captureStopBox?.classList.add('hidden');
+
+                toggleVideoIcon?.classList.add('hidden');
+                togglePhotoIcon?.classList.remove('hidden');
+            } else {
+                currentCameraMode = 'photo';
+                captureBtn.title = 'Tomar Foto';
+                modeToggleBtn.title = 'Cambiar a Modo Video';
+
+                capturePhotoIcon?.classList.remove('hidden');
+                captureVideoDot?.classList.add('hidden');
+                captureStopBox?.classList.add('hidden');
+
+                toggleVideoIcon?.classList.remove('hidden');
+                togglePhotoIcon?.classList.add('hidden');
+            }
+        });
+    }
+
+    // Botón principal de Captura
     if (captureBtn) {
         captureBtn.addEventListener('click', () => {
-            const video = document.querySelector('video');
-            const aScene = document.querySelector('a-scene');
-            const aCanvas = aScene ? (aScene.canvas || aScene.querySelector('canvas')) : null;
-
-            if (!video || !aCanvas) {
-                console.warn('Cámara o lienzo 3D no disponibles.');
-                return;
+            if (currentCameraMode === 'photo') {
+                takePhotoSnapshot();
+            } else {
+                if (isRecording) {
+                    stopVideoRecording();
+                } else {
+                    startVideoRecording();
+                }
             }
+        });
+    }
 
-            // Efecto de flash fotográfico
-            if (shutterFlash) {
-                shutterFlash.classList.remove('opacity-0');
-                shutterFlash.classList.add('opacity-90');
-                setTimeout(() => {
-                    shutterFlash.classList.remove('opacity-90');
-                    shutterFlash.classList.add('opacity-0');
-                }, 120);
+    // Función: Tomar Foto (Snapshot)
+    function takePhotoSnapshot() {
+        const video = document.querySelector('video');
+        const aScene = document.querySelector('a-scene');
+        const aCanvas = aScene ? (aScene.canvas || aScene.querySelector('canvas')) : null;
+
+        if (!video || !aCanvas) {
+            console.warn('Cámara o lienzo 3D no disponibles.');
+            return;
+        }
+
+        // Efecto de flash fotográfico
+        if (shutterFlash) {
+            shutterFlash.classList.remove('opacity-0');
+            shutterFlash.classList.add('opacity-90');
+            setTimeout(() => {
+                shutterFlash.classList.remove('opacity-90');
+                shutterFlash.classList.add('opacity-0');
+            }, 120);
+        }
+
+        // 1. Forzar a Three.js a renderizar la escena en este frame
+        if (aScene.renderer && aScene.camera) {
+            aScene.renderer.render(aScene.object3D, aScene.camera);
+        }
+
+        const snapshotCanvas = document.createElement('canvas');
+        const width = aCanvas.width || 1280;
+        const height = aCanvas.height || 720;
+        snapshotCanvas.width = width;
+        snapshotCanvas.height = height;
+        const ctx = snapshotCanvas.getContext('2d');
+
+        // 2. Dibujar el video de la cámara
+        if (video.videoWidth && video.videoHeight) {
+            const videoRatio = video.videoWidth / video.videoHeight;
+            const canvasRatio = width / height;
+            let drawW, drawH, drawX, drawY;
+
+            if (videoRatio > canvasRatio) {
+                drawH = height;
+                drawW = height * videoRatio;
+                drawX = (width - drawW) / 2;
+                drawY = 0;
+            } else {
+                drawW = width;
+                drawH = width / videoRatio;
+                drawX = 0;
+                drawY = (height - drawH) / 2;
             }
+            ctx.drawImage(video, drawX, drawY, drawW, drawH);
+        }
 
-            // 1. FORZAR a A-Frame y Three.js a renderizar el modelo 3D y partículas en este preciso instante
+        // 3. Dibujar la escena 3D encima
+        ctx.drawImage(aCanvas, 0, 0, width, height);
+
+        // 4. Descargar y guardar en IndexedDB
+        const imageURL = snapshotCanvas.toDataURL('image/png');
+        const downloadLink = document.createElement('a');
+        downloadLink.download = `NorthBase_AR_${Date.now()}.png`;
+        downloadLink.href = imageURL;
+        downloadLink.click();
+        savePhotoToIndexedDB(imageURL);
+
+        // Desbloqueo de Coleccionables
+        awardCameraCollectibles();
+    }
+
+    // Función: Iniciar Grabación de Video
+    function startVideoRecording() {
+        const video = document.querySelector('video');
+        const aScene = document.querySelector('a-scene');
+        const aCanvas = aScene ? (aScene.canvas || aScene.querySelector('canvas')) : null;
+
+        if (!video || !aCanvas) {
+            console.warn('Cámara o lienzo 3D no disponibles para grabar.');
+            return;
+        }
+
+        const width = Math.min(aCanvas.width || 1280, 1280);
+        const height = Math.min(aCanvas.height || 720, 720);
+
+        const compCanvas = document.createElement('canvas');
+        compCanvas.width = width;
+        compCanvas.height = height;
+        const ctx = compCanvas.getContext('2d');
+
+        const stream = compCanvas.captureStream(30);
+
+        // Agregar audio si el stream de la cámara contiene pistas de audio
+        if (video.srcObject && typeof video.srcObject.getAudioTracks === 'function') {
+            video.srcObject.getAudioTracks().forEach(track => stream.addTrack(track));
+        }
+
+        // Selección de formato compatible
+        let mimeType = 'video/webm;codecs=vp9';
+        if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = 'video/webm;codecs=vp8';
+        if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = 'video/webm';
+        if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = 'video/mp4';
+        if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = '';
+
+        try {
+            mediaRecorder = mimeType
+                ? new MediaRecorder(stream, { mimeType, videoBitsPerSecond: 2500000 })
+                : new MediaRecorder(stream);
+        } catch (err) {
+            console.warn('Fallo al inicializar MediaRecorder con opciones, usando valores estándar:', err);
+            mediaRecorder = new MediaRecorder(stream);
+        }
+
+        recordedChunks = [];
+        mediaRecorder.ondataavailable = (e) => {
+            if (e.data && e.data.size > 0) {
+                recordedChunks.push(e.data);
+            }
+        };
+
+        mediaRecorder.onstop = () => {
+            finishVideoRecording();
+        };
+
+        isRecording = true;
+        recordSeconds = 0;
+        mediaRecorder.start(100);
+
+        // Bucle de renderizado cuadro por cuadro
+        function drawFrame() {
+            if (!isRecording) return;
+
             if (aScene.renderer && aScene.camera) {
                 aScene.renderer.render(aScene.object3D, aScene.camera);
             }
 
-            // Crear lienzo temporal de alta resolución
-            const snapshotCanvas = document.createElement('canvas');
-            const width = aCanvas.width;
-            const height = aCanvas.height;
-            snapshotCanvas.width = width;
-            snapshotCanvas.height = height;
-            const ctx = snapshotCanvas.getContext('2d');
-
-            // 2. Dibujar el video de la cámara con el mismo ajuste "object-fit: cover"
             if (video.videoWidth && video.videoHeight) {
                 const videoRatio = video.videoWidth / video.videoHeight;
                 const canvasRatio = width / height;
@@ -626,35 +825,99 @@ document.addEventListener('DOMContentLoaded', () => {
                 ctx.drawImage(video, drawX, drawY, drawW, drawH);
             }
 
-            // 3. Dibujar la escena 3D (modelo + partículas) encima del video
             ctx.drawImage(aCanvas, 0, 0, width, height);
+            recordAnimFrameId = requestAnimationFrame(drawFrame);
+        }
+        recordAnimFrameId = requestAnimationFrame(drawFrame);
 
-            // 4. Descargar la imagen
-            const imageURL = snapshotCanvas.toDataURL('image/png');
-            const downloadLink = document.createElement('a');
-            downloadLink.download = `NorthBase_AR_${Date.now()}.png`;
-            downloadLink.href = imageURL;
-            downloadLink.click();
-            savePhotoToIndexedDB(imageURL);
-            // ==========================================
-            // DESBLOQUEO DE COLECCIONABLES - FASE 4
-            // ==========================================
-            if (typeof awardCollectible === 'function') {
-                // ID 29: Ramón Santiago (Foto interactiva con filtros de la cámara)
-                if (currentEffectName) {
-                    setTimeout(() => {
-                        awardCollectible(29);
-                    }, 400);
-                }
+        // Interfaz visual de grabación
+        if (recordingIndicator) {
+            recordingIndicator.classList.remove('hidden');
+            recordingIndicator.classList.add('flex');
+        }
+        if (recordingTimeText) recordingTimeText.textContent = '00:00';
+        captureVideoDot?.classList.add('hidden');
+        captureStopBox?.classList.remove('hidden');
+        captureBtn.title = 'Detener Grabación';
 
-                // ID 30: Óscar Robles (Foto con modelo 3D escaneado por AR)
-                if (currentActiveModel) {
-                    setTimeout(() => {
-                        awardCollectible(30);
-                    }, 800);
-                }
+        // Temporizador de grabación (Límite: 15 segundos)
+        recordTimerInterval = setInterval(() => {
+            recordSeconds++;
+            const mm = String(Math.floor(recordSeconds / 60)).padStart(2, '0');
+            const ss = String(recordSeconds % 60).padStart(2, '0');
+            if (recordingTimeText) recordingTimeText.textContent = `${mm}:${ss}`;
+
+            if (recordSeconds >= MAX_RECORD_SECONDS) {
+                stopVideoRecording();
             }
-        });
+        }, 1000);
     }
 
+    // Función: Detener Grabación
+    function stopVideoRecording() {
+        if (!isRecording) return;
+        isRecording = false;
+
+        if (recordAnimFrameId) cancelAnimationFrame(recordAnimFrameId);
+        if (recordTimerInterval) clearInterval(recordTimerInterval);
+
+        if (recordingIndicator) {
+            recordingIndicator.classList.add('hidden');
+            recordingIndicator.classList.remove('flex');
+        }
+        captureStopBox?.classList.add('hidden');
+        captureVideoDot?.classList.remove('hidden');
+        captureBtn.title = 'Grabar Video';
+
+        if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+            mediaRecorder.stop();
+        }
+    }
+
+    window.addEventListener('beforeunload', () => {
+        if (isRecording) {
+            stopVideoRecording();
+        }
+    });
+
+    // Función: Guardar y descargar video terminado
+    function finishVideoRecording() {
+        if (!recordedChunks || recordedChunks.length === 0) return;
+
+        const mime = (mediaRecorder && mediaRecorder.mimeType) || 'video/webm';
+        const videoBlob = new Blob(recordedChunks, { type: mime });
+        const duration = recordSeconds || 1;
+
+        // 1. Guardar en IndexedDB
+        saveVideoToIndexedDB(videoBlob, duration);
+
+        // 2. Descargar archivo en el dispositivo
+        const ext = mime.includes('mp4') ? 'mp4' : 'webm';
+        const url = URL.createObjectURL(videoBlob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `NorthBase_AR_Video_${Date.now()}.${ext}`;
+        a.click();
+
+        // Desbloqueo de Coleccionables
+        awardCameraCollectibles();
+    }
+
+    // Helper: Desbloqueo de Coleccionables
+    function awardCameraCollectibles() {
+        if (typeof awardCollectible === 'function') {
+            // ID 29: Ramón Santiago (Efectos de cámara interactivos)
+            if (currentEffectName) {
+                setTimeout(() => {
+                    awardCollectible(29);
+                }, 400);
+            }
+            // ID 30: Óscar Robles (Con modelo 3D escaneado)
+            if (currentActiveModel) {
+                setTimeout(() => {
+                    awardCollectible(30);
+                }, 800);
+            }
+        }
+    }
 });
