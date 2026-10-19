@@ -55,10 +55,10 @@ function showFormMessage(formElement, message, isError = true) {
 
     if (isError) {
         msgContainer.classList.add('bg-red-100', 'text-red-700', 'border', 'border-red-300');
-        msgContainer.innerHTML = `Error: ${message}`;
+        msgContainer.innerHTML = `${message}`;
     } else {
         msgContainer.classList.add('bg-emerald-100', 'text-emerald-800', 'border', 'border-emerald-300');
-        msgContainer.innerHTML = `Success: ${message}`;
+        msgContainer.innerHTML = `${message}`;
     }
 }
 

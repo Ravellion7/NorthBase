@@ -291,7 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function checkRaycastHit(clientX, clientY) {
         if (!currentActiveTarget || !activeTeamName || !sceneEl) return false;
-        
+
         const camera = sceneEl.camera;
         if (!camera) return false;
 
@@ -467,8 +467,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // ==========================================
-    // 2. CONTROL BOTONES DE PARTÍCULAS (IZQUIERDA)
+    // 2. TOGGLE Y CONTROL DE BOTONES DE PARTÍCULAS (IZQUIERDA)
     // ==========================================
+
+    const toggleParticlesBtn = document.getElementById('toggle-particles-btn');
+    const particleButtonsContainer = document.getElementById('particle-buttons-container');
+    const toggleParticlesText = document.getElementById('toggle-particles-text');
+    const toggleParticlesIcon = document.getElementById('toggle-particles-icon');
+
+    if (toggleParticlesBtn && particleButtonsContainer) {
+        toggleParticlesBtn.addEventListener('click', () => {
+            const isHidden = particleButtonsContainer.classList.contains('hidden');
+            if (isHidden) {
+                // Mostrar botones de partículas
+                particleButtonsContainer.classList.remove('hidden');
+                if (toggleParticlesText) toggleParticlesText.textContent = 'Cerrar';
+                if (toggleParticlesIcon) toggleParticlesIcon.classList.remove('rotate-45');
+            } else {
+                // Ocultar botones de partículas
+                particleButtonsContainer.classList.add('hidden');
+                if (toggleParticlesText) toggleParticlesText.textContent = 'Abrir';
+                if (toggleParticlesIcon) toggleParticlesIcon.classList.add('rotate-45');
+            }
+        });
+    }
 
     const particleButtons = document.querySelectorAll('.particle-btn');
     particleButtons.forEach(btn => {
