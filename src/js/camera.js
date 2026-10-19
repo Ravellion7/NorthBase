@@ -920,4 +920,240 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
+
+    // ==========================================
+    // 5. MODAL INTERACTIVO DE GUÍA (TUTORIAL AR)
+    // ==========================================
+    const cameraInfoBtn = document.getElementById('camera-info-btn');
+    const guideModal = document.getElementById('camera-guide-modal');
+    const guideCloseBtn = document.getElementById('guide-close-btn');
+    const guideStepBadge = document.getElementById('guide-step-badge');
+    const guideStepContainer = document.getElementById('guide-step-container');
+    const guideDotsContainer = document.getElementById('guide-dots-container');
+    const guidePrevBtn = document.getElementById('guide-prev-btn');
+    const guideNextBtn = document.getElementById('guide-next-btn');
+    const guideNextText = document.getElementById('guide-next-text');
+
+    let currentGuideStep = 0;
+
+    const guideSteps = [
+        {
+            title: "¡Bienvenido a la Cámara AR!",
+            description: "Para empezar, ten en cuenta que puedes cambiar entre modo foto y video con el botón de alternar junto al disparador.",
+            hint: "Usa el botón circular a la derecha del disparador para elegir si prefieres capturar una foto fija o grabar un clip de video (hasta 15 segundos).",
+            highlightSelector: "#capture-btn, #camera-mode-toggle",
+            visual: `
+                <div class="flex items-center justify-center gap-3 sm:gap-6 my-4 p-4 bg-slate-50 border border-slate-200 rounded-2xl">
+                    <div class="flex flex-col items-center gap-1.5">
+                        <div class="w-12 h-12 rounded-full bg-slate-800 text-white flex items-center justify-center shadow-md">
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm0 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/><path d="M20 4h-3.17L15 2H9L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h4.05l1.83-2h4.24l1.83 2H20v12z"/></svg>
+                        </div>
+                        <span class="text-xs font-semibold text-slate-700">Modo Foto</span>
+                    </div>
+                    <div class="text-[#C1121F] font-bold text-xl">⇄</div>
+                    <div class="flex flex-col items-center gap-1.5">
+                        <div class="w-12 h-12 rounded-full bg-red-600 text-white flex items-center justify-center shadow-md">
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+                        </div>
+                        <span class="text-xs font-semibold text-slate-700">Modo Video (15s)</span>
+                    </div>
+                </div>
+            `
+        },
+        {
+            title: "¡Escanea tu Equipo Favorito!",
+            description: "Ahora, ¡muestra el logo de tu equipo favorito de la Zona Norte en la LMB!",
+            hint: "Apunta la cámara al escudo oficial (en una pantalla, imagen o gorra). El modelo 3D del equipo aparecerá en realidad aumentada en tu pantalla.",
+            highlightSelector: "#camera-status",
+            visual: `
+                <div class="flex items-center justify-center gap-4 my-4 p-4 bg-slate-50 border border-slate-200 rounded-2xl">
+                    <img src="./src/assets/LMB Logo.png" alt="LMB" class="w-12 h-12 object-contain drop-shadow" />
+                    <div class="text-[#C1121F] font-bold text-lg">➔</div>
+                    <div class="w-14 h-14 rounded-2xl bg-[#0A1A32] text-white flex flex-col items-center justify-center shadow-md border border-slate-700">
+                        <span class="text-base font-black">3D</span>
+                        <span class="text-[9px] font-semibold tracking-wider text-slate-300 uppercase">Modelo</span>
+                    </div>
+                </div>
+            `
+        },
+        {
+            title: "¡Prueba las Animaciones!",
+            description: "¡Intenta probar agregarle animaciones al modelo!",
+            hint: "Usa los botones numéricos (1, 2, 3) en la parte inferior para reproducir animaciones de bateo o lanzamiento. Pulsa ■ para pausar o regresar a Idle.",
+            highlightSelector: ".camera-anim-btn",
+            visual: `
+                <div class="flex items-center justify-center gap-2.5 my-4 p-4 bg-slate-50 border border-slate-200 rounded-2xl">
+                    <span class="w-10 h-10 rounded-full bg-[#0A1A32] text-white flex items-center justify-center font-bold text-sm shadow">1</span>
+                    <span class="w-10 h-10 rounded-full bg-[#0A1A32] text-white flex items-center justify-center font-bold text-sm shadow">2</span>
+                    <span class="w-10 h-10 rounded-full bg-[#0A1A32] text-white flex items-center justify-center font-bold text-sm shadow">3</span>
+                    <span class="w-10 h-10 rounded-full bg-[#C1121F] text-white flex items-center justify-center font-bold text-sm shadow">■</span>
+                </div>
+            `
+        },
+        {
+            title: "¡Efectos de Partículas!",
+            description: "¡Puedes agregarle partículas al modelo también!",
+            hint: "Abre el menú lateral izquierdo para activar confeti festivo, fuego ardiente, destellos o rayos eléctricos alrededor de tu modelo. Puedes desactivar las particula activada, pulsando el mismo botón que está activo.",
+            highlightSelector: "#particle-buttons-container, #toggle-particles-btn",
+            visual: `
+                <div class="grid grid-cols-4 gap-2 my-4 p-3 bg-slate-50 border border-slate-200 rounded-2xl">
+                    <div class="flex flex-col items-center gap-1">
+                        <img src="./src/assets/confetti icon.png" alt="Confetti" class="w-9 h-9 object-contain drop-shadow p-1 bg-white rounded-full border border-slate-200" />
+                        <span class="text-[10px] font-semibold text-slate-600">Confeti</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <img src="./src/assets/fire icon.png" alt="Fuego" class="w-9 h-9 object-contain drop-shadow p-1 bg-white rounded-full border border-slate-200" />
+                        <span class="text-[10px] font-semibold text-slate-600">Fuego</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <img src="./src/assets/sparkles icon.png" alt="Sparkles" class="w-9 h-9 object-contain drop-shadow p-1 bg-white rounded-full border border-slate-200" />
+                        <span class="text-[10px] font-semibold text-slate-600">Destellos</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <img src="./src/assets/lightning icon.png" alt="Rayos" class="w-9 h-9 object-contain drop-shadow p-1 bg-white rounded-full border border-slate-200" />
+                        <span class="text-[10px] font-semibold text-slate-600">Rayos</span>
+                    </div>
+                </div>
+            `
+        },
+        {
+            title: "¡Tus Recuerdos en la Galería!",
+            description: "Cualquier foto o video que grabes aquí se va a descargar automáticamente y se almacenará en tu galería.",
+            hint: "Podrás consultar, reproducir y revivir todas tus capturas cuando quieras visitando la pestaña 'Galería' en la barra superior.",
+            highlightSelector: null,
+            visual: `
+                <div class="flex flex-col items-center justify-center my-4 p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-center">
+                    <div class="w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-md mb-2">
+                        <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                    </div>
+                    <p class="text-xs font-bold text-emerald-900">Descarga automática + Guardado local</p>
+                    <p class="text-[11px] text-emerald-700 mt-0.5">Visita la sección de Galería cuando quieras</p>
+                </div>
+            `
+        }
+    ];
+
+    function clearGuideHighlights() {
+        document.querySelectorAll('.guide-highlight').forEach(el => {
+            el.classList.remove('guide-highlight', 'ring-4', 'ring-[#C1121F]', 'ring-offset-2', 'animate-pulse');
+        });
+    }
+
+    function applyGuideHighlight(selector) {
+        clearGuideHighlights();
+        if (!selector) return;
+        document.querySelectorAll(selector).forEach(el => {
+            el.classList.add('guide-highlight', 'ring-4', 'ring-[#C1121F]', 'ring-offset-2', 'animate-pulse');
+        });
+    }
+
+    function renderGuideStep(index) {
+        if (!guideStepContainer) return;
+        currentGuideStep = index;
+        const step = guideSteps[index];
+
+        if (guideStepBadge) {
+            guideStepBadge.textContent = `Paso ${index + 1} de ${guideSteps.length}`;
+        }
+
+        guideStepContainer.innerHTML = `
+            <div class="flex flex-col animate-in fade-in duration-200">
+                <h3 class="text-lg sm:text-xl font-bold text-[#0A1A32] leading-snug">
+                    ${step.title}
+                </h3>
+                <p class="text-xs sm:text-sm text-slate-600 mt-2 font-medium leading-relaxed">
+                    ${step.description}
+                </p>
+                ${step.visual || ''}
+                <div class="flex items-start gap-2 bg-slate-100/70 p-2.5 rounded-xl border border-slate-200/60 mt-1">
+                    <p class="text-[11px] text-slate-500 leading-normal">${step.hint}</p>
+                </div>
+            </div>
+        `;
+
+        // Renderizar puntos (dots)
+        if (guideDotsContainer) {
+            guideDotsContainer.innerHTML = '';
+            guideSteps.forEach((_, i) => {
+                const dot = document.createElement('button');
+                dot.type = 'button';
+                dot.className = i === index
+                    ? 'w-6 h-2 rounded-full bg-[#C1121F] transition-all cursor-pointer'
+                    : 'w-2 h-2 rounded-full bg-slate-300 hover:bg-slate-400 transition-all cursor-pointer';
+                dot.title = `Ir al paso ${i + 1}`;
+                dot.addEventListener('click', () => renderGuideStep(i));
+                guideDotsContainer.appendChild(dot);
+            });
+        }
+
+        // Estado de botones Anterior / Siguiente
+        if (guidePrevBtn) {
+            if (index === 0) {
+                guidePrevBtn.classList.add('hidden');
+            } else {
+                guidePrevBtn.classList.remove('hidden');
+            }
+        }
+
+        if (guideNextText) {
+            guideNextText.textContent = index === guideSteps.length - 1 ? '¡Entendido!' : 'Next';
+        }
+
+        // Resaltar elementos en la pantalla de la cámara
+        applyGuideHighlight(step.highlightSelector);
+    }
+
+    function openGuide() {
+        if (!guideModal) return;
+        renderGuideStep(0);
+        guideModal.classList.remove('hidden');
+        guideModal.classList.add('flex');
+    }
+
+    function closeGuide() {
+        if (!guideModal) return;
+        guideModal.classList.add('hidden');
+        guideModal.classList.remove('flex');
+        clearGuideHighlights();
+    }
+
+    if (cameraInfoBtn) {
+        cameraInfoBtn.addEventListener('click', openGuide);
+    }
+
+    if (guideCloseBtn) {
+        guideCloseBtn.addEventListener('click', closeGuide);
+    }
+
+    if (guideNextBtn) {
+        guideNextBtn.addEventListener('click', () => {
+            if (currentGuideStep < guideSteps.length - 1) {
+                renderGuideStep(currentGuideStep + 1);
+            } else {
+                closeGuide();
+            }
+        });
+    }
+
+    if (guidePrevBtn) {
+        guidePrevBtn.addEventListener('click', () => {
+            if (currentGuideStep > 0) {
+                renderGuideStep(currentGuideStep - 1);
+            }
+        });
+    }
+
+    if (guideModal) {
+        guideModal.addEventListener('click', (e) => {
+            if (e.target === guideModal) {
+                closeGuide();
+            }
+        });
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && guideModal && !guideModal.classList.contains('hidden')) {
+            closeGuide();
+        }
+    });
 });

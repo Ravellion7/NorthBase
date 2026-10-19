@@ -162,6 +162,14 @@
                     class="w-full h-auto object-contain drop-shadow-md" />
             </div>
 
+            <!-- Botón de Información / Guía de la Cámara AR -->
+            <button type="button" id="camera-info-btn" title="¿Cómo usar la Cámara AR?"
+                class="absolute top-3 md:top-4 left-3 sm:left-4 md:left-6 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white border-2 border-white shadow-xl hover:scale-110 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center p-0.5 z-20 hover:ring-2 hover:ring-white/80"
+                aria-label="Abrir guía de ayuda">
+                <img src="./src/assets/info icon.png" alt="Información"
+                    class="w-full h-full object-contain pointer-events-none" />
+            </button>
+
             <div
                 class="absolute left-3 sm:left-4 md:left-6 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2.5 sm:gap-3 md:gap-4 z-20">
 
@@ -398,7 +406,59 @@
 
     </main>
 
+    <!-- Modal Interactivo: Guía de uso de la Cámara AR -->
+    <div id="camera-guide-modal"
+        class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
 
+        <div
+            class="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col p-6 sm:p-8 font-['Poppins',sans-serif] text-slate-800 transition-all">
+
+            <!-- Botón Cerrar (✕) -->
+            <button id="guide-close-btn" type="button"
+                class="absolute top-4 right-4 sm:top-5 sm:right-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center text-lg font-bold transition cursor-pointer"
+                aria-label="Cerrar guía">
+                ✕
+            </button>
+
+            <!-- Encabezado y Badge de Progreso -->
+            <div class="flex items-center gap-2 mb-3">
+                <span id="guide-step-badge"
+                    class="bg-red-50 text-[#C1121F] border border-red-200 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                    Paso 1 de 5
+                </span>
+                <span class="text-xs text-slate-400 font-medium">Guía de la Cámara</span>
+            </div>
+
+            <!-- Contenido dinámico del Paso -->
+            <div id="guide-step-container" class="min-h-[220px] flex flex-col justify-center">
+                <!-- Se inyecta dinámicamente vía JS -->
+            </div>
+
+            <!-- Navegación Inferior -->
+            <div class="flex items-center justify-between mt-6 pt-4 border-t border-slate-100">
+                <!-- Indicador de Puntos (Dots) -->
+                <div id="guide-dots-container" class="flex items-center gap-1.5">
+                    <!-- Dots generados por JS -->
+                </div>
+
+                <!-- Botones de Acción -->
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <button id="guide-prev-btn" type="button"
+                        class="px-3.5 sm:px-4 py-2 rounded-full text-slate-500 hover:text-slate-800 hover:bg-slate-100 font-semibold text-xs sm:text-sm transition cursor-pointer hidden">
+                        Anterior
+                    </button>
+                    <button id="guide-next-btn" type="button"
+                        class="px-5 sm:px-6 py-2 rounded-full bg-[#C1121F] hover:bg-red-700 text-white font-semibold text-xs sm:text-sm shadow-md hover:shadow-lg transition cursor-pointer flex items-center gap-1.5 active:scale-95">
+                        <span id="guide-next-text">Next</span>
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                            <path d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.14 12l-8.29-7.85-1.42 1.42L16.86 11H5v2z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
     <script src="./src/js/index.js"></script>
 
