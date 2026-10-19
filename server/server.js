@@ -106,10 +106,24 @@ app.post('/api/auth/register', async (req, res) => {
             insertValues.push(mother_last_name ? mother_last_name.trim() : null);
         }
         if (cols.has('nombre_usuario')) {
-            const username = [name, father_last_name].filter(Boolean).join(' ').trim();
+            let baseUsername = [name, father_last_name].filter(Boolean).join(' ').trim();
+            if (!baseUsername) baseUsername = cleanEmail.split('@')[0];
+
+            let finalUsername = baseUsername;
+            let counter = 1;
+            while (true) {
+                const [dupUser] = await pool.query(
+                    'SELECT id_usuario FROM usuarios WHERE nombre_usuario = ?',
+                    [finalUsername]
+                );
+                if (dupUser.length === 0) break;
+                counter++;
+                finalUsername = `${baseUsername} ${counter}`;
+            }
+
             insertFields.push('nombre_usuario');
             insertPlaceholders.push('?');
-            insertValues.push(username);
+            insertValues.push(finalUsername);
         }
 
         // Campos comunes
@@ -159,6 +173,21 @@ app.post('/api/auth/register', async (req, res) => {
         });
     } catch (error) {
         console.error('Error en /api/auth/register:', error);
+        if (error.code === 'ER_DUP_ENTRY') {
+            if (error.message.includes('email')) {
+                return res.status(409).json({
+                    error: 'El correo electrónico ya se encuentra registrado.'
+                });
+            }
+            if (error.message.includes('nombre_usuario')) {
+                return res.status(409).json({
+                    error: 'El nombre ya está registrado. Por favor intenta con tu segundo nombre o apellido materno.'
+                });
+            }
+            return res.status(409).json({
+                error: 'Ya existe una cuenta con estos datos.'
+            });
+        }
         res.status(500).json({
             error: 'Ocurrió un error en el servidor al intentar registrar el usuario.',
             details: error.message
