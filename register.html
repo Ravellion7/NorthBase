@@ -10,6 +10,52 @@
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="./dist/output.css">
+    <style>
+        /* Barra deslizante personalizada con la paleta de color azul del header (#0A1A32) */
+        #modal-team-tabs::-webkit-scrollbar,
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 6px !important;
+            width: 6px !important;
+        }
+
+        #modal-team-tabs::-webkit-scrollbar-button,
+        #modal-team-tabs::-webkit-scrollbar-button:single-button,
+        #modal-team-tabs::-webkit-scrollbar-button:horizontal:decrement,
+        #modal-team-tabs::-webkit-scrollbar-button:horizontal:increment,
+        .custom-scrollbar::-webkit-scrollbar-button {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+            background: transparent !important;
+        }
+
+        #modal-team-tabs::-webkit-scrollbar-track,
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0A1A32 !important;
+            border-radius: 9999px !important;
+        }
+
+        #modal-team-tabs::-webkit-scrollbar-thumb,
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #1e3f70 !important;
+            border-radius: 9999px !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        }
+
+        #modal-team-tabs::-webkit-scrollbar-thumb:hover,
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #2b5797 !important;
+        }
+
+        /* Soporte para Firefox */
+        @supports not selector(::-webkit-scrollbar) {
+            #modal-team-tabs,
+            .custom-scrollbar {
+                scrollbar-width: thin;
+                scrollbar-color: #1e3f70 #0A1A32;
+            }
+        }
+    </style>
 </head>
 
 <body class="bg-[#F5F5F5] overflow-x-hidden flex flex-col min-h-screen items-center m-0 p-0">
@@ -101,6 +147,55 @@
 
             <form id="register-form-mobile" class="w-full flex flex-col gap-4 bg-transparent p-0">
 
+                <!-- Selector de Avatar Móvil -->
+                <div class="w-full flex flex-col items-center mb-1">
+                    <div class="relative group cursor-pointer mb-2 open-avatar-modal-btn"
+                        title="Haz clic para ver todos los avatares">
+                        <div
+                            class="w-20 h-20 rounded-full border-3 border-black shadow-[0_4px_12px_rgba(0,0,0,0.15)] overflow-hidden bg-white flex items-center justify-center p-0.5 relative transition-transform hover:scale-105">
+                            <img id="mobile-avatar-preview"
+                                src="./src/assets/Profile Pics/Sultanes/sultanes profile pic.jpg"
+                                alt="Avatar seleccionado" class="w-full h-full object-cover rounded-full" />
+                            <div
+                                class="absolute inset-0 bg-black/35 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-full">
+                                <span class="text-white text-[10px] font-bold uppercase tracking-wider">Cambiar</span>
+                            </div>
+                        </div>
+                        <div
+                            class="absolute -bottom-1 -right-1 bg-[#C1121F] text-white p-1 rounded-full shadow-md border-2 border-white">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="text-center mb-2">
+                        <span
+                            class="text-xs font-semibold text-slate-800 tracking-wide font-['Poppins',sans-serif] block">Elige
+                            tu avatar</span>
+                        <span id="mobile-avatar-team-label" class="text-[11px] text-slate-500 font-medium">Sultanes de
+                            Monterrey</span>
+                    </div>
+
+                    <!-- 3 Miniaturas de Avatar del Equipo -->
+                    <div class="flex items-center justify-center gap-2.5 mb-2" id="mobile-avatar-thumbnails">
+                        <!-- Miniaturas insertadas dinámicamente -->
+                    </div>
+
+                    <!-- Botón para ver todos los equipos -->
+                    <button type="button"
+                        class="open-avatar-modal-btn text-[11px] font-semibold text-[#C1121F] hover:text-[#9b0e19] hover:underline flex items-center gap-1 transition-colors cursor-pointer py-0.5 px-2">
+                        <span>Ver avatares de todos los equipos</span>
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+
+                    <input type="hidden" name="foto_perfil" id="foto_perfil_mobile"
+                        value="./src/assets/Profile Pics/Sultanes/sultanes profile pic.jpg" />
+                </div>
+
                 <input type="text" name="name" autocomplete="given-name" placeholder="Nombre(s)" aria-label="Nombre(s)"
                     required
                     class="w-full px-3.5 py-2 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-black transition shadow-sm" />
@@ -119,7 +214,7 @@
                     aria-label="Correo electrónico" required
                     class="w-full px-3.5 py-2 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-black transition shadow-sm" />
 
-                <select name="favorite_team" aria-label="Equipo favorito" required
+                <select id="favorite-team-mobile" name="favorite_team" aria-label="Equipo favorito" required
                     class="w-full px-3.5 py-2 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 font-['Poppins',sans-serif] text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-black transition shadow-sm cursor-pointer">
                     <option value="" disabled selected>Selecciona tu equipo favorito</option>
                     <option value="sultanes">Sultanes de Monterrey</option>
@@ -198,11 +293,67 @@
             </div>
 
 
-            <div class="w-[40%] p-6 lg:p-10 flex flex-col justify-center items-center">
+            <div class="w-[40%] p-5 lg:p-7 flex flex-col justify-center items-center overflow-y-auto max-h-full">
                 <div class="w-full max-w-sm flex flex-col items-center">
 
 
-                    <form id="register-form-desktop" class="w-full flex flex-col gap-3 lg:gap-3.5">
+                    <form id="register-form-desktop" class="w-full flex flex-col gap-2.5 lg:gap-3">
+
+                        <!-- Selector de Avatar Desktop -->
+                        <div class="w-full flex flex-col items-center mb-1">
+                            <div class="flex items-center gap-3.5 mb-1 w-full justify-center">
+                                <!-- Avatar Principal con vista previa -->
+                                <div class="relative group cursor-pointer open-avatar-modal-btn shrink-0"
+                                    title="Haz clic para ver todos los avatares">
+                                    <div
+                                        class="w-16 h-16 rounded-full border-2 border-white/80 shadow-[0_4px_16px_rgba(0,0,0,0.4)] overflow-hidden bg-slate-800 flex items-center justify-center p-0.5 transition-transform hover:scale-105">
+                                        <img id="desktop-avatar-preview"
+                                            src="./src/assets/Profile Pics/Sultanes/sultanes profile pic.jpg"
+                                            alt="Avatar seleccionado" class="w-full h-full object-cover rounded-full" />
+                                        <div
+                                            class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-full">
+                                            <span
+                                                class="text-white text-[9px] font-bold uppercase tracking-wider">Cambiar</span>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="absolute -bottom-0.5 -right-0.5 bg-[#C1121F] text-white p-1 rounded-full shadow border border-white">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <!-- Opciones rápidas (3 miniaturas) -->
+                                <div class="flex flex-col">
+                                    <div class="flex items-center justify-between gap-1 mb-1">
+                                        <span
+                                            class="text-[11px] lg:text-xs font-semibold text-white tracking-wide font-['Poppins',sans-serif]">Elige
+                                            tu avatar</span>
+                                        <span id="desktop-avatar-team-label"
+                                            class="text-[10px] text-slate-300 font-medium truncate max-w-[120px]">Sultanes</span>
+                                    </div>
+                                    <div class="flex items-center gap-2" id="desktop-avatar-thumbnails">
+                                        <!-- Generados dinámicamente -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Botón para ver todos los equipos -->
+                            <button type="button"
+                                class="open-avatar-modal-btn text-[11px] font-medium text-slate-300 hover:text-white hover:underline flex items-center gap-1 transition-colors cursor-pointer py-0.5">
+                                <span>Ver avatares de todos los equipos</span>
+                                <svg class="w-3 h-3 text-[#FCBF49]" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+
+                            <input type="hidden" name="foto_perfil" id="foto_perfil_desktop"
+                                value="./src/assets/Profile Pics/Sultanes/sultanes profile pic.jpg" />
+                        </div>
 
                         <input type="text" name="name" autocomplete="given-name" placeholder="Nombre(s)"
                             aria-label="Nombre(s)" required
@@ -223,7 +374,7 @@
                             aria-label="Correo electrónico" required
                             class="w-full px-4 py-2.5 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 placeholder-slate-400 font-['Poppins',sans-serif] text-xs lg:text-sm focus:outline-none focus:ring-2 focus:ring-[#C1121F] transition shadow-sm" />
 
-                        <select name="favorite_team" aria-label="Equipo favorito" required
+                        <select id="favorite-team-desktop" name="favorite_team" aria-label="Equipo favorito" required
                             class="w-full px-4 py-2.5 bg-white border-2 border-black border-b-4 rounded-xl text-slate-900 font-['Poppins',sans-serif] text-xs lg:text-sm focus:outline-none focus:ring-2 focus:ring-[#C1121F] transition shadow-sm cursor-pointer">
                             <option value="" disabled selected>Selecciona tu equipo favorito</option>
                             <option value="sultanes">Sultanes de Monterrey</option>
@@ -298,9 +449,73 @@
 
     </main>
 
+    <!-- Modal para explorar todos los avatares -->
+    <div id="avatar-picker-modal"
+        class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 select-none opacity-0 transition-opacity duration-200">
+        <div
+            class="relative w-full max-w-lg bg-[#003049] border-2 border-[#FCBF49]/60 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.85)] p-5 sm:p-6 flex flex-col font-['Poppins',sans-serif] max-h-[92vh] overflow-hidden text-white">
+
+            <!-- Botón Cerrar (X) -->
+            <button type="button" id="close-avatar-modal"
+                class="absolute top-4 right-4 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 rounded-full w-8 h-8 flex items-center justify-center transition-colors cursor-pointer text-sm font-bold z-10"
+                aria-label="Cerrar modal">
+                ✕
+            </button>
+
+            <!-- Encabezado Modal -->
+            <div class="text-center mb-3 pr-6 pl-2">
+                <h3 class="text-lg sm:text-xl font-bold text-white flex items-center justify-center gap-2">
+                    <span>Elige tu Avatar</span>
+                </h3>
+                <p class="text-xs text-[#669BBC] mt-0.5">
+                    Selecciona cualquier avatar oficial de los equipos de la LMB
+                </p>
+            </div>
+
+            <!-- Pestañas de Equipos con Scroll Horizontal Suave -->
+            <div class="mb-3">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-[#FCBF49] block mb-1.5 px-1">
+                    Equipos:
+                </span>
+                <div id="modal-team-tabs" class="flex gap-2.5 overflow-x-auto py-2 px-1 custom-scrollbar items-center">
+                    <!-- Pestañas insertadas dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Grid de los 3 avatares del equipo seleccionado en el modal -->
+            <div class="flex-1 overflow-y-auto py-2 custom-scrollbar">
+                <div class="text-center mb-3">
+                    <span id="modal-active-team-name" class="text-sm font-bold text-white tracking-wide"></span>
+                </div>
+                <div id="modal-avatars-grid" class="grid grid-cols-3 gap-3 sm:gap-4 max-w-sm mx-auto">
+                    <!-- 3 avatares renderizados -->
+                </div>
+            </div>
+
+            <!-- Footer con Vista Previa Actual y Botón Confirmar -->
+            <div class="mt-3 pt-3 border-t border-white/10 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <img id="modal-preview-current" src="./src/assets/Profile Pics/Sultanes/sultanes profile pic.jpg"
+                        class="w-9 h-9 rounded-full border-2 border-[#FCBF49] object-cover shadow"
+                        alt="Avatar seleccionado" />
+                    <div class="flex flex-col">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-[#FCBF49]">Seleccionado</span>
+                        <span id="modal-selected-avatar-text"
+                            class="text-xs text-white/90 font-medium truncate max-w-[170px]">Avatar</span>
+                    </div>
+                </div>
+                <button type="button" id="confirm-avatar-selection-btn"
+                    class="px-5 py-2 bg-[#C1121F] hover:bg-[#9b0e19] text-white font-bold text-xs sm:text-sm rounded-full shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer">
+                    Confirmar
+                </button>
+            </div>
+
+        </div>
+    </div>
+
     <script src="./src/js/index.js"></script>
     <script src="./src/js/auth.js"></script>
-    <script src="./src/js/register.js"></script>
+    <script src="./src/js/register.js?v=logos"></script>
 
 </body>
 

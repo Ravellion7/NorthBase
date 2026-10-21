@@ -54,7 +54,8 @@ app.post('/api/auth/register', async (req, res) => {
             mother_last_name,
             email,
             password,
-            favorite_team
+            favorite_team,
+            foto_perfil
         } = req.body;
 
         // Validaciones básicas
@@ -137,6 +138,12 @@ app.post('/api/auth/register', async (req, res) => {
             insertValues.push(favorite_team || null);
         }
 
+        if (cols.has('foto_perfil')) {
+            insertFields.push('foto_perfil');
+            insertPlaceholders.push('?');
+            insertValues.push(foto_perfil || null);
+        }
+
         const sql = `INSERT INTO usuarios (${insertFields.join(', ')}) VALUES (${insertPlaceholders.join(', ')})`;
         const [result] = await pool.query(sql, insertValues);
 
@@ -168,7 +175,8 @@ app.post('/api/auth/register', async (req, res) => {
                 id_usuario: newUserId,
                 nombre: name,
                 email: cleanEmail,
-                equipo_favorito: favorite_team || null
+                equipo_favorito: favorite_team || null,
+                foto_perfil: foto_perfil || null
             }
         });
     } catch (error) {
@@ -247,7 +255,8 @@ app.post('/api/auth/login', async (req, res) => {
                 id_usuario: user.id_usuario,
                 nombre: displayName,
                 email: user.email,
-                equipo_favorito: user.equipo_favorito || null
+                equipo_favorito: user.equipo_favorito || null,
+                foto_perfil: user.foto_perfil || null
             }
         });
     } catch (error) {
@@ -292,7 +301,8 @@ app.put('/api/auth/profile', async (req, res) => {
             mother_last_name,
             email,
             password,
-            favorite_team
+            favorite_team,
+            foto_perfil
         } = req.body;
 
         if (!id_usuario) {
@@ -355,6 +365,11 @@ app.put('/api/auth/profile', async (req, res) => {
             updateValues.push(favorite_team || null);
         }
 
+        if (cols.has('foto_perfil') && foto_perfil !== undefined) {
+            updateFields.push('foto_perfil = ?');
+            updateValues.push(foto_perfil || null);
+        }
+
         if (password && password.trim().length > 0) {
             const passwordHash = await bcrypt.hash(password.trim(), 10);
             updateFields.push('password_hash = ?');
@@ -395,6 +410,7 @@ app.put('/api/auth/profile', async (req, res) => {
                 nombre: displayName,
                 email: updatedUser.email,
                 equipo_favorito: updatedUser.equipo_favorito || null,
+                foto_perfil: updatedUser.foto_perfil || null,
                 apellido_paterno: updatedUser.apellido_paterno || null,
                 apellido_materno: updatedUser.apellido_materno || null
             }

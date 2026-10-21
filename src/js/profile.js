@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const nameEl = document.getElementById('profile-name');
     const emailEl = document.getElementById('profile-email');
+    const avatarEl = document.getElementById('profile-avatar');
     const badgeContainer = document.getElementById('profile-badge-container');
     const collectiblesContainer = document.getElementById('collectibles-container');
     const logoutBtn = document.getElementById('profile-logout-btn');
@@ -37,6 +38,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!user) {
         if (nameEl) nameEl.textContent = 'Invitado';
         if (emailEl) emailEl.textContent = 'Inicia sesión para guardar tu progreso';
+        if (avatarEl) avatarEl.src = './src/assets/default profile.png';
         if (badgeContainer) {
             badgeContainer.innerHTML = `
                 <a href="./login.html" 
@@ -50,6 +52,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // 3. Pintar datos del usuario
+    if (avatarEl) {
+        avatarEl.src = user.foto_perfil || './src/assets/default profile.png';
+    }
+
     if (nameEl) {
         nameEl.textContent = user.nombre || user.nombre_usuario || 'Fanático del Béisbol';
     }

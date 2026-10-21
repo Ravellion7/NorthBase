@@ -44,6 +44,16 @@ function isAuthenticated() {
     return !!localStorage.getItem('northbase_token') && !!localStorage.getItem('northbase_user');
 }
 
+// Sincronizar automáticamente la foto de perfil en el encabezado de todas las páginas
+document.addEventListener('DOMContentLoaded', () => {
+    const user = getCurrentUser();
+    if (user && user.foto_perfil) {
+        document.querySelectorAll('a[href*="profile.html"] img').forEach(img => {
+            img.src = user.foto_perfil;
+        });
+    }
+});
+
 /**
  * Función genérica para mostrar mensajes de retroalimentación
  */
