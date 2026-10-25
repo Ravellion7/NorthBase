@@ -39,13 +39,34 @@
     <!-- Sección Superior: Avatar y Nombre -->
     <div class="w-full flex flex-col items-center justify-center pt-20 pb-6 px-4 z-10 shrink-0">
 
-        <div
-            class="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-4 border-white shadow-2xl overflow-hidden bg-white flex items-center justify-center">
-            <img src="./src/assets/default profile.png" alt="Foto de perfil" class="w-full h-full object-cover" />
+        <!-- Avatar Interactivo con botón para abrir el modal -->
+        <div class="relative group cursor-pointer open-avatar-modal-btn mb-1" title="Haz clic para cambiar tu foto de perfil">
+            <div
+                class="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-4 border-white shadow-2xl overflow-hidden bg-white flex items-center justify-center transition-transform hover:scale-105 relative">
+                <img id="edit-profile-avatar" src="./src/assets/default profile.png" alt="Foto de perfil" class="w-full h-full object-cover" />
+                <div
+                    class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-full">
+                    <span class="text-white text-[10px] font-bold uppercase tracking-wider">Cambiar</span>
+                </div>
+            </div>
+            <div
+                class="absolute bottom-0 right-0 bg-[#C1121F] text-white p-2 rounded-full shadow-lg border-2 border-white hover:scale-110 transition-transform">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                </svg>
+            </div>
         </div>
 
+        <button type="button" class="open-avatar-modal-btn text-xs font-semibold text-[#FCBF49] hover:text-white mt-1 hover:underline cursor-pointer flex items-center gap-1">
+            <span>Cambiar foto de perfil</span>
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+        </button>
+
         <h1 id="edit-profile-username"
-            class="text-white font-['Poppins',sans-serif] font-bold text-xl sm:text-2xl mt-3 tracking-wide drop-shadow-sm text-center">
+            class="text-white font-['Poppins',sans-serif] font-bold text-xl sm:text-2xl mt-2 tracking-wide drop-shadow-sm text-center">
             Usuario
         </h1>
 
@@ -57,6 +78,8 @@
 
         <form id="edit-profile-form"
             class="w-full max-w-[320px] sm:max-w-sm flex flex-col gap-3 sm:gap-3.5 bg-transparent p-0">
+
+            <input type="hidden" id="foto_perfil" name="foto_perfil" value="" />
 
             <div class="flex flex-col gap-1">
                 <label for="name" class="text-xs font-semibold text-slate-700">Nombre(s)</label>
@@ -123,6 +146,70 @@
 
         </form>
 
+    </div>
+
+    <!-- Modal para explorar y cambiar avatar -->
+    <div id="avatar-picker-modal"
+        class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 select-none opacity-0 transition-opacity duration-200">
+        <div
+            class="relative w-full max-w-lg bg-[#003049] border-2 border-[#FCBF49]/60 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.85)] p-5 sm:p-6 flex flex-col font-['Poppins',sans-serif] max-h-[92vh] overflow-hidden text-white">
+
+            <!-- Botón Cerrar (X) -->
+            <button type="button" id="close-avatar-modal"
+                class="absolute top-4 right-4 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 rounded-full w-8 h-8 flex items-center justify-center transition-colors cursor-pointer text-sm font-bold z-10"
+                aria-label="Cerrar modal">
+                ✕
+            </button>
+
+            <!-- Encabezado Modal -->
+            <div class="text-center mb-3 pr-6 pl-2">
+                <h3 class="text-lg sm:text-xl font-bold text-white flex items-center justify-center gap-2">
+                    <span>Elige tu Avatar</span>
+                </h3>
+                <p class="text-xs text-[#669BBC] mt-0.5">
+                    Selecciona cualquier avatar oficial de los equipos de la LMB
+                </p>
+            </div>
+
+            <!-- Pestañas de Equipos con Scroll Horizontal -->
+            <div class="mb-3">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-[#FCBF49] block mb-1.5 px-1">
+                    Equipos:
+                </span>
+                <div id="modal-team-tabs" class="flex gap-2.5 overflow-x-auto py-2 px-1 custom-scrollbar items-center">
+                    <!-- Pestañas insertadas dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Grid de los 3 avatares del equipo seleccionado en el modal -->
+            <div class="flex-1 overflow-y-auto py-2 custom-scrollbar">
+                <div class="text-center mb-3">
+                    <span id="modal-active-team-name" class="text-sm font-bold text-white tracking-wide"></span>
+                </div>
+                <div id="modal-avatars-grid" class="grid grid-cols-3 gap-3 sm:gap-4 max-w-sm mx-auto">
+                    <!-- 3 avatares renderizados -->
+                </div>
+            </div>
+
+            <!-- Footer con Vista Previa y Botón Confirmar -->
+            <div class="mt-3 pt-3 border-t border-white/10 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <img id="modal-preview-current" src="./src/assets/default profile.png"
+                        class="w-9 h-9 rounded-full border-2 border-[#FCBF49] object-cover shadow"
+                        alt="Avatar seleccionado" />
+                    <div class="flex flex-col">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-[#FCBF49]">Seleccionado</span>
+                        <span id="modal-selected-avatar-text"
+                            class="text-xs text-white/90 font-medium truncate max-w-[170px]">Avatar</span>
+                    </div>
+                </div>
+                <button type="button" id="confirm-avatar-selection-btn"
+                    class="px-5 py-2 bg-[#C1121F] hover:bg-[#9b0e19] text-white font-bold text-xs sm:text-sm rounded-full shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer">
+                    Confirmar
+                </button>
+            </div>
+
+        </div>
     </div>
 
     <script src="./src/js/auth.js"></script>

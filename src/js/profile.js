@@ -85,6 +85,22 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
+    // Consultar datos actualizados del servidor por si cambió la foto o el equipo recientemente
+    try {
+        const userRes = await fetch(`${API_BASE_URL}/auth/user/${user.id_usuario}`);
+        if (userRes.ok) {
+            const userData = await userRes.json();
+            const dbUser = userData.user;
+            if (dbUser) {
+                if (dbUser.foto_perfil && avatarEl) {
+                    avatarEl.src = dbUser.foto_perfil;
+                    user.foto_perfil = dbUser.foto_perfil;
+                    localStorage.setItem('northbase_user', JSON.stringify(user));
+                }
+            }
+        }
+    } catch (_) {}
+
     // 4. Si el usuario tiene equipo favorito, asegurar que tenga el coleccionable ID 25 (Enrique Reyes)
     if (user.equipo_favorito && typeof awardCollectible === 'function') {
         try {

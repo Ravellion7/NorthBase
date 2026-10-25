@@ -6,10 +6,19 @@ async function getUserTableColumns() {
             "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'usuarios'",
             [process.env.DB_NAME || 'northbase_db']
         );
-        return new Set(rows.map(r => r.COLUMN_NAME.toLowerCase()));
+        const colSet = new Set(rows.map(r => r.COLUMN_NAME.toLowerCase()));
+        if (!colSet.has('foto_perfil')) {
+            try {
+                await pool.query("ALTER TABLE usuarios ADD COLUMN foto_perfil VARCHAR(255) NULL DEFAULT NULL AFTER equipo_favorito");
+                colSet.add('foto_perfil');
+            } catch (alterErr) {
+                console.warn('No se pudo verificar o auto-agregar la columna foto_perfil:', alterErr.message);
+            }
+        }
+        return colSet;
     } catch (error) {
         console.warn('No se pudieron leer las columnas de usuarios dinámicamente:', error.message);
-        return new Set(['id_usuario', 'nombre_usuario', 'email', 'password_hash', 'equipo_favorito']);
+        return new Set(['id_usuario', 'nombre_usuario', 'email', 'password_hash', 'equipo_favorito', 'foto_perfil']);
     }
 }
 

@@ -25,6 +25,7 @@ CREATE TABLE `usuarios` (
   `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password_hash` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `equipo_favorito` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `foto_perfil` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `fecha_registro` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_usuario`),
   UNIQUE KEY `nombre_usuario` (`nombre_usuario`),

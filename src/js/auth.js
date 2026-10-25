@@ -45,12 +45,36 @@ function isAuthenticated() {
 }
 
 // Sincronizar automáticamente la foto de perfil en el encabezado de todas las páginas
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const user = getCurrentUser();
-    if (user && user.foto_perfil) {
+    if (!user) return;
+
+    function applyAvatar(avatarUrl) {
+        if (!avatarUrl) return;
         document.querySelectorAll('a[href*="profile.html"] img').forEach(img => {
-            img.src = user.foto_perfil;
+            img.src = avatarUrl;
         });
+    }
+
+    if (user.foto_perfil) {
+        applyAvatar(user.foto_perfil);
+    }
+
+    // Auto-sincronización con el backend para recuperar cambios recientes
+    if (user.id_usuario) {
+        try {
+            const res = await fetch(`${API_BASE_URL}/auth/user/${user.id_usuario}`);
+            if (res.ok) {
+                const data = await res.json();
+                if (data.user && data.user.foto_perfil) {
+                    if (user.foto_perfil !== data.user.foto_perfil) {
+                        user.foto_perfil = data.user.foto_perfil;
+                        localStorage.setItem('northbase_user', JSON.stringify(user));
+                        applyAvatar(data.user.foto_perfil);
+                    }
+                }
+            }
+        } catch (_) {}
     }
 });
 
