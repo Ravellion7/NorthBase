@@ -20,9 +20,17 @@
 
 
     <style>
-        /* Hacer q la cámara de MindAR y el canvas de WebGL estén centrados y llenen el contenedor */
-        .mindar-ui-overlay {
+        /* Ocultar interfaces por defecto de MindAR y botón de VR de A-Frame */
+        .mindar-ui-overlay,
+        .a-enter-vr,
+        .a-enter-vr-button,
+        .a-enter-ar,
+        .a-enter-ar-button,
+        [data-a-enter-vr-button] {
             display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
         }
 
         .a-canvas {

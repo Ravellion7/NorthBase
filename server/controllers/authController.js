@@ -4,6 +4,14 @@ const userModel = require('../models/userModel');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'northbase_secret_key_default';
 
+const NAME_REGEX = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s'-]+$/;
+function isValidName(val) {
+    if (!val || typeof val !== 'string') return true;
+    const trimmed = val.trim();
+    if (!trimmed) return true;
+    return NAME_REGEX.test(trimmed);
+}
+
 // REGISTRO DE USUARIO
 async function register(req, res) {
     try {
@@ -20,6 +28,18 @@ async function register(req, res) {
         if (!name || !email || !password) {
             return res.status(400).json({
                 error: 'Faltan campos obligatorios (nombre, correo o contraseña).'
+            });
+        }
+
+        if (!isValidName(name)) {
+            return res.status(400).json({
+                error: 'El nombre solo puede contener letras y espacios (no se permiten números).'
+            });
+        }
+
+        if (!isValidName(father_last_name) || !isValidName(mother_last_name)) {
+            return res.status(400).json({
+                error: 'Los apellidos solo pueden contener letras y espacios (no se permiten números).'
             });
         }
 
@@ -178,6 +198,18 @@ async function updateProfile(req, res) {
 
         if (!id_usuario) {
             return res.status(400).json({ error: 'Falta el identificador del usuario.' });
+        }
+
+        if (!isValidName(name)) {
+            return res.status(400).json({
+                error: 'El nombre solo puede contener letras y espacios (no se permiten números).'
+            });
+        }
+
+        if (!isValidName(father_last_name) || !isValidName(mother_last_name)) {
+            return res.status(400).json({
+                error: 'Los apellidos solo pueden contener letras y espacios (no se permiten números).'
+            });
         }
 
         const currentUser = await userModel.findById(id_usuario);

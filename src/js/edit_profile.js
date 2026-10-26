@@ -349,6 +349,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return;
             }
 
+            // Validar que nombre y apellidos solo contengan letras y espacios (sin números)
+            const nameRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s'-]+$/;
+            if (!nameRegex.test(name)) {
+                showFormMessage(form, 'El nombre solo puede contener letras y espacios (sin números).', true);
+                return;
+            }
+            if (father_last_name && !nameRegex.test(father_last_name)) {
+                showFormMessage(form, 'El apellido paterno solo puede contener letras y espacios (sin números).', true);
+                return;
+            }
+            if (mother_last_name && !nameRegex.test(mother_last_name)) {
+                showFormMessage(form, 'El apellido materno solo puede contener letras y espacios (sin números).', true);
+                return;
+            }
+
             // Si desea cambiar la contraseña
             if (password.length > 0) {
                 if (password !== confirm_password) {

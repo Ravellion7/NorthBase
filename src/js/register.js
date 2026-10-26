@@ -398,6 +398,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const confirm_password = formData.get('confirm_password') || '';
             const foto_perfil = formData.get('foto_perfil') || currentSelectedAvatar;
 
+            // Validar que nombre y apellidos solo contengan letras y espacios (sin números)
+            const nameRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s'-]+$/;
+            if (!nameRegex.test(name)) {
+                showFormMessage(form, 'El nombre solo puede contener letras y espacios (sin números).', true);
+                return;
+            }
+            if (father_last_name && !nameRegex.test(father_last_name)) {
+                showFormMessage(form, 'El apellido paterno solo puede contener letras y espacios (sin números).', true);
+                return;
+            }
+            if (mother_last_name && !nameRegex.test(mother_last_name)) {
+                showFormMessage(form, 'El apellido materno solo puede contener letras y espacios (sin números).', true);
+                return;
+            }
+
             // Validar contraseñas iguales
             if (password !== confirm_password) {
                 showFormMessage(form, 'Las contraseñas no coinciden. Por favor verifícalas.', true);
