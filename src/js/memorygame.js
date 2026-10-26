@@ -1,7 +1,3 @@
-// ==========================================
-// NORTHBASE - MEMORY GAME (MEMORAMA)
-// ==========================================
-
 // Base de datos de equipos, jugadores y mánagers de la Zona Norte
 const MEMORY_TEAMS = [
     {
@@ -387,7 +383,7 @@ function checkMatch() {
     const isMatch = card1.data.matchId === card2.data.matchId;
 
     if (isMatch) {
-        // ¡Coincidencia!
+        // Coincidencia
         matchedPairs++;
         updateStatsDisplay();
 

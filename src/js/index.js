@@ -4,14 +4,14 @@ menuBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     menuDropdown.classList.toggle('hidden');
 });
-// Close menu when clicking outside
+// Cerrar el menú si se hace click fuera
 document.addEventListener('click', (e) => {
     if (!menuDropdown.contains(e.target) && !menuBtn.contains(e.target)) {
         menuDropdown.classList.add('hidden');
     }
 });
 
-// Toggle password visibility (eye icon)
+// Toggle de visibilidad de contraseña (icon del ojo)
 document.querySelectorAll('.toggle-password').forEach(btn => {
     btn.addEventListener('click', () => {
         const input = btn.previousElementSibling;

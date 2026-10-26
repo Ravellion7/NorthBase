@@ -1,7 +1,3 @@
-// ==========================================
-// INICIO DE SESIÓN - FRONTEND
-// ==========================================
-
 document.addEventListener('DOMContentLoaded', () => {
     const loginForms = [
         document.getElementById('login-form-mobile'),

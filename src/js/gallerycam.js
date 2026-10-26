@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentMediaType = 'photo'; // 'photo' o 'video'
     let activeObjectUrls = [];
 
-    // Abrir conexión a IndexedDB (Versión 2 con soporte para fotos y videos)
+    // Abrir conexión a IndexedDB
     function openDB() {
         return new Promise((resolve, reject) => {
             const request = indexedDB.open('NorthBaseDB', 2);

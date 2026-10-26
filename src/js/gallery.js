@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ? TEAMS_DATABASE[teamKey]
         : (typeof TEAMS_DATABASE !== 'undefined' ? TEAMS_DATABASE['sultanes'] : null);
 
-    // 2. Actualizar imagen de cabecera, botón de regreso y título
+    // Actualizar imagen de cabecera, botón de regreso y título
     if (teamData) {
         if (teamTitleImg) {
             teamTitleImg.src = teamData.titleImage;
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 3. Definición de los filtros de cámara estándar (CSS)
+    // Definición de los filtros de cámara estándar (CSS)
     const FILTERS = {
         'thermal': 'invert(100%) hue-rotate(240deg) saturate(350%) contrast(160%)',
         'smooth': 'blur(0.8px) contrast(96%) brightness(104%) saturate(108%)',
@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.classList.remove('hidden');
     };
 
-    // 4. Renderizar Fotos Dinámicamente
+    // Renderizar Fotos Dinámicamente
     if (photosGrid && teamData) {
         photosGrid.innerHTML = '';
         const photos = teamData.photos || [];
@@ -242,7 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 5. Renderizar Videos Dinámicamente
+    // Renderizar Videos Dinámicamente
     if (videosGrid && teamData) {
         videosGrid.innerHTML = '';
         const videos = teamData.videos || [];

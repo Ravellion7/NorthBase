@@ -1,7 +1,4 @@
-// ==========================================
-// COMPONENTE DE PARTÍCULAS (A-Frame nativo)
 // Debe registrarse ANTES de que <a-scene> se cree
-// ==========================================
 if (typeof AFRAME !== 'undefined') {
     AFRAME.registerComponent('particle-effect', {
         schema: {

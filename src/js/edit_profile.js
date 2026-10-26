@@ -1,7 +1,3 @@
-// ==========================================
-// NORTHBASE - EDITAR PERFIL DE USUARIO
-// ==========================================
-
 // Catálogo oficial de avatares por equipo de la Zona Norte
 const TEAM_AVATARS_MAP = {
     sultanes: {
@@ -246,11 +242,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             tabBtn.type = 'button';
             tabBtn.title = team.name;
             tabBtn.setAttribute('aria-label', team.name);
-            tabBtn.className = `w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center p-1.5 sm:p-2 transition-all cursor-pointer shrink-0 border ${
-                isActive
+            tabBtn.className = `w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center p-1.5 sm:p-2 transition-all cursor-pointer shrink-0 border ${isActive
                     ? 'bg-[#FCBF49] border-[#FCBF49] shadow-lg scale-110 ring-2 ring-white/60'
                     : 'bg-white/10 border-white/20 hover:bg-white/25 hover:scale-105'
-            }`;
+                }`;
 
             tabBtn.innerHTML = `
                 <img src="${team.logo}" alt="${team.shortName}" class="w-8 h-8 sm:w-10 sm:h-10 object-contain drop-shadow-sm transition-transform" />
@@ -282,11 +277,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const avatarBtn = document.createElement('button');
             avatarBtn.type = 'button';
-            avatarBtn.className = `group relative rounded-full p-1 transition-all cursor-pointer flex items-center justify-center ${
-                isSelected
+            avatarBtn.className = `group relative rounded-full p-1 transition-all cursor-pointer flex items-center justify-center ${isSelected
                     ? 'ring-4 ring-[#FCBF49] scale-110 shadow-lg'
                     : 'hover:scale-105 opacity-80 hover:opacity-100 ring-2 ring-transparent'
-            }`;
+                }`;
 
             avatarBtn.innerHTML = `
                 <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-2 border-white bg-slate-900 shadow">

@@ -1,7 +1,3 @@
-// ==========================================
-// NORTHBASE - GESTIÓN DE PERFIL DE USUARIO
-// ==========================================
-
 const TEAM_INFO_MAP = {
     sultanes: { name: 'Sultanes de Monterrey', logo: './src/assets/Sultanes logo.png' },
     acereros: { name: 'Acereros de Monclova', logo: './src/assets/acereros logo.png' },
@@ -16,7 +12,7 @@ const TEAM_INFO_MAP = {
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // 1. Obtener usuario actual
+    // Obtener usuario actual
     const user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
 
     const nameEl = document.getElementById('profile-name');
@@ -34,7 +30,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // 2. Si no ha iniciado sesión
+    // Si no ha iniciado sesión
     if (!user) {
         if (nameEl) nameEl.textContent = 'Invitado';
         if (emailEl) emailEl.textContent = 'Inicia sesión para guardar tu progreso';
@@ -51,7 +47,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
-    // 3. Pintar datos del usuario
+    // Pintar datos del usuario
     if (avatarEl) {
         avatarEl.src = user.foto_perfil || './src/assets/default profile.png';
     }
@@ -79,7 +75,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         } else {
             badgeContainer.innerHTML = `
                 <div class="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-white/90 text-xs font-medium border border-white/15">
-                    ⚾ Fan Zona Norte
+                    Fan Zona Norte
                 </div>
             `;
         }
@@ -99,9 +95,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             }
         }
-    } catch (_) {}
+    } catch (_) { }
 
-    // 4. Si el usuario tiene equipo favorito, asegurar que tenga el coleccionable ID 25 (Enrique Reyes)
+    // Si el usuario tiene equipo favorito, asegurar que tenga el coleccionable ID 25 (Enrique Reyes)
     if (user.equipo_favorito && typeof awardCollectible === 'function') {
         try {
             await awardCollectible(25);
@@ -110,7 +106,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // 5. Cargar coleccionables desde la API de MySQL
+    // Cargar coleccionables desde la API de MySQL
     if (collectiblesContainer) {
         try {
             const res = await fetch(`${API_BASE_URL}/collectibles/user/${user.id_usuario}`);
@@ -131,7 +127,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderEmptyCollectibles(collectiblesContainer);
         }
     }
-    // 5. Configurar listeners del modal de visualización
+    // Configurar listeners del modal de visualización
     const closeBtn = document.getElementById('close-collectible-modal');
     const modal = document.getElementById('collectible-modal');
     if (closeBtn) closeBtn.addEventListener('click', closeCollectibleModal);

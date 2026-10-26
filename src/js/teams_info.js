@@ -256,11 +256,9 @@ const MLB_TEAM_IDS_CLIENT = {
     algodoneros: 447
 };
 
-// ==========================================
 // CONSULTA DE ESTADÍSTICAS EN VIVO LMB
-// ==========================================
 async function fetchTeamStats(teamKey) {
-    // 1. Intentar primero a través de nuestro endpoint proxy de backend
+    // Intentar primero a través de nuestro endpoint proxy de backend
     // (Si se abre con Live Server en puerto 5500, apuntar al backend en puerto 3000)
     try {
         const apiOrigin = (window.location.port !== '3000' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'))
@@ -275,7 +273,7 @@ async function fetchTeamStats(teamKey) {
         console.warn('Backend proxy no disponible temporalmente, consultando directamente MLB Stats API...', backendErr);
     }
 
-    // 2. Fallback resiliente directo a statsapi.mlb.com (por si el backend local no está corriendo o está en reinicio)
+    // Fallback directo a statsapi.mlb.com (por si el backend local no está corriendo o está en reinicio)
     const teamId = MLB_TEAM_IDS_CLIENT[teamKey] || 562;
     const [standingsRes, hitRes, pitchRes, rosterRes] = await Promise.allSettled([
         fetch('https://statsapi.mlb.com/api/v1/standings?leagueId=125&season=2026').then(r => r.json()),
@@ -359,9 +357,7 @@ async function fetchTeamStats(teamKey) {
     };
 }
 
-// ==========================================
 // RENDERIZADO VISUAL DE ESTADÍSTICAS Y ROSTER
-// ==========================================
 function renderTeamStats(data, container) {
     if (!data || !container) return;
     const { standings, hitting, pitching, roster } = data;
@@ -591,7 +587,7 @@ function renderTeamStats(data, container) {
         return `
                             <div class="roster-card flex items-center gap-3 p-3 bg-slate-50/90 hover:bg-slate-100 rounded-xl border border-slate-200/90 transition-all hover:scale-[1.01]" data-name="${p.name.toLowerCase()}" data-pos="${p.position.toLowerCase()}">
                                 <div class="w-10 h-10 rounded-lg bg-[#0A1A32] text-white font-extrabold text-xs sm:text-sm flex items-center justify-center shrink-0 shadow-sm">
-                                    ${p.jersey !== '-' ? '#' + p.jersey : '⚾'}
+                                    ${p.jersey !== '-' ? '#' + p.jersey : ''}
                                 </div>
                                 <div class="min-w-0 flex-1">
                                     <h4 class="text-xs sm:text-sm font-bold text-slate-800 truncate">${p.name}</h4>
@@ -676,14 +672,14 @@ async function initTeamLiveStats(teamKey) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Leer el parámetro ?team= de la URL
+    // Leer el parámetro ?team= de la URL
     const urlParams = new URLSearchParams(window.location.search);
     const teamKey = (urlParams.get('team') || 'sultanes').toLowerCase();
 
-    // 2. Obtener los datos del equipo seleccionado (o Sultanes por defecto)
+    // Obtener los datos del equipo seleccionado (o Sultanes por defecto)
     const teamData = TEAMS_DATABASE[teamKey] || TEAMS_DATABASE['sultanes'];
 
-    // 3. Actualizar la página dinámicamente
+    // Actualizar la página dinámicamente
     const titleImg = document.getElementById('team-title-img');
     const multimediaBtn = document.getElementById('team-multimedia-btn');
     const infoText = document.getElementById('team-info-text');
@@ -704,7 +700,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Actualizar título de la pestaña del navegador
     document.title = `NorthBase - ${teamData.name}`;
 
-    // 4. Desbloquear el coleccionable del estadio del equipo al visitarlo
+    // Desbloquear el coleccionable del estadio del equipo al visitarlo
     const stadiumId = TEAM_STADIUM_MAP[teamKey];
     if (stadiumId && typeof awardCollectible === 'function') {
         setTimeout(() => {
@@ -712,7 +708,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 600);
     }
 
-    // 5. Cargar estadísticas oficiales en vivo de la LMB para el equipo activo
+    // Cargar estadísticas oficiales en vivo de la LMB para el equipo activo
     initTeamLiveStats(teamKey);
 });
 

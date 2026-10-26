@@ -1,7 +1,3 @@
-// ==========================================
-// NORTHBASE - UTILIDADES DE AUTENTICACIÓN
-// ==========================================
-
 // Si se ejecuta mediante túnel (Cloudflare Tunnel) o mismo host, usar ruta relativa /api
 // Si se corre desde Live Server (puerto 5500 u otro), apuntar al backend local en 3000
 const API_BASE_URL = (window.location.port !== '3000' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'))
@@ -74,7 +70,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     }
                 }
             }
-        } catch (_) {}
+        } catch (_) { }
     }
 });
 
@@ -105,7 +101,7 @@ function showFormMessage(formElement, message, isError = true) {
 // ==========================================
 
 /**
- * Desbloquear un coleccionable para el usuario actual y disparar notificación dorada
+ * Desbloquear un coleccionable para el usuario actual y disparar notificación 
  * @param {number|string} collectibleId - ID numérico del coleccionable en la base de datos
  * @returns {Promise<Object|null>}
  */
@@ -135,7 +131,7 @@ async function awardCollectible(collectibleId) {
 
         const data = await response.json();
 
-        // Mostrar la notificación dorada únicamente si es un logro nuevo
+        // Mostrar la notificación únicamente si es un logro nuevo
         if (data.success && data.isNew && data.collectible) {
             showCollectibleToast(data.collectible);
         }
@@ -148,7 +144,7 @@ async function awardCollectible(collectibleId) {
 }
 
 /**
- * Notificación emergente dorada de desbloqueo de coleccionable
+ * Notificación emergente de desbloqueo de coleccionable
  * @param {Object} collectible - Datos del coleccionable ({ id_coleccionable, nombre, descripcion, tipo, imagen_url })
  */
 function showCollectibleToast(collectible) {

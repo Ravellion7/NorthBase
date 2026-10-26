@@ -696,7 +696,7 @@ TRIVIA_DATABASE.calientes = TRIVIA_DATABASE.caliente;
 TRIVIA_DATABASE.tecolotes = TRIVIA_DATABASE.tecos;
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Obtener parámetro de URL (?trivia=sultanes, etc.)
+    // Obtener parámetro de URL (?trivia=sultanes, etc.)
     const urlParams = new URLSearchParams(window.location.search);
     const triviaKey = (urlParams.get('trivia') || 'norteno').toLowerCase();
 
@@ -969,43 +969,43 @@ document.addEventListener('DOMContentLoaded', () => {
                     porcentaje: percent
                 })
             })
-            .then(res => res.json())
-            .then(data => {
-                if (data.newCollectibles && data.newCollectibles.length > 0) {
-                    // 1. Mostrar toasts dorados flotantes con intervalo
-                    data.newCollectibles.forEach((col, index) => {
-                        setTimeout(() => {
-                            if (typeof showCollectibleToast === 'function') {
-                                showCollectibleToast(col);
-                            }
-                        }, index * 2000);
-                    });
+                .then(res => res.json())
+                .then(data => {
+                    if (data.newCollectibles && data.newCollectibles.length > 0) {
+                        // Mostrar toasts flotantes con intervalo
+                        data.newCollectibles.forEach((col, index) => {
+                            setTimeout(() => {
+                                if (typeof showCollectibleToast === 'function') {
+                                    showCollectibleToast(col);
+                                }
+                            }, index * 2000);
+                        });
 
-                    // 2. Mostrar banner de felicitación en la pantalla de resultados
-                    if (unlockedContainer) {
-                        data.newCollectibles.forEach(col => {
-                            const rewardEl = document.createElement('div');
-                            rewardEl.className = 'w-full p-3 rounded-2xl bg-[#003049] border-2 border-[#FCBF49] text-white flex items-center gap-3 shadow-lg shadow-amber-500/20 text-left';
-                            rewardEl.innerHTML = `
+                        // Mostrar banner de felicitación en la pantalla de resultados
+                        if (unlockedContainer) {
+                            data.newCollectibles.forEach(col => {
+                                const rewardEl = document.createElement('div');
+                                rewardEl.className = 'w-full p-3 rounded-2xl bg-[#003049] border-2 border-[#FCBF49] text-white flex items-center gap-3 shadow-lg shadow-amber-500/20 text-left';
+                                rewardEl.innerHTML = `
                                 <div class="w-12 h-12 shrink-0 bg-white/10 rounded-xl p-1 flex items-center justify-center">
                                     <img src="${col.imagen_url || './src/assets/trophy icon.png'}" alt="${col.nombre}" class="w-full h-full object-contain" />
                                 </div>
                                 <div class="flex-1 min-w-0">
                                     <span class="inline-block text-[10px] font-bold text-[#FCBF49] uppercase tracking-wider">
-                                        ⭐ ¡NUEVO COLECCIONABLE DESBLOQUEADO!
+                                        ¡NUEVO COLECCIONABLE DESBLOQUEADO!
                                     </span>
                                     <h4 class="font-bold text-xs sm:text-sm text-white truncate">${col.nombre}</h4>
                                     <span class="text-[10px] text-[#669BBC]">${col.tipo ? col.tipo.toUpperCase() : 'COLECCIONABLE'}</span>
                                 </div>
                             `;
-                            unlockedContainer.appendChild(rewardEl);
-                        });
+                                unlockedContainer.appendChild(rewardEl);
+                            });
+                        }
                     }
-                }
-            })
-            .catch(err => {
-                console.warn('Error al guardar trivia:', err);
-            });
+                })
+                .catch(err => {
+                    console.warn('Error al guardar trivia:', err);
+                });
         } else if (authHint) {
             authHint.innerHTML = `
                 <p class="text-xs text-slate-500">
