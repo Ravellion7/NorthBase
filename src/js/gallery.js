@@ -5,9 +5,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalCanvas = document.getElementById('modal-canvas');
     const closeBtn = document.getElementById('modal-close-btn');
     const filterBtns = document.querySelectorAll('.filter-circle-btn');
+    const downloadBtn = document.getElementById('modal-download-btn');
+    const downloadText = document.getElementById('modal-download-text');
+    const videoProgressOverlay = document.getElementById('video-progress-overlay');
+    const videoProgressBar = document.getElementById('video-progress-bar');
+    const videoProgressPercent = document.getElementById('video-progress-percent');
+    const videoProgressStatus = document.getElementById('video-progress-status');
+    const cancelVideoRenderBtn = document.getElementById('cancel-video-render-btn');
 
     let currentIsVideo = false;
     let videoPixelAnimId = null;
+    let videoRenderCancelled = false;
+    let activeVideoRecorder = null;
+    let activeProcessingVideo = null;
 
     const teamTitleImg = document.getElementById('gallery-team-img');
     const backBtn = document.getElementById('gallery-back-btn');
@@ -56,7 +66,26 @@ document.addEventListener('DOMContentLoaded', () => {
         'high-sat': 'saturate(300%) contrast(125%)'
     };
 
+    const FILTER_NAMES = {
+        'none': '',
+        'pixelated': 'Pixelado',
+        'thermal': 'Térmico',
+        'smooth': 'Suavizado',
+        'unfocused': 'Desenfocado',
+        'high-sat': 'Alta Saturación'
+    };
+
     let activeFilter = 'none';
+
+    function updateDownloadButtonText() {
+        if (!downloadText) return;
+        if (!activeFilter || activeFilter === 'none') {
+            downloadText.textContent = currentIsVideo ? 'Descargar Video' : 'Descargar Foto';
+        } else {
+            const name = FILTER_NAMES[activeFilter] || activeFilter;
+            downloadText.textContent = `Descargar con Filtro (${name})`;
+        }
+    }
 
     // Detener y resetear pixelado
     function stopPixelation() {
@@ -169,6 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
             activeFilter = 'none';
             if (modalImg) modalImg.style.filter = 'none';
             if (modalVideo) modalVideo.style.filter = 'none';
+            updateDownloadButtonText();
             return;
         }
 
@@ -188,6 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (modalImg) modalImg.style.filter = cssStyle;
             if (modalVideo) modalVideo.style.filter = cssStyle;
         }
+        updateDownloadButtonText();
     };
 
     const clearButtonStyles = () => {
@@ -203,9 +234,11 @@ document.addEventListener('DOMContentLoaded', () => {
         clearButtonStyles();
         stopPixelation();
         applyFilter('none');
+        updateDownloadButtonText();
 
         if (isVideo) {
             if (modalImg) modalImg.classList.add('hidden');
+            modalVideo.crossOrigin = 'anonymous';
             modalVideo.src = src;
             modalVideo.classList.remove('hidden', 'opacity-0');
             modalVideo.play();
@@ -214,6 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 modalVideo.pause();
                 modalVideo.classList.add('hidden');
             }
+            modalImg.crossOrigin = 'anonymous';
             modalImg.src = src;
             modalImg.classList.remove('hidden');
         }
@@ -273,8 +307,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Cancelar cualquier renderizado activo de video
+    const cancelActiveVideoRender = () => {
+        videoRenderCancelled = true;
+        if (activeVideoRecorder && activeVideoRecorder.state === 'recording') {
+            try { activeVideoRecorder.stop(); } catch (e) { }
+        }
+        if (activeProcessingVideo) {
+            try {
+                activeProcessingVideo.pause();
+                activeProcessingVideo.removeAttribute('src');
+                activeProcessingVideo.load();
+            } catch (e) { }
+        }
+        activeProcessingVideo = null;
+        activeVideoRecorder = null;
+        if (videoProgressOverlay) videoProgressOverlay.classList.add('hidden');
+    };
+
     // Cerrar Modal
     const closeModal = () => {
+        cancelActiveVideoRender();
         modal.classList.add('hidden');
         stopPixelation();
         applyFilter('none');
@@ -290,6 +343,273 @@ document.addEventListener('DOMContentLoaded', () => {
     if (modal) {
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeModal();
+        });
+    }
+
+    // Utilidad para disparar la descarga de un Blob o URL
+    function triggerDownload(urlOrBlob, filename) {
+        const isBlob = urlOrBlob instanceof Blob;
+        const url = isBlob ? URL.createObjectURL(urlOrBlob) : urlOrBlob;
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+            document.body.removeChild(a);
+            if (isBlob) URL.revokeObjectURL(url);
+        }, 2000);
+    }
+
+    // Descarga de fotos con el filtro aplicado
+    function downloadPhoto() {
+        if (!modalImg || !modalImg.src) return;
+
+        const filterSuffix = (activeFilter && activeFilter !== 'none') ? `_${activeFilter}` : '';
+        const filename = `${teamKey}_foto${filterSuffix}.jpg`;
+
+        const naturalW = modalImg.naturalWidth || modalImg.width || 800;
+        const naturalH = modalImg.naturalHeight || modalImg.height || 600;
+
+        // Si no hay filtro, descargar la imagen limpia
+        if (!activeFilter || activeFilter === 'none') {
+            const canvas = document.createElement('canvas');
+            canvas.width = naturalW;
+            canvas.height = naturalH;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(modalImg, 0, 0, naturalW, naturalH);
+            canvas.toBlob((blob) => {
+                if (blob) {
+                    triggerDownload(blob, filename);
+                } else {
+                    triggerDownload(modalImg.src, filename);
+                }
+            }, 'image/jpeg', 0.95);
+            return;
+        }
+
+        const exportCanvas = document.createElement('canvas');
+        exportCanvas.width = naturalW;
+        exportCanvas.height = naturalH;
+        const ctx = exportCanvas.getContext('2d');
+
+        if (activeFilter === 'pixelated') {
+            const blockSize = Math.max(12, Math.round(naturalW / 55));
+            const smallW = Math.max(16, Math.floor(naturalW / blockSize));
+            const smallH = Math.max(16, Math.floor(naturalH / blockSize));
+
+            const smallCanvas = document.createElement('canvas');
+            smallCanvas.width = smallW;
+            smallCanvas.height = smallH;
+            const smallCtx = smallCanvas.getContext('2d');
+            smallCtx.drawImage(modalImg, 0, 0, smallW, smallH);
+
+            ctx.imageSmoothingEnabled = false;
+            ctx.webkitImageSmoothingEnabled = false;
+            ctx.mozImageSmoothingEnabled = false;
+            ctx.msImageSmoothingEnabled = false;
+            ctx.filter = 'contrast(120%) saturate(110%)';
+            ctx.drawImage(smallCanvas, 0, 0, naturalW, naturalH);
+        } else {
+            ctx.filter = FILTERS[activeFilter] || 'none';
+            ctx.drawImage(modalImg, 0, 0, naturalW, naturalH);
+        }
+
+        exportCanvas.toBlob((blob) => {
+            if (blob) {
+                triggerDownload(blob, filename);
+            } else {
+                console.error('Error al generar blob de la imagen con filtro');
+            }
+        }, 'image/jpeg', 0.95);
+    }
+
+    // Descarga de videos con el filtro renderizado cuadro a cuadro
+    async function downloadVideo() {
+        if (!modalVideo || !modalVideo.src) return;
+
+        const filterSuffix = (activeFilter && activeFilter !== 'none') ? `_${activeFilter}` : '';
+
+        // Si no hay filtro, descarga instantánea del archivo original
+        if (!activeFilter || activeFilter === 'none') {
+            triggerDownload(modalVideo.src, `${teamKey}_video.mp4`);
+            return;
+        }
+
+        videoRenderCancelled = false;
+        if (videoProgressOverlay) {
+            videoProgressOverlay.classList.remove('hidden');
+            if (videoProgressBar) videoProgressBar.style.width = '0%';
+            if (videoProgressPercent) videoProgressPercent.textContent = '0%';
+            if (videoProgressStatus) videoProgressStatus.textContent = 'Preparando video para procesamiento...';
+        }
+
+        const procVideo = document.createElement('video');
+        activeProcessingVideo = procVideo;
+        procVideo.crossOrigin = 'anonymous';
+        procVideo.src = modalVideo.currentSrc || modalVideo.src;
+        procVideo.muted = true;
+        procVideo.playsInline = true;
+        procVideo.preload = 'auto';
+
+        const cleanup = () => {
+            if (videoProgressOverlay) videoProgressOverlay.classList.add('hidden');
+            if (procVideo) {
+                procVideo.pause();
+                procVideo.removeAttribute('src');
+                procVideo.load();
+            }
+            activeProcessingVideo = null;
+            activeVideoRecorder = null;
+        };
+
+        if (cancelVideoRenderBtn) {
+            cancelVideoRenderBtn.onclick = () => {
+                cancelActiveVideoRender();
+            };
+        }
+
+        await new Promise((resolve) => {
+            procVideo.onloadeddata = resolve;
+            procVideo.onerror = resolve;
+            setTimeout(resolve, 3500);
+        });
+
+        if (videoRenderCancelled) return cleanup();
+
+        const vidW = procVideo.videoWidth || modalVideo.videoWidth || 640;
+        const vidH = procVideo.videoHeight || modalVideo.videoHeight || 360;
+        const duration = procVideo.duration || modalVideo.duration || 5;
+
+        const procCanvas = document.createElement('canvas');
+        procCanvas.width = vidW;
+        procCanvas.height = vidH;
+        const ctx = procCanvas.getContext('2d');
+
+        const blockSize = Math.max(10, Math.round(vidW / 50));
+        const smallW = Math.max(16, Math.floor(vidW / blockSize));
+        const smallH = Math.max(16, Math.floor(vidH / blockSize));
+        const smallCanvas = document.createElement('canvas');
+        smallCanvas.width = smallW;
+        smallCanvas.height = smallH;
+        const smallCtx = smallCanvas.getContext('2d');
+
+        const stream = procCanvas.captureStream(30);
+
+        // Pasar audio sin que suene en altavoces del usuario
+        try {
+            const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+            if (AudioContextClass) {
+                const audioCtx = new AudioContextClass();
+                const audioSource = audioCtx.createMediaElementSource(procVideo);
+                const audioDest = audioCtx.createMediaStreamDestination();
+                audioSource.connect(audioDest);
+                const aTracks = audioDest.stream.getAudioTracks();
+                if (aTracks.length > 0) {
+                    stream.addTrack(aTracks[0]);
+                }
+                procVideo.muted = false;
+            }
+        } catch (err) {
+            procVideo.muted = true;
+        }
+
+        let mimeType = 'video/mp4;codecs=avc1';
+        if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = 'video/mp4';
+        if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = 'video/webm;codecs=vp9';
+        if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = 'video/webm;codecs=vp8';
+        if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = 'video/webm';
+
+        const chunks = [];
+        let recorder = null;
+        try {
+            recorder = mimeType
+                ? new MediaRecorder(stream, { mimeType, videoBitsPerSecond: 3500000 })
+                : new MediaRecorder(stream);
+        } catch (e) {
+            recorder = new MediaRecorder(stream);
+        }
+        activeVideoRecorder = recorder;
+
+        const ext = (recorder.mimeType && recorder.mimeType.includes('mp4')) ? 'mp4' : 'webm';
+        const filename = `${teamKey}_video${filterSuffix}.${ext}`;
+
+        recorder.ondataavailable = (e) => {
+            if (e.data && e.data.size > 0) chunks.push(e.data);
+        };
+
+        recorder.onstop = () => {
+            if (!videoRenderCancelled && chunks.length > 0) {
+                const blob = new Blob(chunks, { type: recorder.mimeType || 'video/webm' });
+                triggerDownload(blob, filename);
+            }
+            cleanup();
+        };
+
+        if (videoProgressStatus) {
+            videoProgressStatus.textContent = 'Renderizando video con el filtro aplicado...';
+        }
+
+        recorder.start(100);
+        procVideo.currentTime = 0;
+
+        try {
+            await procVideo.play();
+        } catch (e) {
+            console.warn('Error al reproducir procVideo:', e);
+        }
+
+        let animId = null;
+
+        function renderStep() {
+            if (videoRenderCancelled) {
+                if (animId) cancelAnimationFrame(animId);
+                return;
+            }
+
+            if (procVideo.paused || procVideo.ended || procVideo.currentTime >= (duration - 0.05)) {
+                if (videoProgressBar) videoProgressBar.style.width = '100%';
+                if (videoProgressPercent) videoProgressPercent.textContent = '100%';
+                if (videoProgressStatus) videoProgressStatus.textContent = '¡Finalizando y descargando!';
+
+                setTimeout(() => {
+                    if (recorder && recorder.state === 'recording') {
+                        recorder.stop();
+                    }
+                }, 300);
+                return;
+            }
+
+            const progress = Math.min(98, Math.round((procVideo.currentTime / duration) * 100));
+            if (videoProgressBar) videoProgressBar.style.width = `${progress}%`;
+            if (videoProgressPercent) videoProgressPercent.textContent = `${progress}%`;
+
+            if (activeFilter === 'pixelated') {
+                smallCtx.drawImage(procVideo, 0, 0, smallW, smallH);
+                ctx.imageSmoothingEnabled = false;
+                ctx.webkitImageSmoothingEnabled = false;
+                ctx.filter = 'contrast(120%) saturate(110%)';
+                ctx.drawImage(smallCanvas, 0, 0, vidW, vidH);
+            } else {
+                ctx.filter = FILTERS[activeFilter] || 'none';
+                ctx.drawImage(procVideo, 0, 0, vidW, vidH);
+            }
+
+            animId = requestAnimationFrame(renderStep);
+        }
+
+        renderStep();
+    }
+
+    // Botón de Descarga
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (currentIsVideo) {
+                downloadVideo();
+            } else {
+                downloadPhoto();
+            }
         });
     }
 

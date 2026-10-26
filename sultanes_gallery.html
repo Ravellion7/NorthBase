@@ -200,43 +200,80 @@
 
 
 
-            <div class="absolute bottom-8 left-0 right-0 flex items-center justify-center gap-3 sm:gap-4 z-50">
+            <!-- Contenedor inferior: Botón de Descarga y Filtros -->
+            <div class="absolute bottom-4 sm:bottom-6 left-0 right-0 flex flex-col items-center gap-2.5 sm:gap-3 z-50 px-4 pointer-events-none">
 
-                <!-- 1. Pixelado -->
-                <button type="button" data-filter="pixelated" title="Cámara Pixelada"
-                    class="filter-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/80 hover:bg-white border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center p-1.5 sm:p-2">
-                    <img src="./src/assets/pixelated icon.png" alt="Pixelado"
-                        class="w-full h-full object-contain pointer-events-none drop-shadow-sm" />
+                <!-- Botón Descargar con Filtro -->
+                <button id="modal-download-btn" type="button"
+                    class="pointer-events-auto flex items-center gap-2 bg-[#C1121F] hover:bg-[#a50f1a] active:scale-95 text-white font-['Poppins',sans-serif] font-semibold text-xs sm:text-sm px-4 py-2 sm:px-5 sm:py-2.5 rounded-full shadow-xl shadow-black/50 hover:shadow-2xl transition-all duration-200 cursor-pointer border border-white/20 hover:scale-105"
+                    title="Descargar con el filtro aplicado">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5 fill-current" viewBox="0 0 24 24">
+                        <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
+                    </svg>
+                    <span id="modal-download-text">Descargar</span>
                 </button>
 
-                <!-- 2. Cámara Térmica -->
-                <button type="button" data-filter="thermal" title="Cámara Térmica"
-                    class="filter-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/80 hover:bg-white border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center p-1.5 sm:p-2">
-                    <img src="./src/assets/thermometer icon.png" alt="Térmica"
-                        class="w-full h-full object-contain pointer-events-none drop-shadow-sm" />
-                </button>
+                <!-- Barra de 5 filtros -->
+                <div class="pointer-events-auto flex items-center justify-center gap-3 sm:gap-4">
+                    <!-- 1. Pixelado -->
+                    <button type="button" data-filter="pixelated" title="Cámara Pixelada"
+                        class="filter-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/80 hover:bg-white border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center p-1.5 sm:p-2">
+                        <img src="./src/assets/pixelated icon.png" alt="Pixelado"
+                            class="w-full h-full object-contain pointer-events-none drop-shadow-sm" />
+                    </button>
 
-                <!-- 3. Suavizado -->
-                <button type="button" data-filter="smooth" title="Cámara Suavizada"
-                    class="filter-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/80 hover:bg-white border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center p-1.5 sm:p-2">
-                    <img src="./src/assets/smoothing icon.png" alt="Suavizado"
-                        class="w-full h-full object-contain pointer-events-none drop-shadow-sm" />
-                </button>
+                    <!-- 2. Cámara Térmica -->
+                    <button type="button" data-filter="thermal" title="Cámara Térmica"
+                        class="filter-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/80 hover:bg-white border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center p-1.5 sm:p-2">
+                        <img src="./src/assets/thermometer icon.png" alt="Térmica"
+                            class="w-full h-full object-contain pointer-events-none drop-shadow-sm" />
+                    </button>
 
-                <!-- 4. Desenfocada -->
-                <button type="button" data-filter="unfocused" title="Cámara Desenfocada"
-                    class="filter-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/80 hover:bg-white border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center p-1.5 sm:p-2">
-                    <img src="./src/assets/unfocused icon.png" alt="Desenfocada"
-                        class="w-full h-full object-contain pointer-events-none drop-shadow-sm" />
-                </button>
+                    <!-- 3. Suavizado -->
+                    <button type="button" data-filter="smooth" title="Cámara Suavizada"
+                        class="filter-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/80 hover:bg-white border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center p-1.5 sm:p-2">
+                        <img src="./src/assets/smoothing icon.png" alt="Suavizado"
+                            class="w-full h-full object-contain pointer-events-none drop-shadow-sm" />
+                    </button>
 
-                <!-- 5. Alta Saturación -->
-                <button type="button" data-filter="high-sat" title="Alta Saturación"
-                    class="filter-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/80 hover:bg-white border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center p-1.5 sm:p-2">
-                    <img src="./src/assets/rainbow icon.png" alt="Alta Saturación"
-                        class="w-full h-full object-contain pointer-events-none drop-shadow-sm" />
-                </button>
+                    <!-- 4. Desenfocada -->
+                    <button type="button" data-filter="unfocused" title="Cámara Desenfocada"
+                        class="filter-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/80 hover:bg-white border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center p-1.5 sm:p-2">
+                        <img src="./src/assets/unfocused icon.png" alt="Desenfocada"
+                            class="w-full h-full object-contain pointer-events-none drop-shadow-sm" />
+                    </button>
 
+                    <!-- 5. Alta Saturación -->
+                    <button type="button" data-filter="high-sat" title="Alta Saturación"
+                        class="filter-circle-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/80 hover:bg-white border-[3px] border-white shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center p-1.5 sm:p-2">
+                        <img src="./src/assets/rainbow icon.png" alt="Alta Saturación"
+                            class="w-full h-full object-contain pointer-events-none drop-shadow-sm" />
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Modal de Progreso para Descarga de Video -->
+            <div id="video-progress-overlay"
+                class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-50 flex flex-col items-center justify-center p-4">
+                <div class="bg-[#0A1A32] border border-white/20 p-6 sm:p-7 rounded-2xl shadow-2xl flex flex-col items-center max-w-sm w-full text-center">
+                    <div class="w-12 h-12 border-4 border-white/20 border-t-[#C1121F] rounded-full animate-spin mb-4"></div>
+                    <h4 class="text-white font-['Anton',sans-serif] text-xl tracking-wider mb-1">PROCESANDO VIDEO</h4>
+                    <p id="video-progress-status" class="text-slate-300 font-['Poppins',sans-serif] text-xs sm:text-sm mb-4">
+                        Renderizando video con el filtro aplicado...
+                    </p>
+                    <div class="w-full bg-white/10 rounded-full h-3 overflow-hidden mb-2">
+                        <div id="video-progress-bar" class="bg-[#C1121F] h-3 rounded-full transition-all duration-150" style="width: 0%"></div>
+                    </div>
+                    <div class="w-full flex items-center justify-between text-white/70 font-['Poppins',sans-serif] text-xs">
+                        <span>Progreso</span>
+                        <span id="video-progress-percent" class="font-bold text-white">0%</span>
+                    </div>
+                    <button id="cancel-video-render-btn" type="button"
+                        class="mt-4 text-xs font-['Poppins',sans-serif] text-slate-400 hover:text-white underline cursor-pointer">
+                        Cancelar
+                    </button>
+                </div>
             </div>
 
 
