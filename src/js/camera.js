@@ -282,6 +282,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentActiveTarget = null;
     let currentActiveModel = null;
     let activeTeamName = null;
+    let lastDetectedTeam = null;
+    let lastDetectedTimestamp = 0;
     let availableAnimations = [];
     let sultanesAnimations = []; // Animaciones maestras exclusivas de Sultanes
     let currentEffectName = null;
@@ -439,6 +441,8 @@ document.addEventListener('DOMContentLoaded', () => {
             currentActiveTarget = target;
             currentActiveModel = model;
             activeTeamName = teamName;
+            lastDetectedTeam = teamName;
+            lastDetectedTimestamp = Date.now();
 
             if (model) {
                 const mesh = model.getObject3D('mesh');
@@ -906,14 +910,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // Helper: Desbloqueo de Coleccionables
     function awardCameraCollectibles() {
         if (typeof awardCollectible === 'function') {
+            const user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
+
+            if (!user) {
+                console.warn('[NorthBase AR] No hay usuario logueado en este dispositivo/navegador. Inicia sesión para guardar tus coleccionables.');
+            }
+
             // ID 29: Ramón Santiago (Efectos de cámara interactivos)
             if (currentEffectName) {
                 setTimeout(() => {
                     awardCollectible(29);
                 }, 400);
             }
-            // ID 30: Óscar Robles (Con modelo 3D escaneado)
-            if (currentActiveModel) {
+
+            // ID 30: Óscar Robles (Con modelo 3D escaneado del equipo)
+            // Se valida si el modelo está activo en el fotograma o si se detectó en los últimos 6 segundos
+            const wasModelRecentlyVisible = currentActiveModel !== null || (Date.now() - lastDetectedTimestamp < 6000);
+            if (wasModelRecentlyVisible) {
                 setTimeout(() => {
                     awardCollectible(30);
                 }, 800);

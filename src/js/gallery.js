@@ -2,8 +2,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('gallery-modal');
     const modalImg = document.getElementById('modal-img');
     const modalVideo = document.getElementById('modal-video');
+    const modalCanvas = document.getElementById('modal-canvas');
     const closeBtn = document.getElementById('modal-close-btn');
     const filterBtns = document.querySelectorAll('.filter-circle-btn');
+
+    let currentIsVideo = false;
+    let videoPixelAnimId = null;
 
     const teamTitleImg = document.getElementById('gallery-team-img');
     const backBtn = document.getElementById('gallery-back-btn');
@@ -44,9 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 3. Definición de los 5 filtros de cámara
+    // 3. Definición de los filtros de cámara estándar (CSS)
     const FILTERS = {
-        'pixelated': 'url(#pixelate) contrast(120%)',
         'thermal': 'invert(100%) hue-rotate(240deg) saturate(350%) contrast(160%)',
         'smooth': 'blur(0.8px) contrast(96%) brightness(104%) saturate(108%)',
         'unfocused': 'blur(8px) brightness(105%)',
@@ -55,10 +58,136 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let activeFilter = 'none';
 
-    const applyFilter = (filterStyle) => {
-        activeFilter = filterStyle;
-        if (modalImg) modalImg.style.filter = filterStyle;
-        if (modalVideo) modalVideo.style.filter = filterStyle;
+    // Detener y resetear pixelado
+    function stopPixelation() {
+        if (videoPixelAnimId) {
+            cancelAnimationFrame(videoPixelAnimId);
+            videoPixelAnimId = null;
+        }
+        if (modalCanvas) {
+            modalCanvas.classList.add('hidden');
+            modalCanvas.style.position = '';
+            modalCanvas.style.inset = '';
+            modalCanvas.style.margin = '';
+            modalCanvas.style.width = '';
+            modalCanvas.style.height = '';
+            modalCanvas.style.pointerEvents = '';
+        }
+        if (modalImg && !currentIsVideo) {
+            modalImg.classList.remove('hidden');
+        }
+        if (modalVideo && currentIsVideo) {
+            modalVideo.classList.remove('opacity-0');
+        }
+    }
+
+    // Renderizar pixelado auténtico 8-bit para Fotos
+    function renderPixelatedImage() {
+        if (!modalImg || !modalCanvas) return;
+        const naturalW = modalImg.naturalWidth || modalImg.width || 600;
+        const naturalH = modalImg.naturalHeight || modalImg.height || 400;
+
+        modalCanvas.width = naturalW;
+        modalCanvas.height = naturalH;
+
+        // Tamaño de bloque de píxel: crea bloques visibles estilo retro auténtico
+        const blockSize = Math.max(12, Math.round(naturalW / 55));
+        const smallW = Math.max(16, Math.floor(naturalW / blockSize));
+        const smallH = Math.max(16, Math.floor(naturalH / blockSize));
+
+        const smallCanvas = document.createElement('canvas');
+        smallCanvas.width = smallW;
+        smallCanvas.height = smallH;
+        const smallCtx = smallCanvas.getContext('2d');
+        smallCtx.drawImage(modalImg, 0, 0, smallW, smallH);
+
+        const ctx = modalCanvas.getContext('2d');
+        ctx.imageSmoothingEnabled = false;
+        ctx.webkitImageSmoothingEnabled = false;
+        ctx.mozImageSmoothingEnabled = false;
+        ctx.msImageSmoothingEnabled = false;
+        ctx.drawImage(smallCanvas, 0, 0, naturalW, naturalH);
+
+        modalImg.classList.add('hidden');
+        modalCanvas.classList.remove('hidden');
+        modalCanvas.style.filter = 'contrast(120%) saturate(110%)';
+    }
+
+    // Renderizar pixelado auténtico a 60 FPS para Videos
+    function startPixelatedVideo() {
+        if (!modalVideo || !modalCanvas) return;
+        const vidW = modalVideo.videoWidth || 640;
+        const vidH = modalVideo.videoHeight || 360;
+
+        modalCanvas.width = vidW;
+        modalCanvas.height = vidH;
+
+        const blockSize = Math.max(10, Math.round(vidW / 50));
+        const smallW = Math.max(16, Math.floor(vidW / blockSize));
+        const smallH = Math.max(16, Math.floor(vidH / blockSize));
+
+        const smallCanvas = document.createElement('canvas');
+        smallCanvas.width = smallW;
+        smallCanvas.height = smallH;
+        const smallCtx = smallCanvas.getContext('2d');
+        const ctx = modalCanvas.getContext('2d');
+
+        // Posicionar el canvas de forma absoluta sobre el video
+        // para que no comparta el espacio horizontal dentro del contenedor flex
+        modalCanvas.style.position = 'absolute';
+        modalCanvas.style.inset = '0';
+        modalCanvas.style.margin = 'auto';
+        modalCanvas.style.width = '100%';
+        modalCanvas.style.height = '100%';
+        modalCanvas.style.pointerEvents = 'none';
+
+        modalCanvas.classList.remove('hidden');
+        modalVideo.classList.add('opacity-0');
+        modalCanvas.style.filter = 'contrast(120%) saturate(110%)';
+
+        function renderFrame() {
+            if (activeFilter !== 'pixelated') return;
+
+            if (!modalVideo.paused && !modalVideo.ended) {
+                smallCtx.drawImage(modalVideo, 0, 0, smallW, smallH);
+                ctx.imageSmoothingEnabled = false;
+                ctx.webkitImageSmoothingEnabled = false;
+                ctx.mozImageSmoothingEnabled = false;
+                ctx.msImageSmoothingEnabled = false;
+                ctx.drawImage(smallCanvas, 0, 0, vidW, vidH);
+            }
+            videoPixelAnimId = requestAnimationFrame(renderFrame);
+        }
+
+        renderFrame();
+    }
+
+    const applyFilter = (filterKey) => {
+        stopPixelation();
+
+        if (!filterKey || filterKey === 'none') {
+            activeFilter = 'none';
+            if (modalImg) modalImg.style.filter = 'none';
+            if (modalVideo) modalVideo.style.filter = 'none';
+            return;
+        }
+
+        activeFilter = filterKey;
+
+        if (filterKey === 'pixelated') {
+            if (modalImg) modalImg.style.filter = 'none';
+            if (modalVideo) modalVideo.style.filter = 'none';
+
+            if (currentIsVideo) {
+                startPixelatedVideo();
+            } else {
+                renderPixelatedImage();
+            }
+        } else {
+            const cssStyle = FILTERS[filterKey] || 'none';
+            if (modalImg) modalImg.style.filter = cssStyle;
+            if (modalVideo) modalVideo.style.filter = cssStyle;
+        }
     };
 
     const clearButtonStyles = () => {
@@ -70,13 +199,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Función para abrir el modal con el elemento multimedia clickeado
     const openMediaModal = (src, isVideo) => {
+        currentIsVideo = isVideo;
         clearButtonStyles();
+        stopPixelation();
         applyFilter('none');
 
         if (isVideo) {
             if (modalImg) modalImg.classList.add('hidden');
             modalVideo.src = src;
-            modalVideo.classList.remove('hidden');
+            modalVideo.classList.remove('hidden', 'opacity-0');
             modalVideo.play();
         } else {
             if (modalVideo) {
@@ -145,11 +276,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Cerrar Modal
     const closeModal = () => {
         modal.classList.add('hidden');
+        stopPixelation();
         applyFilter('none');
         clearButtonStyles();
         if (modalVideo) {
             modalVideo.pause();
             modalVideo.src = "";
+            modalVideo.classList.remove('opacity-0');
         }
     };
 
@@ -165,8 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
             const filterKey = btn.getAttribute('data-filter');
-            const targetFilterStyle = FILTERS[filterKey] || 'none';
-            const isCurrentlyActive = (activeFilter === targetFilterStyle);
+            const isCurrentlyActive = (activeFilter === filterKey);
 
             clearButtonStyles();
 
@@ -175,7 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 btn.classList.remove('bg-white/80', 'border-white');
                 btn.classList.add('bg-white', 'border-[#C1121F]', 'scale-125', 'shadow-2xl');
-                applyFilter(targetFilterStyle);
+                applyFilter(filterKey);
             }
         });
     });
