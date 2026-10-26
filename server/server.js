@@ -20,6 +20,23 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Seguridad: Bloquear acceso público directo a archivos del backend, dumps SQL y archivos de configuración
+app.use((req, res, next) => {
+    const p = req.path.toLowerCase();
+    if (
+        p.startsWith('/server') ||
+        p.startsWith('/node_modules') ||
+        p.startsWith('/.git') ||
+        p.endsWith('.sql') ||
+        p.endsWith('.env') ||
+        (p.endsWith('.json') && (p.includes('package') || p.includes('tsconfig')))
+    ) {
+        return res.status(403).json({ error: 'Acceso denegado a archivos internos.' });
+    }
+    next();
+});
+
 app.use(express.static(path.join(__dirname, '..')));
 
 // Ruta de Salud
@@ -42,7 +59,6 @@ app.use('/api/external', externalRoutes);
 app.listen(PORT, async () => {
     console.log(`\n==================================================`);
     console.log(`Servidor NorthBase corriendo en: http://localhost:${PORT}`);
-    console.log(`Arquitectura: MVC (Modelo - Vista - Controlador)`);
     console.log(`==================================================`);
     await testConnection();
 });

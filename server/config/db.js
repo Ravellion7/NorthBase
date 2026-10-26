@@ -4,8 +4,11 @@ const path = require('path');
 
 dotenv.config({ path: path.join(__dirname, '../../.env') });
 
-const pool = mysql.createPool({
-    host: process.env.DB_HOST || 'localhost',
+const dbHost = process.env.DB_HOST || 'localhost';
+const isCloudHost = dbHost !== 'localhost' && dbHost !== '127.0.0.1';
+
+const poolConfig = {
+    host: dbHost,
     user: process.env.DB_USER || 'root',
     password: process.env.DB_PASSWORD || '',
     database: process.env.DB_NAME || 'northbase_db',
@@ -13,7 +16,14 @@ const pool = mysql.createPool({
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
-});
+};
+
+// Activar SSL seguro automáticamente para proveedores en la nube (Aiven, TiDB, Railway, Supabase)
+if (process.env.DB_SSL === 'true' || isCloudHost) {
+    poolConfig.ssl = { rejectUnauthorized: false };
+}
+
+const pool = mysql.createPool(poolConfig);
 
 async function testConnection() {
     try {
