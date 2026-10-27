@@ -7,11 +7,9 @@ if (typeof AFRAME !== 'undefined') {
 
 
         init: function () {
-            console.log('>>> PARTICLE COMPONENT INIT:', this.data.type);
             this.velocities = [];
             this.points = null;
             this._buildParticles(this.data.type);
-            console.log('>>> PARTICLES BUILT. Children in object3D:', this.el.object3D.children.length);
         },
 
 
@@ -230,12 +228,11 @@ function savePhotoToIndexedDB(dataUrl) {
             timestamp: Date.now(),
             date: new Date().toLocaleDateString()
         });
-        console.log('Foto guardada en IndexedDB con éxito.');
-    };
+    }; console.
 
-    request.onerror = (e) => {
-        console.error('Error al acceder a IndexedDB:', e.target.error);
-    };
+        request.onerror = (e) => {
+            console.error('Error al acceder a IndexedDB:', e.target.error);
+        };
 }
 
 // Helper para guardar videos en IndexedDB (Galería local)
@@ -261,7 +258,6 @@ function saveVideoToIndexedDB(blob, durationSec) {
             timestamp: Date.now(),
             date: new Date().toLocaleDateString()
         });
-        console.log('Video guardado en IndexedDB con éxito.');
     };
 
     request.onerror = (e) => {
@@ -304,7 +300,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!team) return;
         const cleanKey = team.toLowerCase().trim();
         const teamKey = TEAM_URL_MAP[cleanKey] || cleanKey;
-        console.log(`Redirigiendo a estadísticas del equipo: ${teamKey}`);
         window.location.href = `./sultanes.html?team=${teamKey}`;
     }
 
@@ -341,7 +336,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // Comprobar colisión con todos los objetos, mallas y hitbox del equipo activo
         const intersects = raycaster.intersectObjects(currentActiveTarget.object3D.children, true);
         if (intersects && intersects.length > 0) {
-            console.log(`Three.js Raycaster detectó clic en modelo de ${activeTeamName}`);
             navigateToTeam(activeTeamName);
             return true;
         }
@@ -411,7 +405,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Si es el modelo de Sultanes, guardar sus 3 animaciones como la plantilla maestra
                 if (teamName === 'Sultanes' && mesh.animations && mesh.animations.length > 0) {
-                    console.log('Animaciones maestras de Sultanes cargadas:', mesh.animations.map(a => a.name));
                     sultanesAnimations = mesh.animations;
 
                     // Asignar inmediatamente las animaciones de Sultanes a todos los demás modelos
@@ -434,7 +427,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         target.addEventListener('targetFound', () => {
-            console.log(`¡Logo de ${teamName} detectado!`);
             currentActiveTarget = target;
             currentActiveModel = model;
             activeTeamName = teamName;
@@ -474,7 +466,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Restaurar targetLost para limpiar la animación al perder de vista el logo
         target.addEventListener('targetLost', () => {
-            console.log(`Logo de ${teamName} fuera de vista`);
             if (currentActiveTarget === target) {
                 if (currentActiveModel) {
                     currentActiveModel.removeAttribute('animation-mixer');
@@ -543,7 +534,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (currentActiveTarget) {
                     currentActiveTarget.removeAttribute('particle-effect');
                 }
-                console.log('Efecto de partículas desactivado.');
             } else {
                 btn.classList.remove('border-white', 'bg-black/40');
                 btn.classList.add('border-[#C1121F]', 'bg-white/30', 'scale-125', 'shadow-2xl');
@@ -552,7 +542,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     currentActiveTarget.removeAttribute('particle-effect');
                     currentActiveTarget.setAttribute('particle-effect', { type: effect });
                 }
-                console.log(`Efecto de partículas activado: ${effect}`);
             }
         });
     });
@@ -565,7 +554,6 @@ document.addEventListener('DOMContentLoaded', () => {
     animButtons.forEach(btn => {
         btn.addEventListener('click', () => {
             if (!currentActiveModel) {
-                console.warn('No hay ningún modelo detectado actualmente.');
                 return;
             }
 
@@ -580,14 +568,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (animIndex === 'stop') {
                 currentActiveModel.removeAttribute('animation-mixer');
-                console.log('Animación detenida (Idle).');
                 return;
             }
 
             const index = parseInt(animIndex, 10);
             if (availableAnimations.length > index) {
                 const clipName = availableAnimations[index];
-                console.log(`Reproduciendo animación: ${clipName}`);
 
                 currentActiveModel.removeAttribute('animation-mixer');
                 currentActiveModel.setAttribute('animation-mixer', {
